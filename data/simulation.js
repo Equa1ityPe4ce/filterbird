@@ -7,7 +7,7 @@ var notices = {duplicates:0,pd2_conditions:0,pod_conditions:0,colors:0,encoding:
 var colors = {
 	WHITE:"#dddddd",
 	GRAY:"#707070",
-	BLUE:"#6666bb",	
+	BLUE:"#6666bb",
 	YELLOW:"#cccc77",
 	GOLD:"#9b885e",
 	GREEN:"#00f000",
@@ -43,7 +43,7 @@ function startup() {
 	document.getElementById("background_2").src = background
 	settings.background = r;
 	loadCustomization()
-	
+
 	// TODO: Add URL parameters for these options
 	document.getElementById("original").checked = false
 	toggleOriginalChoices(false)
@@ -53,18 +53,16 @@ function startup() {
 	toggleCustom(true)
 	document.getElementById("custom_format").checked = true
 	toggleCustomFormat(true)
-	
+
 	// check URL parameters
 	params = new URLSearchParams(window.location.search);
-	if (params.has('v') == true) {
-		if (params.get('v').toLowerCase() == "pd2") { changeVersion(1) }
-	}
-	if (params.has('multiple') == true) {
-		if (params.get('multiple') == "0") {
-			document.getElementById("multiple_filters").checked = false
-			toggleMultipleFilters(false)
-		}
-	}
+
+	// hard set to pd2
+	changeVersion(1)
+
+	// hard set to single filter
+	toggleMultipleFilters(false)
+
 	if (params.has('alternate') == true) {
 		if (params.get('alternate') == "0") {
 			document.getElementById("custom_format").checked = false
@@ -84,7 +82,7 @@ function startup() {
 		}
 	}
 	// TODO: Handle settings if the page is loaded irregularly (i.e. by navigating "back")
-	
+
 	//document.getElementById("debug").style.display = "block"
 }
 
@@ -151,7 +149,7 @@ function setILVL(value) {
 	// keep ilvl consistent (temporary while old item selection & custom item editing coexist)
 	itemCustom.ILVL = value
 	document.getElementById("ilvl").value = value
-	
+
 	character.ILVL = Number(value)
 	if (settings.auto_difficulty == true) {
 		if (value < 36) { character.DIFFICULTY = 0 }
@@ -583,14 +581,14 @@ function parseFile(file,num) {
 				match = true
 			}
 			document.getElementById("o3").innerHTML += match
-			
+
 			//-----------------------------------------------------------------------------------------------------------
 			// check output for invalid keywords		// TODO: reduce duplicated code
 			if (settings.validation == 1 && errors < settings.max_errors) {
 				var unrecognized_list = [];
 				var unrecognized_keywords = false;
 				var out_format = output.split("//")[0];
-				
+
 				// TODO: Rework this to check the conditions and ensure that it doesn't apply to identified items of magic rarity or higher
 				// Checks name output (not description) for %NL% and displays an error if found
 				//if (settings.version == 1) {
@@ -602,17 +600,13 @@ function parseFile(file,num) {
 				//		}
 				//	}
 				//}
-				
+
 				out_format = out_format.split(",").join("‾").split(" ").join(", ,").split("%CONTINUE%").join(",misc_CONTINUE,").split("%NAME%").join(",ref_NAME,").split("%WHITE%").join(",color_WHITE,").split("%GRAY%").join(",color_GRAY,").split("%BLUE%").join(",color_BLUE,").split("%YELLOW%").join(",color_YELLOW,").split("%GOLD%").join(",color_GOLD,").split("%GREEN%").join(",color_GREEN,").split("%BLACK%").join(",color_BLACK,").split("%TAN%").join(",color_TAN,").split("%PURPLE%").join(",color_PURPLE,").split("%ORANGE%").join(",color_ORANGE,").split("%RED%").join(",color_RED,").split("%ILVL%").join(",ref_ILVL,").split("%SOCKETS%").join(",ref_SOCK,").split("%PRICE%").join(",ref_PRICE,").split("%RUNENUM%").join(",ref_RUNE,").split("%RUNENAME%").join(",ref_RUNENAME,").split("%GEMLEVEL%").join(",ref_GLEVEL,").split("%GEMTYPE%").join(",ref_GTYPE,").split("%CODE%").join(",ref_CODE,").split("\t").join(",\t,").split("{").join(",{,").split("}").join(",},").split("‗").join(",‗,");
 				// TODO: Change split/join replacements to use deliminator other than "_" between the identifying key and the keyword, so no exceptions need to be made when splitting off the keyword (e.g. for [DARK,GREEN] since it contains the deliminator)
-				if (settings.version == 0) { out_format = out_format.split("%DGREEN%").join(",color_DGREEN,").split("%CLVL%").join(",ref_CLVL,") }
-				else { out_format = out_format.split("%DGREEN%").join(",invalid_DGREEN,").split("%CLVL%").join(",invalid_CLVL,") }
-				if (settings.version == 1) { out_format = out_format.split("%DARK_GREEN%").join(",color_DGREEN,").split("%QTY%").join(",ref_QUANTITY,").split("%RANGE%").join(",ref_range,").split("%WPNSPD%").join(",ref_baseSpeed,").split("%ALVL%").join(",ref_ALVL,").split("%NL%").join(",misc_NL,").split("%MAP%").join(",ignore_MAP,").split("%NOTIFY-DEAD%").join(",ignore_NOTIFY-DEAD,").split("%LVLREQ%").join(",ref_reqlevel,").split("%CRAFTALVL%").join(",ref_CRAFTALVL,") }
-				else { out_format = out_format.split("%MAP%").join(",ignore_MAP,").split("%DARK_GREEN%").join(",color_DGREEN,").split("%NOTIFY-DEAD%").join(",ignore_NOTIFY-DEAD,") }		// TODO: would it be useful for 'known' keywords that don't do anything special in either PoD or PD2 (e.g. %LIGHT_GRAY%) to be treated differently?
+				out_format = out_format.split("%DGREEN%").join(",invalid_DGREEN,").split("%CLVL%").join(",invalid_CLVL,")
+				out_format = out_format.split("%DARK_GREEN%").join(",color_DGREEN,").split("%QTY%").join(",ref_QUANTITY,").split("%RANGE%").join(",ref_range,").split("%WPNSPD%").join(",ref_baseSpeed,").split("%ALVL%").join(",ref_ALVL,").split("%NL%").join(",misc_NL,").split("%MAP%").join(",ignore_MAP,").split("%NOTIFY-DEAD%").join(",ignore_NOTIFY-DEAD,").split("%LVLREQ%").join(",ref_reqlevel,").split("%CRAFTALVL%").join(",ref_CRAFTALVL,")
 				out_format = out_format.split("%LIGHT_GRAY%").join(",color_GRAY,").split("%CORAL%").join(",color_GRAY,").split("%SAGE%").join(",color_GRAY,").split("%TEAL%").join(",color_GRAY,")
-				if (settings.version == 0) { out_format = out_format.split("%QTY%").join(",ref_QUANTITY,").split("%RANGE%").join(",ref_range,").split("%WPNSPD%").join(",ref_baseSpeed,").split("%ALVL%").join(",ref_ALVL,").split("%NL%").join(",misc_NL,").split("%NOTIFY-ITEM%").join(",ignore_NOTIFY-ITEM,").split("%NOTIFY-WHITE%").join(",ignore_NOTIFY-WHITE,").split("%NOTIFY-GRAY%").join(",ignore_NOTIFY-GRAY,").split("%NOTIFY-BLUE%").join(",ignore_NOTIFY-BLUE,").split("%NOTIFY-YELLOW%").join(",ignore_NOTIFY-YELLOW,").split("%NOTIFY-TAN%").join(",ignore_NOTIFY-TAN,").split("%NOTIFY-GOLD%").join(",ignore_NOTIFY-GOLD,").split("%NOTIFY-GREEN%").join(",ignore_NOTIFY-GREEN,").split("%NOTIFY-DARK_GREEN%").join(",ignore_NOTIFY-DARK_GREEN,").split("%NOTIFY-BLACK%").join(",ignore_NOTIFY-BLACK,").split("%NOTIFY-PURPLE%").join(",ignore_NOTIFY-PURPLE,").split("%NOTIFY-RED%").join(",ignore_NOTIFY-RED,").split("%NOTIFY-ORANGE%").join(",ignore_NOTIFY-ORANGE,") }
-				if (settings.version == 0) { out_format = out_format.split("%LVLREQ%").join(",ref_reqlevel,").split("%CRAFTALVL%").join(",ref_CRAFTALVL,").split("%CLASS%").join(",ref_CLASS,").split("%CL%").join(",ref_CL,").split("%QUAL%").join(",ref_QUAL,").split("%QT%").join(",ref_QT,").split("%BASENAME%").join(",ref_BASENAME,")}	// TODO: organize keywords for different versions - these lines are a mess
-				if (settings.version == 1) { out_format = out_format.split("%CLASS%").join(",invalid_CLASS,").split("%CL%").join(",invalid_CL,").split("%QUAL%").join(",invalid_QUAL,").split("%QT%").join(",invalid_QT,").split("%BASENAME%").join(",invalid_BASENAME,")}
+				out_format = out_format.split("%CLASS%").join(",invalid_CLASS,").split("%CL%").join(",misc_NL,").split("%QUAL%").join(",invalid_QUAL,").split("%QT%").join(",invalid_QT,").split("%BASENAME%").join(",invalid_BASENAME,")
 				if (settings.version == 1) {
 					var notifs = ["%PX-","%DOT-","%MAP-","%BORDER-"];
 					for (n in notifs) {									// TODO: implement more efficient way to split notification keywords
@@ -678,13 +672,6 @@ function parseFile(file,num) {
 						if (uk == "%DARK.GREEN%") { uk = "%DARK_GREEN%" }
 						unrecognized_keywords = true
 						if (unrecognized_list.includes(uk) == false) { unrecognized_list.push(uk) }
-						if (settings.version == 0) {
-							if (notices.pd2_conditions == 0) { document.getElementById("o4").innerHTML += "<br>PD2 code(s) detected - the PD2 version of FilterBird can be enabled from the menu." }	// TODO: Also display notice for notification keywords (BORDER, MAP, DOT, PX, NOTIFY)
-							notices.pd2_conditions = 1
-						} else if (settings.version == 1) {
-							if (notices.pod_conditions == 0) { document.getElementById("o4").innerHTML += "<br>PoD code(s) detected - the PoD version of FilterBird can be enabled from the menu." }
-							notices.pod_conditions = 1
-						}
 					} else {
 						if (o.indexOf("%") < o.lastIndexOf("%")) {
 							var ok_list = o.substring(o.indexOf("%"),o.lastIndexOf("%")+1).split("%");
@@ -715,7 +702,7 @@ function parseFile(file,num) {
 				}
 			}
 			//-----------------------------------------------------------------------------------------------------------
-			
+
 			if (match == true) {
 				var desc_output_active = false;
 				var desc_output_escape = false;
@@ -734,7 +721,7 @@ function parseFile(file,num) {
 					else if (output[i] == "\t") { output = output.substr(1); leadingTabs = true; }
 					else { i = output.length }
 				}
-				
+
 				if (output.includes("{") == true && output.indexOf("{") < output.lastIndexOf("}")) {
 					var out_temp = output.substring(output.indexOf("{"),output.length-1);
 					out_temp = out_temp.substring(output.indexOf("}"),output.length-1);
@@ -754,7 +741,7 @@ function parseFile(file,num) {
 					if (desc_output_total != "" && output != "") { document.getElementById("o"+num).innerHTML += "#"+num+" Notice for line "+line_num+" (item's description overwritten)<br>" }	// displays a notice if the item's description gets overwritten (but not blanked) from lack of continuation
 					desc_output_total = ""
 				}
-				
+
 				if (output.includes("%NAME%") == true) {
 					output_total = output.split("%NAME%").join(output_total)
 				} else {
@@ -784,13 +771,13 @@ function parseFile(file,num) {
 		}
 		document.getElementById("o3").innerHTML = ""
 	} }
-	
+
 	// All lines have been checked at this point
 	if (done == false) { document.getElementById("o"+num).innerHTML += "#"+num+" No match found after checking all "+line_num+" lines ("+rules_checked+" rules) ... (default display)<br>" }
 	//else { document.getElementById("o"+num).innerHTML = document.getElementById("o"+num).innerHTML.substring(0,document.getElementById("o"+num).innerHTML.length-4)+" ... ("+line_num+" of "+lines.length+" lines checked)<br>" }	// TODO: would it be useful to show how many total lines/rules there are?
 	if (itemToCompare.ID == false && itemToCompare.always_id == false) { desc_output_total = "" }
 	if (itemToCompare.CODE == "GOLD" && output_total != "") { output_total = itemToCompare.money+" Gold"; desc_output_total = ""; }
-	
+
 	if (((continued > 0 && done == true) || continued > 1) && (output_total != "" || desc_output_total != "")) {
 		var out_name = output_total;
 		var out_desc = desc_output_total;
@@ -803,19 +790,16 @@ function parseFile(file,num) {
 		out_desc = out_desc.split("  ").join("&nbsp&nbsp").split(" &nbsp").join("&nbsp&nbsp").split("&nbsp ").join("&nbsp&nbsp")
 		document.getElementById("o"+num).innerHTML += "#"+num+" Combined Output ... "+"<l style='color:#aaa'>"+"ItemDisplay[⍰]:"+out_name+out_desc+"</l><br>"
 	}
-	
+
 	if (desc_output_total != "") { desc_output_total = "{%BLUE%"+desc_output_total+"}" }
 	output_total = desc_output_total+"%"+getColor(itemToCompare)+"%"+output_total
 	var description_braces = 0;
 	var description_active = false;
 	if (output_total.includes("{") == true && output_total.includes("}") == true) { if (output_total.indexOf("{") < output_total.lastIndexOf("}")) { description_active = true } }
-	
+
 	var out_format = output_total.split(",").join("‾").split(" ").join(", ,").split("%CONTINUE%").join(",misc_CONTINUE,").split("%NAME%").join(",ref_NAME,").split("%WHITE%").join(",color_WHITE,").split("%GRAY%").join(",color_GRAY,").split("%BLUE%").join(",color_BLUE,").split("%YELLOW%").join(",color_YELLOW,").split("%GOLD%").join(",color_GOLD,").split("%GREEN%").join(",color_GREEN,").split("%BLACK%").join(",color_BLACK,").split("%TAN%").join(",color_TAN,").split("%PURPLE%").join(",color_PURPLE,").split("%ORANGE%").join(",color_ORANGE,").split("%RED%").join(",color_RED,").split("%ILVL%").join(",ref_ILVL,").split("%SOCKETS%").join(",ref_SOCK,").split("%PRICE%").join(",ref_PRICE,").split("%RUNENUM%").join(",ref_RUNE,").split("%RUNENAME%").join(",ref_RUNENAME,").split("%GEMLEVEL%").join(",ref_GLEVEL,").split("%GEMTYPE%").join(",ref_GTYPE,").split("%CODE%").join(",ref_CODE,").split("\t").join(",\t,").split("{").join(",{,").split("}").join(",},").split("‗").join(",‗,");
-	if (settings.version == 0) { out_format = out_format.split("%DGREEN%").join(",color_DGREEN,").split("%DARK_GREEN%").join(",color_DGREEN,").split("%CLVL%").join(",ref_CLVL,").split("%NL%").join(",misc_NL,").split("%MAP%").join(",ignore_MAP,").split("%NOTIFY-DEAD%").join(",ignore_NOTIFY-DEAD,") }
-	if (settings.version == 1) { out_format = out_format.split("%DARK_GREEN%").join(",color_DGREEN,").split("%QTY%").join(",ref_QUANTITY,").split("%RANGE%").join(",ref_range,").split("%WPNSPD%").join(",ref_baseSpeed,").split("%ALVL%").join(",ref_ALVL,").split("%NL%").join(",misc_NL,").split("%MAP%").join(",ignore_MAP,").split("%NOTIFY-DEAD%").join(",ignore_NOTIFY-DEAD,").split("%LVLREQ%").join(",ref_reqlevel,").split("%CRAFTALVL%").join(",ref_CRAFTALVL,") }
+	if (settings.version == 1) { out_format = out_format.split("%DARK_GREEN%").join(",color_DGREEN,").split("%QTY%").join(",ref_QUANTITY,").split("%RANGE%").join(",ref_range,").split("%WPNSPD%").join(",ref_baseSpeed,").split("%ALVL%").join(",ref_ALVL,").split("%NL%").join(",misc_NL,").split("%CL%").join(",misc_NL,").split("%MAP%").join(",ignore_MAP,").split("%NOTIFY-DEAD%").join(",ignore_NOTIFY-DEAD,").split("%LVLREQ%").join(",ref_reqlevel,").split("%CRAFTALVL%").join(",ref_CRAFTALVL,") }
 	if (settings.version == 1) { out_format = out_format.split("%LIGHT_GRAY%").join(",color_GRAY,").split("%CORAL%").join(",color_GRAY,").split("%SAGE%").join(",color_GRAY,").split("%TEAL%").join(",color_GRAY,") }
-	if (settings.version == 0) { out_format = out_format.split("%QTY%").join(",ref_QUANTITY,").split("%RANGE%").join(",ref_range,").split("%WPNSPD%").join(",ref_baseSpeed,").split("%ALVL%").join(",ref_ALVL,").split("%NL%").join(",misc_NL,").split("%NOTIFY-ITEM%").join(",ignore_NOTIFY-ITEM,").split("%NOTIFY-WHITE%").join(",ignore_NOTIFY-WHITE,").split("%NOTIFY-GRAY%").join(",ignore_NOTIFY-GRAY,").split("%NOTIFY-BLUE%").join(",ignore_NOTIFY-BLUE,").split("%NOTIFY-YELLOW%").join(",ignore_NOTIFY-YELLOW,").split("%NOTIFY-TAN%").join(",ignore_NOTIFY-TAN,").split("%NOTIFY-GOLD%").join(",ignore_NOTIFY-GOLD,").split("%NOTIFY-GREEN%").join(",ignore_NOTIFY-GREEN,").split("%NOTIFY-DARK_GREEN%").join(",ignore_NOTIFY-DARK_GREEN,").split("%NOTIFY-BLACK%").join(",ignore_NOTIFY-BLACK,").split("%NOTIFY-PURPLE%").join(",ignore_NOTIFY-PURPLE,").split("%NOTIFY-RED%").join(",ignore_NOTIFY-RED,").split("%NOTIFY-ORANGE%").join(",ignore_NOTIFY-ORANGE,") }
-	if (settings.version == 0) { out_format = out_format.split("%LVLREQ%").join(",ref_reqlevel,").split("%CRAFTALVL%").join(",ref_CRAFTALVL,").split("%CLASS%").join(",ref_CLASS,").split("%CL%").join(",ref_CL,").split("%QUAL%").join(",ref_QUAL,").split("%QT%").join(",ref_QT,").split("%BASENAME%").join(",ref_BASENAME,")}	// TODO: organize keywords for different versions - these lines are a mess
 	if (settings.version == 1) {
 		var notifs = ["%PX-","%DOT-","%MAP-","%BORDER-"];
 		for (n in notifs) {
@@ -878,7 +862,7 @@ function parseFile(file,num) {
 		var temp = o;
 		var key = o.split("_")[0];
 		var blank = false;
-		
+
 		if (key == "misc" || key == "ignore") {
 			blank = true
 		} else if (key == "color") {
@@ -917,7 +901,7 @@ function parseFile(file,num) {
 				if (o == "}" && description_braces == 1) { description_braces = description_braces+1; blank = true; }
 			}
 		}
-		
+
 		if (description_braces != 1) {
 			if (o == "misc_NL" || o == "‗") { display += "<br>" }
 			if (o == " ") { display += "<l style='color:Black; opacity:0%;'>_</l>" }
@@ -1011,7 +995,7 @@ function equipmentHover(num) {
 	document.getElementById("item_affixes").innerHTML = affixes
 	document.getElementById("item_desc"+num).style.display = "block"
 	if (main_affixes != "" || affixes != "" || document.getElementById("item_desc"+num).innerHTML != "") { document.getElementById("tooltip_inventory").style.display = "block" }
-	
+
 	var original_choices_height = 47; if (document.getElementById("original_choices").style.display == "none") { original_choices_height = 0 }
 	var item = document.getElementById("output_"+num).getBoundingClientRect();
 	var tooltip_width = document.getElementById("tooltip_inventory").getBoundingClientRect().width;
@@ -1127,7 +1111,7 @@ function printAffixes() {
 // testing...
 function test() {
 	document.getElementById("print").innerHTML = ""
-	
+
 	// without downloading the filter files with their original encoding, there may not be a way to do this
 	/*var launcher_url = "https://raw.githubusercontent.com/Project-Diablo-2/LootFilters/main/filters.json";
 	getRequest1(launcher_url);
@@ -1193,26 +1177,26 @@ function getRequest3(url) {
 			document.getElementById("print").innerHTML += launcher_text + "<br><br>"
 			document.getElementById("print").innerHTML += github_text + "<br><br>"
 			document.getElementById("filter_text_2").value = filter_text	// TODO: how to display characters correctly for ANSI encoded files?
-			
+
 			// these seem to be the functions PD2 uses for converting between ANSI and UTF-8... unfortunately, they don't work correctly for the characters we're interested in
 			//	unescape(encodeURIComponent(s))
 			//	decodeURIComponent(escape(s))
-			
+
 			// testing custom ANSI to UTF-8 conversion:
-			
+
 			var text1 = filter_text.substring(1,1000)
 			//var text1 = filter_text.substring(696,706)
 			//var text1 = filter_text.substring(686,694)
-			
+
 			//var encoder = new TextEncoder();
 			//alert(encoder.encode(text1))
 			//	(­×¤¹²³½)	32,40,239,191,189,215,164,239,191,189,239,191,189,239,191,189,239,191,189,41,13
 			//	I encodi	73,32,101,110,99,111,100,105
-			
+
 			var encoding = "";
 			var encoder = new TextEncoder();
 			for (let i = 0; i < text1.length; i++) {
-				
+
 				var encoded_array = encoder.encode(text1[i])
 				if (encoded_array.length > 1) {
 					// TODO
@@ -1228,7 +1212,7 @@ function getRequest3(url) {
 				}
 				//var t1_bytes = text1[i].getBytes();
 				//document.getElementById("print").innerHTML += t1_bytes
-				
+
 				//document.getElementById("print").innerHTML += unescape(encodeURIComponent(text1[i]))
 			}
 			//document.getElementById("print").innerHTML += text1 + "<br><br>"
@@ -1272,7 +1256,7 @@ CHARSTAT43	cold resist
 CHARSTAT13	experience (0 for mules ...tied to character level)
 */
 
-// changeBackground - 
+// changeBackground -
 // ---------------------------------
 function changeBackground() {
 	var r = settings.background + 1;
@@ -1283,13 +1267,13 @@ function changeBackground() {
 	settings.background = r
 }
 
-// toggleNonItemDetails - 
+// toggleNonItemDetails -
 // ---------------------------------
 function toggleNonItemDetails(checked)  {
 	if (checked == true) { document.getElementById("non_item_editing").style.display = "block" }
 	else { document.getElementById("non_item_editing").style.display = "none" }
 }
-// setCLVL2 - 
+// setCLVL2 -
 // ---------------------------------
 function setCLVL2(value) {
 	if (isNaN(value) == true || value < 1 || value > 99) { value = document.getElementById("dropdown_clvl").selectedIndex }
@@ -1307,7 +1291,7 @@ function setCLVL2(value) {
 	}
 	simulate()
 }
-// setClass - 
+// setClass -
 // ---------------------------------
 function setClass(value) {
 	var classes = ["AMAZON", "ASSASSIN", "BARBARIAN", "DRUID", "NECROMANCER", "PALADIN", "SORCERESS"];
@@ -1315,7 +1299,7 @@ function setClass(value) {
 	character[value.toUpperCase()] = true
 	simulate()
 }
-// setDifficulty - 
+// setDifficulty -
 // ---------------------------------
 function setDifficulty(selected) {
 	if (Number(selected) < 3) {
@@ -1329,7 +1313,7 @@ function setDifficulty(selected) {
 	}
 	simulate()
 }
-// setGoldStash - 
+// setGoldStash -
 // ---------------------------------
 function setGoldStash(value) {
 	if (isNaN(value) == true || value < 0 || value > 2500000) { value = character.CHARSTAT15 }
@@ -1337,7 +1321,7 @@ function setGoldStash(value) {
 	character.CHARSTAT15 = Number(value)
 	simulate()
 }
-// setGoldChar - 
+// setGoldChar -
 // ---------------------------------
 function setGoldChar(value) {
 	if (isNaN(value) == true || value < 0 || value > (character.CLVL * 10000)) {
@@ -1368,7 +1352,7 @@ function setEquipped(checked) {
 	} }
 	simulate()
 }
-// setFilterLevel - 
+// setFilterLevel -
 // ---------------------------------
 function setFilterLevel(value) {
 	if (isNaN(value) == true || value < 0 || value > 9) {
@@ -1381,14 +1365,14 @@ function setFilterLevel(value) {
 }
 
 
-// toggleOriginalChoices - 
+// toggleOriginalChoices -
 // ---------------------------------
 function toggleOriginalChoices(checked) {
 	if (checked == true) { document.getElementById("original_choices").style.display = "block" }
 	else { document.getElementById("original_choices").style.display = "none" }
 }
 
-// changeVersion - 
+// changeVersion -
 //	v: version (0 = PoD, 1 = PD2)
 // ---------------------------------
 function changeVersion(v) {
@@ -1410,7 +1394,7 @@ function changeVersion(v) {
 	}
 }
 
-// toggleAutoSimulation - 
+// toggleAutoSimulation -
 // ---------------------------------
 function toggleAutoSimulation(checked) {
 	if (checked == true) { settings.auto_simulate = 1 }
@@ -1418,7 +1402,7 @@ function toggleAutoSimulation(checked) {
 	simulate()
 }
 
-// toggleConditionValidation - 
+// toggleConditionValidation -
 // ---------------------------------
 function toggleConditionValidation(checked) {
 	if (checked == true) {
@@ -1431,7 +1415,7 @@ function toggleConditionValidation(checked) {
 	simulate()
 }
 
-// toggleErrorLimit - 
+// toggleErrorLimit -
 // ---------------------------------
 function toggleErrorLimit(checked) {
 	if (checked == true) {
@@ -1445,7 +1429,7 @@ function toggleErrorLimit(checked) {
 	simulate()
 }
 
-// toggleHorizontalScroll - 
+// toggleHorizontalScroll -
 // ---------------------------------
 function toggleHorizontalScroll(checked) {
 	if (checked == true) {
@@ -1458,7 +1442,7 @@ function toggleHorizontalScroll(checked) {
 	}
 }
 
-// toggleMultipleFilters - 
+// toggleMultipleFilters -
 // ---------------------------------
 function toggleMultipleFilters(checked) {
 	if (checked == true) {
@@ -1481,10 +1465,10 @@ function toggleMultipleFilters(checked) {
 
 /**
   * Uses canvas.measureText to compute and return the width of the given text of given font in pixels.
-  * 
+  *
   * @param {String} text The text to be rendered.
   * @param {String} font The css font descriptor that text is to be rendered with (e.g. "bold 14px verdana").
-  * 
+  *
   * @see https://stackoverflow.com/questions/118241/calculate-text-width-with-javascript/21015393#21015393
   */
 function getTextWidth(text, font) {
@@ -1502,6 +1486,6 @@ function getCanvasFontSize(el = document.body) {
   const fontWeight = getCssStyle(el, 'font-weight') || 'normal';
   const fontSize = getCssStyle(el, 'font-size') || '16px';
   const fontFamily = getCssStyle(el, 'font-family') || 'Times New Roman';
-  
+
   return `${fontWeight} ${fontSize} ${fontFamily}`;
 }
