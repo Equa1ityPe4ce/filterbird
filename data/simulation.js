@@ -94,6 +94,7 @@ function startup() {
 	//simulate(1)
 	//toggleAutoSimulation(false);
 	//document.getElementById("debug").style.display = "block"
+	//loadedFromApp();
 
 }
 
