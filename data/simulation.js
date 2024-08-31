@@ -45,27 +45,28 @@ function startup() {
 	loadCustomization()
 
 	// TODO: Add URL parameters for these options
-	document.getElementById("original").checked = false
-	toggleOriginalChoices(false)
+	document.getElementById("original").checked = true
+	toggleOriginalChoices(true)
+
 	document.getElementById("non_item_custom").checked = true
 	toggleNonItemDetails(true)
 	document.getElementById("custom").checked = true
 	toggleCustom(true)
-	document.getElementById("custom_format").checked = true
+	//document.getElementById("custom_format").checked = true
 	toggleCustomFormat(true)
 
 	// check URL parameters
 	params = new URLSearchParams(window.location.search);
 
 	// hard set to pd2
-	changeVersion(1)
+	changeVersion(1);
 
 	// hard set to single filter
 	toggleMultipleFilters(false)
 
 	if (params.has('alternate') == true) {
 		if (params.get('alternate') == "0") {
-			document.getElementById("custom_format").checked = false
+			//document.getElementById("custom_format").checked = false
 			toggleCustomFormat(false)
 		}
 	}
@@ -1377,7 +1378,6 @@ function toggleOriginalChoices(checked) {
 // ---------------------------------
 function changeVersion(v) {
 	var prev_version = settings.version;
-	document.getElementById("version"+v).checked = true
 	v = Number(v)
 	settings.version = v
 	if (settings.version == 1) {
