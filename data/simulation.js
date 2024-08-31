@@ -33,7 +33,7 @@ var filter_text = "";
 // startup - runs when the page loads
 // ---------------------------------
 function startup() {
-	//document.getElementById("filter_text_1").innerHTML = "// filter 1"
+	document.getElementById("filter_text_1").innerHTML = "// filter code will be hidden in prod"
 	//document.getElementById("filter_text_2").innerHTML = "// Load filter files from your Diablo II directory or copy/paste their rules here\r\n// If you're not simulating multiple filters, Filter #2 can be disabled via the menu"
 	loadItems()
 	loadOptions()
@@ -45,13 +45,13 @@ function startup() {
 	loadCustomization()
 
 	// TODO: Add URL parameters for these options
-	document.getElementById("original").checked = true
+	//document.getElementById("original").checked = true
 	toggleOriginalChoices(true)
 
-	document.getElementById("non_item_custom").checked = true
+	//document.getElementById("non_item_custom").checked = true
 	toggleNonItemDetails(true)
-	document.getElementById("custom").checked = true
-	toggleCustom(true)
+	//document.getElementById("custom").checked = true
+	toggleCustom(false)
 	//document.getElementById("custom_format").checked = true
 	toggleCustomFormat(true)
 
@@ -72,25 +72,48 @@ function startup() {
 	}
 	if (params.has('auto') == true) {
 		if (params.get('auto') == "0") {
-			document.getElementById("auto_simulate").checked = false
+			//document.getElementById("auto_simulate").checked = false
 			toggleAutoSimulation(false)
 		}
 	}
+
+	toggleConditionValidation(false)
+
 	if (params.has('checking') == true) {
 		if (params.get('checking') == "0") {
-			document.getElementById("cond_validation").checked = false
+			//document.getElementById("cond_validation").checked = false
 			toggleConditionValidation(false)
 		}
 	}
-
+	setItem("Ber Rune")
+	//simulate(1)
+	//toggleAutoSimulation(false);
 	//document.getElementById("debug").style.display = "block"
 
+}
+
+
+// advItemEdit()
+function advItemEdit() {
+	toggleOriginalChoices(false);
+	toggleAutoSimulation(false);
+	toggleCustom(true)
+	setValues()
+	simulate(1)
+}
+
+// simpleItemEdit()
+function simpleItemEdit() {
+	toggleOriginalChoices(true);
+	toggleAutoSimulation(true);
+	toggleCustom(false);
+	simulate(1)
 }
 
 // loadItems - adds equipment and other items to the item dropdown menu
 // ---------------------------------
 function loadItems() {
-	var choices = "<option>­ ­ ­ ­ Select Item</option>";
+	var choices = "<option>­ ­ ­ ­ Select Item To View</option>";
 	for (group in equipment) {
 		for (itemNew in equipment[group]) {
 			var item = equipment[group][itemNew];
@@ -110,11 +133,11 @@ function loadItems() {
 function loadOptions() {
 	document.getElementById("dropdown_id").innerHTML = "<option>Id</option><option selected>Unid (if possible)</option>";
 	var options_clvl = "<option class='gray-all' style='color:gray' disabled>Character Level</option>"; for (let i = 1; i < 100; i++) { options_clvl += "<option>"+i+"</option>" }
-	document.getElementById("dropdown_clvl").innerHTML = options_clvl
-	document.getElementById("dropdown_clvl").selectedIndex = character.CLVL
+	//document.getElementById("dropdown_clvl").innerHTML = options_clvl
+	//document.getElementById("dropdown_clvl").selectedIndex = character.CLVL
 	var options_ilvl = "<option class='gray-all' style='color:gray' disabled>Item Level</option>"; for (let i = 1; i < 100; i++) { options_ilvl += "<option>"+i+"</option>" }
-	document.getElementById("dropdown_ilvl").innerHTML = options_ilvl
-	document.getElementById("dropdown_ilvl").selectedIndex = character.ILVL
+	//document.getElementById("dropdown_ilvl").innerHTML = options_ilvl
+	//document.getElementById("dropdown_ilvl").selectedIndex = character.ILVL
 }
 
 // setID - handles input from the ID dropdown menu
@@ -164,7 +187,7 @@ function setILVL(value) {
 //	value: the item's name
 // ---------------------------------
 function setItem(value) {
-	if (value != "­ ­ ­ ­ Select Item") {
+	if (value != "­ ­ ­ ­ Select Item To View") {
 		for (group in equipment) { for (itemNew in equipment[group]) { if (value == equipment[group][itemNew].name) {
 			var item = equipment[group][itemNew];
 			itemToCompare = {}
@@ -1277,9 +1300,9 @@ function toggleNonItemDetails(checked)  {
 // setCLVL2 -
 // ---------------------------------
 function setCLVL2(value) {
-	if (isNaN(value) == true || value < 1 || value > 99) { value = document.getElementById("dropdown_clvl").selectedIndex }
+	//if (isNaN(value) == true || value < 1 || value > 99) { value = document.getElementById("dropdown_clvl").selectedIndex }
 	document.getElementById("clvl").value = value
-	document.getElementById("dropdown_clvl").value = value
+	//document.getElementById("dropdown_clvl").value = value
 	character.CLVL = Number(value)
 	if (settings.version == 1) { itemCustom.CRAFTALVL = Math.floor(character.CLVL/2) + Math.floor(ilvl/2) }
 	else {
@@ -1407,10 +1430,10 @@ function toggleAutoSimulation(checked) {
 function toggleConditionValidation(checked) {
 	if (checked == true) {
 		settings.validation = 1
-		document.getElementById("show_error_limit").style.display = "block"
+		//document.getElementById("show_error_limit").style.display = "block"
 	} else {
 		settings.validation = 0
-		document.getElementById("show_error_limit").style.display = "none"
+		//document.getElementById("show_error_limit").style.display = "none"
 	}
 	simulate()
 }

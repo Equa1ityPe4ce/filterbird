@@ -75,11 +75,11 @@ var most_recent_rarity_misc = 2;	// which item rarity was most recently selected
 function toggleCustom(checked) {
 	if (checked == true) {
 		document.getElementById("item_editing").style.display = "block"
-		document.getElementById("show_custom_format").style.display = "block"
+		//document.getElementById("show_custom_format").style.display = "block"
 	}
 	else {
 		document.getElementById("item_editing").style.display = "none"
-		document.getElementById("show_custom_format").style.display = "none"
+		//document.getElementById("show_custom_format").style.display = "none"
 	}
 }
 // toggleCustomFormat - switches the custom item editing UI between horizontal and vertical orientations
@@ -256,7 +256,7 @@ function loadRarity(value) {
 	}
 	// TODO: Adjust how Maps are implemented, so their rarity can be adjusted
 	document.getElementById("dropdown_rarity").innerHTML = options
-	
+
 	// keeps the previous rarity if possible
 	var new_index = document.getElementById("dropdown_rarity").length-1;
 	if (typeof(itemCustom.rarity) != 'undefined' && !(value == "any" && itemCustom.rarity != "unique" && itemCustom.rarity != "set")) {
@@ -271,9 +271,9 @@ function loadRarity(value) {
 			if (most_recent_rarity == i_rarity) { new_index = i }
 		}
 	}
-	
+
 	document.getElementById("dropdown_rarity").selectedIndex = new_index
-	
+
 	loadName(document.getElementById("dropdown_rarity").value)
 }
 // setRarity - called when 'rarity' dropdown is used, loads the next dropdown
@@ -400,12 +400,12 @@ function setName(value) {
 	tidyBaseSelection()
 	setValues()
 }
-// validateILVL - 
+// validateILVL -
 // ---------------------------------
 function validateILVL(value) {
 	var qlvl = 1;
 	if (typeof(itemCustom.qlvl) != 'undefined') { qlvl = itemCustom.qlvl }
-	if (isNaN(value) == true || value < 1 || value > 99) { value = document.getElementById("dropdown_ilvl").selectedIndex }
+	//if (isNaN(value) == true || value < 1 || value > 99) { value = document.getElementById("dropdown_ilvl").selectedIndex }
 	if (value < qlvl) { value = qlvl }
 	document.getElementById("ilvl").value = value
 	character.ILVL = Number(value)
@@ -416,14 +416,14 @@ function setILVL2(value) {
 	validateILVL(value)
 	value = document.getElementById("ilvl").value
 	// keep ilvl consistent (temporary while old item selection & custom item editing coexist)
-	document.getElementById("dropdown_ilvl").selectedIndex = value
+	//document.getElementById("dropdown_ilvl").selectedIndex = value
 	character.ILVL = value
 	if (settings.auto_difficulty == true) {
 		if (value < 36) { character.DIFFICULTY = 0 }
 		else if (value > 66) { character.DIFFICULTY = 2 }
 		else { character.DIFFICULTY = 1 }
 	}
-	
+
 	setCustomBase()
 	tidyBaseSelection()
 	setValues()
@@ -444,7 +444,7 @@ function setCustomBase() {
 	itemCustom = {name_prefix:"",name_suffix:"",req_level:0};
 	itemCustom.type_affix = type;
 	itemCustom.ILVL = document.getElementById("ilvl").value;
-	
+
 	if (type == "rune" || type == "gem" || type == "other" || type == "misc") {
 		document.getElementById("select_rarity").style.display = "none"
 		for (itemNew in premade[type]) {
@@ -598,11 +598,11 @@ function getALVL() {
 	var clvl = character.CLVL;
 	var craft_ilvl = Math.floor(ilvl/2) + Math.floor(clvl/2)
 	var craft_alvl = 0;
-	
+
 	if (type != "amulet" && type != "ring" && type != "quiver" && type != "charm" && type != "jewel" && type != "rune" && type != "gem" && type != "other" && type != "misc") { base_qlvl = bases[itemCustom.base.split(" ").join("_").split("-").join("_").split("'s").join("s")].qlvl; }
 	else if (itemCustom.base == "Large Charm") { base_qlvl = 14 }
 	else if (itemCustom.base == "Small Charm") { base_qlvl = 28 }
-	
+
 	if (type == "circlet") {
 		if (itemCustom.base == "Circlet") { magic_lvl = 3 }
 		else if (itemCustom.base == "Coronet") { magic_lvl = 8 }
@@ -611,7 +611,7 @@ function getALVL() {
 	} else if (type == "staff" || type == "orb" || (type == "wand" && itemCustom.tier != 3)) {
 		magic_lvl = 1
 	}
-	
+
 	x = Math.max(ilvl,base_qlvl)
 	if (magic_lvl > 0) { alvl = x + magic_lvl }
 	else {
@@ -619,7 +619,7 @@ function getALVL() {
 		else { alvl = 2*x - 99 }
 	}
 	alvl = Math.min(alvl,99)
-	
+
 	x = Math.max(craft_ilvl,base_qlvl)
 	if (magic_lvl > 0) { craft_alvl = x + magic_lvl }
 	else {
@@ -627,7 +627,7 @@ function getALVL() {
 		else { craft_alvl = 2*x - 99 }
 	}
 	craft_alvl = Math.min(craft_alvl,99)
-	
+
 	itemCustom.QLVL = base_qlvl
 	itemCustom.MAGLVL = magic_lvl
 	itemCustom.ALVL = alvl
@@ -650,7 +650,7 @@ function loadEditing() {
 	document.getElementById("select_runeword").style.display = "none"
 	itemCustomPremade = {}
 	if (getMatch("sockets") == false) { document.getElementById("dropdown_runeword").selectedIndex = 0; }
-	
+
 	var selects = ["identified","ethereal","sockets","quality","automod","pointmod","affix","corruption","upgrade"];
 	for (s in selects) {
 		var divs = [];
@@ -668,7 +668,7 @@ function loadEditing() {
 		if (getMatch(selects[s])) { load(selects[s]) }
 	}
 }
-// load - subfunction for loadEditing, 
+// load - subfunction for loadEditing,
 // ---------------------------------
 function load(kind) {
 	// TODO: reduce duplicated code
@@ -1619,7 +1619,7 @@ function doUpgrade(selected) {
 function setValues() {
 	itemCustomAffixes = {}
 	//if (document.getElementById("dropdown_sockets").selectedIndex > 1) {
-	//	
+	//
 	//}
 	if (document.getElementById("dropdown_quality").selectedIndex == 2) {
 		itemCustomAffixes.SUP = true
@@ -1717,7 +1717,7 @@ function setValues() {
 	setItemFromCustom()
 }
 
-// setItemFromCustom - 
+// setItemFromCustom -
 // ---------------------------------
 function setItemFromCustom() {
 	itemTemp = itemCustom;
@@ -1767,13 +1767,13 @@ function setItemFromCustom() {
 		for (let i = 0; i < runewords[rw_name].runes.length; i++) { s+=1; }
 		itemToCompare.sockets = s
 	}
-	
+
 	if (itemCustom.CODE == "GOLD") { document.getElementById("select_amount").style.display = "block"; setAmount(document.getElementById("amount").value) }
 	else { document.getElementById("select_amount").style.display = "none" }
 	var force_simulate = false;
 	if (typeof(itemCustom.QUANTITY) != 'undefined') { document.getElementById("select_quantity").style.display = "block"; setQuantity(itemCustom.QUANTITY); }
 	else { document.getElementById("select_quantity").style.display = "none" }
-	
+
 	setItemCodes()
 	var already_reset = setPD2Codes();	// if true, the program will essentially do 1 recursive loop before returning here and calling the next line twice (not good, but shouldn't be a major issue since simulate() won't execute parseFile() when the info is the same)
 	simulate()				// TODO: could this just be put inside setPD2Codes() instead?
@@ -1866,7 +1866,7 @@ function setItemCodes() {
 	if (typeof(itemToCompare.QUANTITY) == 'undefined') { itemToCompare.QUANTITY = 0 }
 	if (typeof(itemToCompare.range) == 'undefined') { itemToCompare.range = 0 }
 	if (typeof(itemToCompare.baseSpeed) == 'undefined') { itemToCompare.baseSpeed = 0 }
-	
+
 	var two_handers_1 = ["lax","bax","btx","gax","gix","9la","9ba","9bt","9ga","9gi","7la","7ba","7bt","7ga","7gi","mau","gma","9m9","9gm","7m7","7gm","2hs","clm","gis","bsw","flb","gsd","92h","9cm","9gs","9b9","9fb","9gd","72h","7cm","7gs","7b7","7fb","7gd","spr","tri","brn","spt","pik","9sr","9tr","9br","9st","9p9","7sr","7tr","7br","7st","7p7","am3","am4","am8","am9","amd","ame"];
 	var two_handers_2 = ["WP8","WP9","WP10","WP11"];
 	itemToCompare["2H"] = false;
@@ -1874,7 +1874,7 @@ function setItemCodes() {
 	for (th in two_handers_1) { if (itemToCompare.CODE == two_handers_1[th]) { itemToCompare["2H"] = true; } }
 	for (th in two_handers_2) { if (typeof(itemToCompare[two_handers_2[th]]) != 'undefined') { if (itemToCompare[two_handers_2[th]] == true) { itemToCompare["2H"] = true; } } }
 	if (typeof(itemToCompare.WEAPON) != 'undefined') { if (itemToCompare["2H"] == false && itemToCompare.WEAPON == true) { itemToCompare["1H"] = true } }
-	
+
 	// implement missing named attribute codes:
 	if (typeof(itemToCompare.STAT93) != 'undefined') { itemToCompare.IAS = itemToCompare.STAT93; itemToCompare.STAT68 = itemToCompare.STAT93; }
 	if (typeof(itemToCompare.STAT105) != 'undefined') { itemToCompare.FCR = itemToCompare.STAT105 }
@@ -1882,7 +1882,7 @@ function setItemCodes() {
 	if (typeof(itemToCompare.STAT102) != 'undefined') { itemToCompare.FBR = itemToCompare.STAT102 }
 	if (typeof(itemToCompare.life) != 'undefined') { itemToCompare.LIFE = itemToCompare.life }
 	if (typeof(itemToCompare.mana) != 'undefined') { itemToCompare.MANA = itemToCompare.mana }
-	
+
 	// implement missing PoD keywords:
 	itemToCompare.CL = ""
 	itemToCompare.CLASS = ""
@@ -1920,7 +1920,7 @@ function setItemCodes() {
 		itemToCompare.STAT43 += itemToCompare.RES
 		itemToCompare.STAT45 += itemToCompare.RES
 	}
-	
+
 	// implement FOOLS:
 	itemToCompare.FOOLS = false
 	for (let n = 1; n <= 3; n++) {
@@ -1941,7 +1941,7 @@ function setPD2Codes() {
 	var code_other = {req_level:"LVLREQ",QUANTITY:"QTY",mana_per_kill:"MAEK",autorepair:"REPAIR",ar_bonus:"ARPER"};
 	var selected_group_index = document.getElementById("dropdown_group").selectedIndex;
 	var reset_selected = false;
-	
+
 	// Both PD2 and PoD seem to have all of these codes now... TODO: test PoD codes, especially whether certain groups include/exclude the same related categories
 	if (settings.version == 1) {
 		if (typeof(itemToCompare.WP5) != 'undefined' || typeof(itemToCompare.WP7) != 'undefined') { if (itemToCompare.WP5 == true || itemToCompare.WP7 == true) { itemToCompare.WP6 = true } }
@@ -2027,7 +2027,7 @@ function setPD2Codes() {
 }
 
 
-// setPrice - 
+// setPrice -
 // ---------------------------------
 function setPrice(val) {
 	val = Number(val)
@@ -2040,7 +2040,7 @@ function setPrice(val) {
 	simulate()
 }
 
-// setAmount - 
+// setAmount -
 // ---------------------------------
 function setAmount(val) {
 	if (itemCustom.CODE == "GOLD") {
@@ -2056,7 +2056,7 @@ function setAmount(val) {
 	simulate()
 }
 
-// setQuantity - 
+// setQuantity -
 // ---------------------------------
 function setQuantity(val) {
 	if (typeof(itemCustom.QUANTITY) != 'undefined') {
