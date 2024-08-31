@@ -33,7 +33,7 @@ var filter_text = "";
 // startup - runs when the page loads
 // ---------------------------------
 function startup() {
-	document.getElementById("filter_text_1").innerHTML = "// filter code will be hidden in prod"
+	//document.getElementById("filter_text_1").innerHTML = "// filter code will be hidden in prod"
 	//document.getElementById("filter_text_2").innerHTML = "// Load filter files from your Diablo II directory or copy/paste their rules here\r\n// If you're not simulating multiple filters, Filter #2 can be disabled via the menu"
 	loadItems()
 	loadOptions()
