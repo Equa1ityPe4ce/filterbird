@@ -1,9 +1,9 @@
 @font-face {
-	font-family: AvQest;
-	src: url(AvQest.ttf);
+	font-family: exocet;
+	src: url(exocet-blizzard-medium.ttf);
 }
 .item {
-	font-family: AvQest;
+	font-family: exocet;
 	font-style: normal;
 	font-weight: 400;
 	text-align: center;
