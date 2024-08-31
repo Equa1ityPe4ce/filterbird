@@ -80,8 +80,8 @@
 				<div id="select_rarity_misc" style="display:none;"><label class="label">&nbsp;Rarity: </label><select id="dropdown_rarity_misc" class="new-dropdown" style="min-width:0px;" onChange="setRarityMisc(this.selectedIndex)"></select></div>
 				<div id="select_ilvl"><label class="label" for="ilvl">Level: </label><input id="ilvl" name="ilvl" class="num-input" type="number" min="1" max="99" value="85" onchange="setILVL2(this.value)"></div>
 				<div>
-					<button style="height:29px;" onClick="simulate(1)">Update Item Display</button>
-					<button style="height:29px;" onClick="simpleItemEdit()">Simple Item Picker</button>
+					<button style="height:29px;" onmousedown="reloadWindow(1)" onClick="simulate(1);">Update Item Display</button>
+					<button style="height:29px;" onmousedown="reloadWindow(1)" onClick="simpleItemEdit()">Simple Item Picker</button>
 				</div>
 			</div>
 			<div style="display:inline-table;"><br></div>
@@ -163,8 +163,15 @@
 
 		<div id="output_area_1" style="height:100px; width:800px; position:relative;" oncontextmenu="return false">
 			<!--<div style="color:white; position:absolute;">Filter #1</div>-->
+			<div id="reloading_window_1" class="reloading-window">'
+				<br/>
+				<br/>
+				⏳
+			</div>
+
 			<img id="background_1" style="z-index:1;" src="" onClick="simulate(1)" oncontextmenu="changeBackground()">
 			<div id="output_1" class="item" onmouseover="equipmentHover(1)" onmouseout="equipmentOut()"></div>
+
 		</div>
 		<div id="output_area_2" style="height:100px; width:800px; position:relative;" oncontextmenu="return false">
 			<div style="color:white; position:absolute;">Filter #2</div>
@@ -182,7 +189,6 @@
 		</div>
 
 		<div id="extra_space"></div>
-
 		<div id="debug" style="display:none;">
 			<button onClick="test()">Test</button>
 			<button onClick="printAffixes()">Debug</button>
@@ -201,6 +207,13 @@
 
 	</div>	<!-- /full_interface -->
 </div>	<!-- /main -->
+
+<div class="loading-window" if="loading_window_1">'
+<br/>
+<br/>
+⏳
+</div>
+
 </body>
 </html>
 

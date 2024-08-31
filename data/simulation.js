@@ -44,6 +44,11 @@ function startup() {
 	settings.background = r;
 	loadCustomization()
 
+
+	document.getElementById("filter_text_1").style.display = "none"
+	//document.getElementById("output_area_1").style.display = "none"
+	document.getElementById("o1").style.display = "none"
+
 	// TODO: Add URL parameters for these options
 	//document.getElementById("original").checked = true
 	toggleOriginalChoices(true)
@@ -110,6 +115,21 @@ function simpleItemEdit() {
 	simulate(1)
 }
 
+function loadedFromApp() {
+	simulate(1);
+	document.getElementById("loading_window_1").style.display = "none";
+}
+//loading-window
+function reloadWindow(value) {
+	if (value === 1) {
+		document.getElementById("reloading_window_1").style.display = "none"
+		document.getElementById("reloading_window_1").style.display = "block"
+	} else {
+		document.getElementById("reloading_window_1").style.display = "block"
+		document.getElementById("reloading_window_1").style.display = "none"
+	}
+}
+
 // loadItems - adds equipment and other items to the item dropdown menu
 // ---------------------------------
 function loadItems() {
@@ -119,9 +139,9 @@ function loadItems() {
 			var item = equipment[group][itemNew];
 			var addon = "";
 			if (item == equipment[group][0]) { addon = "<option class='gray-all' style='color:gray' disabled>" + item.name + "</option>" }
-			else if (typeof(item.color) != 'undefined') { addon = "<option style='color:"+colors[getColor(item)]+"'>" + item.name + "</option>" }
-			else if (typeof(item.rarity) != 'undefined') { addon = "<option class='dropdown-"+item.rarity+"'>" + item.name + "</option>" }
-			else { addon = "<option class='dropdown-unique'>" + item.name + "</option>" }
+			else if (typeof(item.color) != 'undefined') { addon = "<option onclick=\"reloadWindow(1);\" style='color:"+colors[getColor(item)]+"'>" + item.name + "</option>" }
+			else if (typeof(item.rarity) != 'undefined') { addon = "<option onclick=\"reloadWindow(1);\" class='dropdown-"+item.rarity+"'>" + item.name + "</option>" }
+			else { addon = "<option onclick=\"reloadWindow(1);\" class='dropdown-unique'>" + item.name + "</option>" }
 			choices += addon
 		}
 	}
@@ -187,6 +207,7 @@ function setILVL(value) {
 //	value: the item's name
 // ---------------------------------
 function setItem(value) {
+	reloadWindow(1);
 	if (value != "­ ­ ­ ­ Select Item To View") {
 		for (group in equipment) { for (itemNew in equipment[group]) { if (value == equipment[group][itemNew].name) {
 			var item = equipment[group][itemNew];
@@ -285,15 +306,26 @@ function setItem(value) {
 		if (typeof(itemToCompare.SOCK) == 'undefined') { itemToCompare.SOCK = 0 }
 		simulate()
 	}
+	reloadWindow(0);
 }
+
+
+function simulate(manual) {
+	reloadWindow(1);
+	simulateNested(manual) ;
+	reloadWindow(0);
+}
+
 
 // simulate - begins the filter simulation process
 // ---------------------------------
-function simulate(manual) {
+function simulateNested(manual) {
+	//reloadWindow(1);
 	settings.nowrap_width = 800;
 	//document.body.style.cursor = "wait";
-	if (settings.auto_simulate == 0) { document.getElementById("o5").innerHTML = "Auto-Simulate is disabled. Click the 'ground' to simulate manually." }
-	else { document.getElementById("o5").innerHTML = "Auto-Simulate is enabled - the simulation updates when character/item changes are made. Click the 'ground' to simulate manually." }
+	 document.getElementById("o5").innerHTML = "";
+	//if (settings.auto_simulate == 0) { document.getElementById("o5").innerHTML = "Auto-Simulate is disabled. Click the 'ground' to simulate manually." }
+	//else { document.getElementById("o5").innerHTML = "Auto-Simulate is enabled - the simulation updates when character/item changes are made. Click the 'ground' to simulate manually." }
 	document.getElementById("multiple_spacing").innerHTML = ""
 	if (settings.num_filters == 2) { document.getElementById("multiple_spacing").innerHTML = "<br>" }
 	if (document.getElementById("dropdown_group").selectedIndex > 9) { document.getElementById("select_price").style.display = "none" }
@@ -364,6 +396,7 @@ function simulate(manual) {
 	messages_old = messages
 	document.getElementById("o4").innerHTML = messages
 	//document.body.style.cursor = "auto";
+	//reloadWindow(0)
 }
 
 // loadFileAsText - loads text from a file
