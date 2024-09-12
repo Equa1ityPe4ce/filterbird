@@ -105,7 +105,7 @@
 }
 .new-dropdown-title {
 	color: white;
-	background-color: #393939;
+	background-color: transparent;
 }
 .range {
 	
@@ -118,7 +118,7 @@ input[type="file"] {
 /* Navbar container */
 .navbar {
 	overflow: hidden;
-	background-color: #333;
+	background-color: transparent;
 	font-family: Montserrat, sans-serif;
 	min-width: 911px;
 }
@@ -133,7 +133,7 @@ input[type="file"] {
 	border: none;
 	color: #ddd;
 	padding: 4px 16px;
-	background-color: inherit;
+	background-color: transparent;
 	font-family: inherit;
 	font-size: 14px;
 	text-decoration: none;
@@ -203,7 +203,6 @@ input[type="file"] {
   text-align: center;
 }
 
-
 .reloading-window {
  /* display: none;*/
   position: fixed;
@@ -216,4 +215,25 @@ input[type="file"] {
   background-color: rgba(0,0,0,1);
 
   text-align: center;
+}
+
+/* Set the default scrollbar track and thumb */
+::-webkit-scrollbar {
+    width: 12px; /* Adjust width */
+}
+
+::-webkit-scrollbar-track {
+    background: #222; /* Dark background for track */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #b39a74; /* Gold color from your XAML */
+    border-radius: 6px; /* Rounded corners */
+    border: 3px solid #222; /* Padding around the thumb */
+}
+
+/* Firefox-specific scrollbar customization */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #b39a74 #222; /* Thumb color (gold) and track color */
 }
