@@ -125,9 +125,11 @@ function reloadWindow(value) {
 	if (value === 1) {
 		document.getElementById("reloading_window_1").style.display = "none"
 		document.getElementById("reloading_window_1").style.display = "block"
+		equipmentOut();
 	} else {
 		document.getElementById("reloading_window_1").style.display = "block"
 		document.getElementById("reloading_window_1").style.display = "none"
+		equipmentHover(1);
 	}
 }
 
@@ -1062,10 +1064,14 @@ function equipmentHover(num) {
 	var offset_x = Math.floor(item.left + item.width/2 - tooltip_width/2);
 	var offset_y = Math.floor(63 + textbox_height + editing_height + 100*num + item.height/2);
 	document.getElementById("tooltip_inventory").style.left = offset_x+"px"
-	document.getElementById("tooltip_inventory").style.top = offset_y+"px"
+	//document.getElementById("tooltip_inventory").style.top = offset_y+"px"
 	var extra_height = Math.max(0,(document.getElementById("tooltip_inventory").getBoundingClientRect().height - 50 - document.getElementById("output_processing_info").getBoundingClientRect().height))
 	if (settings.num_filters == 1) { extra_height += 24 }
-	document.getElementById("extra_space").style.height = extra_height+"px"
+	//document.getElementById("extra_space").style.height = extra_height+"px"
+	
+	var inv_height = document.getElementById("tooltip_inventory").getBoundingClientRect().height
+	document.getElementById("tooltip_inventory_backdrop").style.height = inv_height+"px"
+	
 }
 
 // equipmentOut - stops showing equipment info (mouse-over ends)
