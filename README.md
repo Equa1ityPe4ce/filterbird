@@ -22,14 +22,7 @@ This is a fork of the original FilterBird project by BetweenWalls. This fork is 
 
 **Reporting**: Please Message Equa1ity in discord with issues
 
-This version may contain discrepancies from the original game's filter display. If any problems arise, please check the following links for issues and solutions.
-
-    Original FilterBird GitHub
-
-Please also visit the original repository for credit and more information.
-Original [REPO](https://github.com/BetweenWalls/filterbird) from the legend BetweenWalls.
-
 **Credits**
-* Origional Creator: BetweenWalls
+* Origional Creator: BetweenWalls [REPO](https://github.com/BetweenWalls/filterbird)
 * Edits for the Launcher: Maaaark
 * Launcher Integration: Equa1ity
