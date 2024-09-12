@@ -21,7 +21,7 @@
 	<link rel="shortcut icon" href="./images/wing_icon.png" type="image/x-icon">
 </head>
 
-<body style="background-color:transparent;" onload="initial_load()">
+<body style="background-color:transparent; font-family: exocet;" onload="initial_load()">
 <div id="main">
 
 	<div class="navbar">
@@ -31,13 +31,12 @@
 
 	<div id="full_interface">
 		<div id="original_choices" class="navbar">
-			<br>
 			<!-- <button style="height:29px;" onClick="simulate(1)">Refresh</button> -->
 			<div class="dropdown" style="width:200px; height:20px; position:relative; z-index:6; display:inline;">
 				<select class="dropdown" id="dropdown_item" onChange="setItem(this.value)"></select>
 				<select class="dropdown" id="dropdown_id" style="width:34px; padding-left:0px;" onChange="setID(this.value)"></select>
 				<!-- <label class="label" for="dropdown_ilvl">Item Level: </label><<select class="dropdown" id="dropdown_ilvl" style="width:25px; padding-left:0px;" onChange="setILVL(this.value)"></select>-->
-				<button style="height:29px;" onClick="advItemEdit()">Advanced Item Editor</button>
+				<button style="height:29px;" onClick="advItemEdit()">Advanced Item Viewer</button>
 			</div>
 			<!--<div class="dropdown" style="height:20px; position:relative; z-index:6; display:inline; float:right;">
 				<label class="label" for="dropdown_clvl">Character Level </label>
@@ -45,9 +44,8 @@
 			</div>-->
 		</div>
 		<div id="non_item_editing" style="display:none;">
-			<br>
 			<div style="background-color:transparent; display:table;">
-				<div class="new-dropdown-title">In-Game Info</div>
+				<div class="new-dropdown-title">In-Game Info + Settings</div>
 				<div style="display:inline-table; margin-right:5px;">
 					<div style="display:inline"><label class="label" for="clvl">Level: </label><input id="clvl" name="clvl" class="num-input" type="number" min="1" max="99" value="90" onchange="setCLVL2(this.value)"></div>
 					<div id="character_class" style="display:inline"><label class="label">&nbsp;Class: </label><select id="dropdown_class" class="new-dropdown" onChange="setClass(this.value)">
@@ -80,8 +78,8 @@
 				<div id="select_rarity_misc" style="display:none;"><label class="label">&nbsp;Rarity: </label><select id="dropdown_rarity_misc" class="new-dropdown" style="min-width:0px;" onChange="setRarityMisc(this.selectedIndex)"></select></div>
 				<div id="select_ilvl"><label class="label" for="ilvl">Level: </label><input id="ilvl" name="ilvl" class="num-input" type="number" min="1" max="99" value="85" onchange="setILVL2(this.value)"></div>
 				<div>
-					<button style="height:29px;" onmousedown="reloadWindow(1)" onClick="simulate(1);">Update Item Display</button>
-					<button style="height:29px;" onmousedown="reloadWindow(1)" onClick="simpleItemEdit()">Simple Item Picker</button>
+					<button style="height:29px;" onmousedown="reloadWindow(1)" onClick="simulate(1);">Update Item View</button>
+					<button style="height:29px;" onmousedown="reloadWindow(1)" onClick="simpleItemEdit()">Simple Item Viewer</button>
 				</div>
 			</div>
 			<div style="display:inline-table;"><br></div>
@@ -159,27 +157,29 @@
 			<label id="filter_clear_2" for="clear_2" style="color:white; display:inline-table; background-color:#733; width:96px;">Clear Filter #2</label><input type="button" id="clear_2" name="clear_2" style="display:none;" onclick="clearText(2)"></input>
 		</div>
 		<textarea id="filter_text_2" style="width:793px;" cols="130" rows="6"></textarea>
-		<br><br>
+		<!--<br><br>-->
 
 		<div id="output_area_1" style="height:100px; width:800px; position:relative;" oncontextmenu="return false">
 			<!--<div style="color:white; position:absolute;">Filter #1</div>-->
-			<div id="reloading_window_1" class="reloading-window">'
-				<br/>
-				<br/>
-				⏳
+			<div id="reloading_window_1" class="reloading-window">
+			<img src="images/loading_item.gif" alt="Loading" height="90%">
 			</div>
 
 			<img id="background_1" style="z-index:1;" src="" onClick="simulate(1)" oncontextmenu="changeBackground()">
-			<div id="output_1" class="item" onmouseover="equipmentHover(1)" onmouseout="equipmentOut()"></div>
+			<div id="output_1" class="item" onmouseover="equipmentHover(1)"></div>
 
 		</div>
 		<div id="output_area_2" style="height:100px; width:800px; position:relative;" oncontextmenu="return false">
 			<div style="color:white; position:absolute;">Filter #2</div>
 			<img id="background_2" style="z-index:1;" src="" onClick="simulate(1)" oncontextmenu="changeBackground()">
-			<div id="output_2" class="item" onmouseover="equipmentHover(2)" onmouseout="equipmentOut()"></div>
+			<div id="output_2" class="item" onmouseover="equipmentHover(2)"></div>
+			<!-- onmouseout="equipmentOut()"-->
 		</div>
-		<br>
+		
 
+		<div style="text-align:center; width:800px;"><label class="label">*** Item stats may not be up to date ***</label></div>
+		
+		
 		<div id="output_processing_info">
 			<div id="o1" style="color:white;"></div><div id="output_spacing"></div>
 			<div id="o2" style="color:white;"></div>
@@ -195,7 +195,7 @@
 			<div id="print" style="color:white;"></div>
 		</div>
 
-	<div style="display:block; width:800px;">
+	<div class="itemarea" style="display:block; width:800px;" id="tooltip_inventory_backdrop">
 	  <div class ="hover" style="position:absolute;" id="tooltip_inventory">
 		<a id="item_name" style="display:block;"></a>
 		<a id="item_info" style="display:block; color:#dddddd;"></a>
@@ -208,10 +208,10 @@
 	</div>	<!-- /full_interface -->
 </div>	<!-- /main -->
 
-<div class="loading-window" id="loading_window_1">'
-<br/>
-<br/>
-⏳
+<div class="loading-window" id="loading_window_1">
+	<br/>
+	<br/>
+	<img src="images/loading_main.gif" alt="Let Me In" width="300">
 </div>
 
 </body>
