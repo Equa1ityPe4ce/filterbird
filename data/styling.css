@@ -102,6 +102,7 @@ body {
 	-moz-appearance: none;
 	appearance: none;
 	min-width: 80px;
+	max-width: 200px;
 }
 .num-input {
 	color: #ddd;
@@ -223,7 +224,7 @@ input[type="file"] {
   position: fixed;
   z-index: 100;
 
-  width: 800px;
+  width: 745px;
   height: 100px;
   overflow: auto;
   background-color: rgb(0,0,0);

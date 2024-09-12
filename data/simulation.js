@@ -2,7 +2,7 @@
 var itemToCompare = {name:"5000 Gold",NAME:"5000 Gold",CODE:"GOLD",GOLD:5000,ID:true,always_id:true,rarity:"regular"};
 var character = {CLVL:90,CHARSTAT14:199000,CHARSTAT15:199000,DIFFICULTY:2,ILVL:85,CHARSTAT70:0,CHARSTAT13:1000,AMAZON:true,ASSASSIN:false,BARBARIAN:false,DRUID:false,NECROMANCER:false,PALADIN:false,SORCERESS:false,SHOP:false,EQUIPPED:false,FILTLVL:1};
 var item_settings = {ID:false, ILVL_return:85};
-var settings = {auto_difficulty:true,version:0,validation:1,auto_simulate:1,max_errors:50,error_limit:1,num_filters:2,background:0,nowrap:true,nowrap_width:800};
+var settings = {auto_difficulty:true,version:0,validation:1,auto_simulate:1,max_errors:50,error_limit:1,num_filters:2,background:0,nowrap:true,nowrap_width:745};
 var notices = {duplicates:0,pd2_conditions:0,pod_conditions:0,colors:0,encoding:0};
 var colors = {
 	WHITE:"#dddddd",
@@ -324,7 +324,7 @@ function simulate(manual) {
 // ---------------------------------
 function simulateNested(manual) {
 	//reloadWindow(1);
-	settings.nowrap_width = 800;
+	settings.nowrap_width = 745;
 	//document.body.style.cursor = "wait";
 	 document.getElementById("o5").innerHTML = "";
 	//if (settings.auto_simulate == 0) { document.getElementById("o5").innerHTML = "Auto-Simulate is disabled. Click the 'ground' to simulate manually." }
@@ -1513,7 +1513,7 @@ function toggleMultipleFilters(checked) {
 		document.getElementById("filter_text_bar_2").style.display = "block"
 		document.getElementById("filter_text_2").style.display = "inline"
 		document.getElementById("output_area_2").style.display = "inline"
-		document.getElementById("output_area_2").style = "height:100px; width:800px; position:relative;"
+		document.getElementById("output_area_2").style = "height:100px; width:745px; position:relative;"
 		document.getElementById("o2").style.display = "block"
 		document.getElementById("multiple_spacing").innerHTML = "<br>"
 	} else {
