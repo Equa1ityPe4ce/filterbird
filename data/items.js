@@ -858,6 +858,45 @@ var runeword_stats = {
 
 // Item names must be unique to be loaded correctly
 var equipment = {
+	 runes: [
+{name:"Runes"},
+
+{CODE:"r01s", RUNE:1, name:"El Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:11, weapon:{ar:50,light_radius:1}, armor:{defense:15,light_radius:1}},
+{CODE:"r02s", RUNE:2, name:"Eld Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:11, weapon:{damage_vs_undead:75,ar_vs_undead:50}, armor:{slower_stam_drain:15}, shield:{block:7}},
+{CODE:"r03s", RUNE:3, name:"Tir Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:13, weapon:{mana_per_kill:2}, armor:{mana_per_kill:2}},	// same
+{CODE:"r04s", RUNE:4, name:"Nef Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:13, weapon:{knockback:1}, armor:{missile_defense:30}},
+{CODE:"r05s", RUNE:5, name:"Eth Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:15, weapon:{target_defense:-25}, armor:{mana_regen:15}},
+{CODE:"r06s", RUNE:6, name:"Ith Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:15, weapon:{damage_max:9}, armor:{damage_to_mana:15}},
+{CODE:"r07s", RUNE:7, name:"Tal Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:17, weapon:{pDamage_all:75,pDamage_duration:5}, armor:{pRes:35}},
+{CODE:"r08s", RUNE:8, name:"Ral Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:19, weapon:{fDamage_min:5,fDamage_max:30}, armor:{fRes:35}},
+{CODE:"r09s", RUNE:9, name:"Ort Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:21, weapon:{lDamage_min:1,lDamage_max:50}, armor:{lRes:35}},
+{CODE:"r10s", RUNE:10, name:"Thul Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:23, weapon:{cDamage_min:3,cDamage_max:14}, armor:{cRes:35}},
+{CODE:"r11s", RUNE:11, name:"Amn Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:25, weapon:{life_leech:7}, armor:{thorns:14}},
+{CODE:"r12s", RUNE:12, name:"Sol Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:27, weapon:{damage_min:9}, armor:{damage_reduced:7}},
+{CODE:"r13s", RUNE:13, name:"Shael Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:29, weapon:{ias:20}, armor:{fhr:20}, shield:{fbr:20}},
+{CODE:"r14s", RUNE:14, name:"Dol Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:31, weapon:{flee_on_hit:25}, armor:{life_replenish:7}},
+{CODE:"r15s", RUNE:15, name:"Hel Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:0, weapon:{req:-20}, armor:{req:-15}},
+{CODE:"r16s", RUNE:16, name:"Io Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:35, weapon:{vitality:10}, armor:{vitality:10}},	// same
+{CODE:"r17s", RUNE:17, name:"Lum Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:37, weapon:{energy:10}, armor:{energy:10}},
+{CODE:"r18s", RUNE:18, name:"Ko Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:39, weapon:{dexterity:10}, armor:{dexterity:10}},
+{CODE:"r19s", RUNE:19, name:"Fal Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:41, weapon:{strength:10}, armor:{strength:10}},
+{CODE:"r20s", RUNE:20, name:"Lem Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:43, weapon:{gf:75}, armor:{gf:50}},
+{CODE:"r21s", RUNE:21, name:"Pul Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:45, weapon:{damage_vs_demons:75,ar_vs_demons:100}, armor:{e_def:30}},
+{CODE:"r22s", RUNE:22, name:"Um Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:47, weapon:{owounds:25}, armor:{all_res:15}, shield:{all_res:22}},
+{CODE:"r23s", RUNE:23, name:"Mal Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:49, weapon:{pmh:1}, armor:{mDamage_reduced:7}},
+{CODE:"r24s", RUNE:24, name:"Ist Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:51, weapon:{mf:30}, armor:{mf:25}},
+{CODE:"r25s", RUNE:25, name:"Gul Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:53, weapon:{ar_bonus:20}, armor:{pRes_max:5}},
+{CODE:"r26s", RUNE:26, name:"Vex Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:55, weapon:{mana_leech:7}, armor:{fRes_max:5}},
+{CODE:"r27s", RUNE:27, name:"Ohm Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:57, weapon:{e_damage:50}, armor:{cRes_max:5}},
+{CODE:"r28s", RUNE:28, name:"Lo Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:59, weapon:{dstrike:20}, armor:{lRes_max:5}},
+{CODE:"r29s", RUNE:29, name:"Sur Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:61, weapon:{blind_on_hit:20}, armor:{max_mana:5}, shield:{mana:50}},
+{CODE:"r30s", RUNE:30, name:"Ber Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:63, weapon:{cblow:20}, armor:{pdr:8}},
+{CODE:"r31s", RUNE:31, name:"Jah Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:65, weapon:{itd:1}, armor:{max_life:5}, shield:{life:50}},
+{CODE:"r32s", RUNE:32, name:"Cham Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:67, weapon:{freezes_target:3}, armor:{cbf:1}},
+{CODE:"r33s", RUNE:33, name:"Zod Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:69, weapon:{indestructible:1}, armor:{indestructible:1}},	// same
+
+	],
+	
     helm: [
 {name:"Helm"},
 {qlvl:50, not:["amazon","assassin","druid","necromancer","paladin","sorceress","Rogue Scout","Desert Guard","Iron Wolf"], name:"Arreat's Face", req_level:42, skills_combat_barbarian:2, skills_barbarian:2, fhr:30, ar_bonus:20, life_leech:6, e_def:200, strength:20, dexterity:20, all_res:30, base:"Slayer Guard"},
@@ -923,11 +962,6 @@ var equipment = {
 {qlvl:9, set_Sigon:1, name:"Sigon's Visor", req_level:6, defense:25, mana:30, base:"Great Helm", rarity:"set", set_bonuses:["set_Sigon",{},{ar_per_level:8},{},{},{},{}], img:"Sigon's_Visor"},
 {qlvl:7, set_Infernal:1, name:"Infernal Cranium", req_level:5, damage_to_mana:20, all_res:10, base:"Cap", rarity:"set", set_bonuses:["set_Infernal",{},{defense_per_level:2},{}], img:"Infernal_Cranium"},
 {qlvl:5, set_Berserker:1, name:"Berserker's Headgear", req_level:3, defense:15, fRes:25, base:"Helm", rarity:"set", set_bonuses:["set_Berserker",{},{ar_per_level:8},{}], img:"Berserker's_Headgear"},
-{not:["barbarian","druid"], rarity:"rw", name:"Delirium ­ ­ - ­ ­ Diadem", req_level:51, ctc:[[1,50,"Delirium","when struck"],[6,14,"Mind Blast","when struck"],[14,13,"Terror","when struck"],[11,18,"Confuse","on striking"]], all_skills:2, defense:261, vitality:10, gf:50, mf:25, base:"Diadem", cskill:[[17,"Attract",60]]},
-{not:["barbarian","druid"], rarity:"rw", name:"Lore ­ ­ - ­ ­ War Hat", req_level:27, all_skills:1, energy:10, lRes:30, damage_reduced:7, mana_per_kill:2, light_radius:2, base:"War Hat"},
-{not:["barbarian","druid"], rarity:"rw", name:"Radiance ­ ­ - ­ ­ Death Mask", req_level:27, e_def:75, missile_defense:30, vitality:10, energy:10, mana:33, damage_reduced:7, mDamage_reduced:3, damage_to_mana:15, light_radius:5, base:"Death Mask"},
-{rarity:"rw", name:"Dream ­ ­ - ­ ­ Diadem", req_level:65, ctc:[[10,15,"Confuse","when struck"]], aura:"Holy Shock", aura_lvl:13, e_def:30, defense:220, fhr:30, vitality:10, mana_per_level:0.625, all_res:20, mf:25, max_life:5, base:"Diadem"},
-{rarity:"rw", name:"Nadir ­ ­ - ­ ­ Bone Helm", req_level:13, e_def:50, defense:10, missile_defense:30, strength:5, mana_per_kill:2, gf:-33, light_radius:-3, base:"Bone Helm", cskill:[[13,"Cloak of Shadows",9]]},
 {rarity:"regular", name:"Diadem", sockets:3, base:"Diadem"},
 {only:"sorceress", rarity:"magic", name:"Powered Diadem of the Magus", req_level:64, fcr:20, skills_lightning:3, base:"Diadem"},
 //{not:["Rogue Scout","Desert Guard","Iron Wolf","Barb (merc)"], rarity:"rare", name:"Vanguard's Diadem", req_level:67, skills_class:2, frw:30, fcr:20, strength:30, all_res:20, pRes:40, base:"Diadem"},
@@ -997,26 +1031,6 @@ var equipment = {
 {qlvl:9, set_Sigon:1, name:"Sigon's Shelter", req_level:6, e_def:25, lRes:30, base:"Gothic Plate", rarity:"set", set_bonuses:["set_Sigon",{},{thorns:20},{},{},{},{}], img:"Sigon's_Shelter"},
 {qlvl:5, set_Berserker:1, name:"Berserker's Hauberk", req_level:3, skills_barbarian:1, mDamage_reduced:2, base:"Splint Mail", rarity:"set", set_bonuses:["set_Berserker",{},{defense_per_level:3},{}], img:"Berserker's_Hauberk"},
 {qlvl:3, set_Arctic:1, name:"Arctic Furs", req_level:2, e_def:325, all_res:10, base:"Quilted Armor", rarity:"set", set_bonuses:["set_Arctic",{},{defense_per_level:3},{cRes:15},{}], img:"Arctic_Furs"},
-{rarity:"rw", name:"Bramble ­ ­ - ­ ­ Archon Plate", req_level:63, aura:"Thorns", aura_lvl:21, defense:300, fhr:50, pDamage:50, max_mana:5, mana_regen:15, cRes_max:5, fRes:30, pRes:100, life_per_kill:13, base:"Archon Plate", cskill:[[13,"Spirit of Barbs",33]]},
-{rarity:"rw", name:"Chains of Honor ­ ­ - ­ ­ Archon Plate", req_level:65, all_skills:2, e_def:70, strength:20, life_leech:8, pdr:8, all_res:65, life_replenish:7, damage_vs_demons:200, damage_vs_undead:100, mf:25, base:"Archon Plate"},
-{rarity:"rw", name:"Enigma ­ ­ - ­ ­ Archon Plate", req_level:65, all_skills:2, oskill_Warp:1, defense:775, frw:45, strength_per_level:0.75, max_life:5, pdr:8, life_per_kill:14, damage_to_mana:15, mf_per_level:1, base:"Archon Plate", pod_changes:1},
-{rarity:"rw", name:"Fortitude ­ ­ - ­ ­ Archon Plate", req_level:63, ctc:[[20,15,"Chilling Armor","when struck"]], fcr:25, damage_bonus:300, e_def:200, defense:15, life_per_level:1.5, life_replenish:7, lRes_max:5, all_res:30, damage_reduced:7, damage_to_mana:12, light_radius:1, base:"Archon Plate"},
-{rarity:"rw", name:"Dragon ­ ­ - ­ ­ Archon Plate", req_level:61, ctc:[[20,18,"Venom","when struck"],[12,15,"Hydra","on striking"]], aura:"Holy Fire", aura_lvl:14, defense:360, missile_defense:230, all_attributes:5, strength_per_level:0.375, lRes_max:5, damage_reduced:7, max_mana:5, base:"Archon Plate"},
-{rarity:"rw", name:"Rain ­ ­ - ­ ­ Wyrmhide", req_level:63, ctc:[[5,15,"Cyclone Armor","when struck"]], skills_druid:2, mana:150, lRes:30, mDamage_reduced:7, damage_to_mana:15, extraGrizzly:1, base:"Wyrmhide", pod_changes:1},
-{rarity:"rw", name:"Principle ­ ­ - ­ ­ Wyrmhide", req_level:55, ctc:[[100,5,"Holy Bolt","on striking"]], skills_paladin:2, damage_vs_undead:50, life:150, slower_stam_drain:15, pRes_max:5, fRes:30, base:"Wyrmhide"},
-{rarity:"rw", name:"Prudence ­ ­ - ­ ­ Dusk Shroud", req_level:49, fhr:25, e_def:170, all_res:35, damage_reduced:3, mDamage_reduced:17, mana_per_kill:2, light_radius:1, autorepair:1, base:"Dusk Shroud"},
-{rarity:"rw", name:"Bone ­ ­ - ­ ­ Wyrmhide", req_level:47, ctc:[[15,3,"Terror","when struck"]], skills_necromancer:2, mana:150, all_res:30, damage_reduced:7, extraFireGolem:1, base:"Wyrmhide", pod_changes:1},
-{rarity:"rw", name:"Gloom ­ ­ - ­ ­ Scarab Husk", req_level:47, ctc:[[15,3,"Dim Vision","when struck"]], fhr:10, e_def:260, strength:10, all_res:45, half_freeze:1, damage_to_mana:5, light_radius:-3, base:"Scarab Husk"},
-{rarity:"rw", name:"Stone ­ ­ - ­ ­ Scarab Husk", req_level:47, fhr:60, e_def:290, missile_defense:300, strength:16, vitality:16, energy:10, all_res:15, base:"Scarab Husk", cskill:[[16,"Molten Boulder",80],[16,"Clay Golem",16]]},
-{rarity:"rw", name:"Duress ­ ­ - ­ ­ Scarab Husk", req_level:47, fhr:40, damage_bonus:20, cDamage_min:37, cDamage_max:133, cblow:15, owounds:33, e_def:200, slower_stam_drain:-20, cRes:30, all_res:15, base:"Scarab Husk"},
-{rarity:"rw", name:"Enlightenment ­ ­ - ­ ­ Wyrmhide", req_level:45, ctc:[[5,15,"Blaze","when struck"],[5,15,"Fire Ball","on striking"]], skills_sorceress:2, skill_Warmth:1, e_def:30, fRes:30, damage_reduced:7, base:"Wyrmhide"},
-{rarity:"rw", name:"Wealth ­ ­ - ­ ­ Dusk Shroud", req_level:43, dexterity:10, mana_per_kill:2, gf:300, mf:100, base:"Dusk Shroud"},
-{rarity:"rw", name:"Treachery ­ ­ - ­ ­ Wyrmhide", req_level:43, ctc:[[5,15,"Fade","when struck"],[25,15,"Venom","on striking"]], skills_assassin:2, ias:45, fhr:20, cRes:30, gf:50, base:"Wyrmhide"},
-{rarity:"rw", name:"Lionheart ­ ­ - ­ ­ Dusk Shroud", req_level:41, damage_bonus:20, strength:25, dexterity:15, vitality:20, energy:10, life:50, all_res:30, req:-15, base:"Dusk Shroud"},
-{rarity:"rw", name:"Smoke ­ ­ - ­ ­ Dusk Shroud", req_level:37, fhr:20, e_defense:75, missile_defense:280, energy:10, all_res:50, light_radius:-1, base:"Dusk Shroud", cskill:[[6,"Weaken",18]]},
-{rarity:"rw", name:"Myth ­ ­ - ­ ­ Mage Plate", req_level:25, ctc:[[3,1,"Howl","when struck"],[10,1,"Taunt","on striking"]], skills_barbarian:2, missile_defense:30, life_replenish:10, thorns:14, req:-15, extraValkyrie:1, base:"Mage Plate"},
-{rarity:"rw", name:"Peace ­ ­ - ­ ­ Mage Plate", req_level:29, skills_amazon:2, oskill_Lethal_Strike:2, fhr:20, cRes:30, thorns:14, base:"Mage Plate", pod_changes:1},
-{rarity:"rw", name:"Stealth ­ ­ - ­ ­ Light Plate", req_level:17, frw:25, fcr:25, fhr:25, dexterity:6, mana_regen:15, stamina:15, pRes:30, mDamage_reduced:3, base:"Light Plate"},
 {rarity:"regular", name:"Archon Plate", sockets:3, base:"Archon Plate"},
 {rarity:"magic", name:"Jeweler's Archon Plate of the Whale", life:100, sockets:4, base:"Archon Plate"},
 	],
@@ -1192,15 +1206,6 @@ var equipment = {
 {qlvl:79, only:"amazon", name:"Blood Raven's Charge", twoHanded:1, req_level:71, skills_bows:4, e_damage:230, ar_bonus:300, explosive_attack:13, type:"bow", base:"Matriarchal Bow", img:"Hellclap", cskill:[[5,"Revive",30]]},
 {qlvl:50, only:"amazon", name:"Lycander's Aim", twoHanded:1, req_level:42, skills_bows:2, skills_amazon:2, e_damage:200, damage_min:25, damage_max:50, ias:20, mana_leech:8, energy:20, dexterity:20, defense_bonus:20, type:"bow", base:"Ceremonial Bow"},	// bonus defense on weapon
 {qlvl:21, only:"amazon", set_Mav:1, name:"M'avina's Caster", twoHanded:1, req_level:70, e_damage:188, ias:40, ar:50, magic_attack:1, type:"bow", base:"Grand Matron Bow", rarity:"set", set_bonuses:["set_Mav",{},{mDamage_min:114, mDamage_max:377},{ctc_temp1:1},{skills_bows:2},{}], img:"M'avina's_Caster"},
-{only:"amazon",	rarity:"rw", 	name:"Plague ­ ­ - ­ ­ Grand Matron Bow", sup:15, req_level:67, ctc:[[25,15,"Poison Nova","on striking"],[20,12,"Lower Resist","when struck"]], aura:"Cleansing", aura_lvl:17, all_skills:2, skills_bows:3, damage_vs_demons:380, enemy_pRes:-23, dstrike_per_level:0.375, owounds:25, freezes_target:3, strength:10, twoHanded:1, type:"bow", base:"Grand Matron Bow", pod_changes:1},
-{only:"amazon", rarity:"rw", 	name:"Brand ­ ­ - ­ ­ Grand Matron Bow", sup:15, req_level:65, ctc:[[35,14,"Amplify Damage","when struck"],[100,18,"Bone Spear","on striking"]], skills_bows:3, e_damage:340, itd:1, ar_bonus:20, damage_vs_demons:330, dstrike:20, pmh:1, knockback:1, explosive_attack:15, twoHanded:1, type:"bow", base:"Grand Matron Bow"},
-{only:"amazon", rarity:"rw", 	name:"Faith ­ ­ - ­ ­ Grand Matron Bow", sup:15, req_level:65, twoHanded:1, aura:"Fanaticism", aura_lvl:15, all_skills:2, skills_bows:3, e_damage:330, itd:1, ar_bonus:300, damage_vs_undead:75, ar_vs_undead:50, fDamage_min:120, fDamage_max:120, all_res:15, gf:75, type:"bow", base:"Grand Matron Bow", reanimate:10},
-{only:"amazon", rarity:"rw", 	name:"Ice ­ ­ - ­ ­ Matriarchal Bow", sup:15, req_level:65, ctc:[[100,40,"Blizzard","when you level-up"],[25,22,"Frost Nova","on striking"]], aura:"Holy Freeze", aura_lvl:18, skills_bows:3, e_damage:210, ias:20, itd:1, cDamage:30, life_leech:7, enemy_cRes:-20, dstrike:20, gf_per_level:3.125, twoHanded:1, type:"bow", base:"Matriarchal Bow"},
-{only:"amazon", rarity:"rw", 	name:"Wrath ­ ­ - ­ ­ Grand Matron Bow", sup:15, req_level:63, ctc:[[30,1,"Decrepify","on striking"],[5,10,"Life Tap","on striking"]], skills_bows:3, damage_vs_demons:375, damage_vs_undead:300, ar_vs_demons:100, mDamage_min:85, mDamage_max:120, lDamage_min:41, lDamage_max:240, cblow:20, pmh:1, energy:10, cbf:1, twoHanded:1, type:"bow", base:"Grand Matron Bow"},
-{only:"amazon", rarity:"rw", 	name:"Melody ­ ­ - ­ ­ Matriarchal Bow", sup:15, req_level:39, skills_bows:6, e_damage:50, ias:20, damage_vs_undead:300, skill_Dodge:3, skill_Phase_Run:3, skill_Lethal_Strike:3, knockback:1, dexterity:10, twoHanded:1, type:"bow", base:"Matriarchal Bow", pod_changes:1},
-{only:"amazon", rarity:"rw", 	name:"Harmony ­ ­ - ­ ­ Matriarchal Bow", sup:15, req_level:39, aura:"Vigor", aura_lvl:10, skills_bows:3, e_damage:275, damage_min:9, damage_max:9, fDamage_min:55, fDamage_max:160, cDamage_min:55, cDamage_max:160, lDamage_min:55, lDamage_max:160, oskill_Valkyrie:6, dexterity:10, mana_regen:20, mana_per_kill:2, light_radius:2, twoHanded:1, type:"bow", base:"Matriarchal Bow", cskill:[[20,"Revive",25]]},
-{only:"amazon", rarity:"rw", 	name:"Edge ­ ­ - ­ ­ Ashwood Bow", sup:15, req_level:29, aura:"Thorns", aura_lvl:15, skills_bows:3, ias:35, damage_vs_demons:380, damage_vs_undead:280, pDamage_all:75, pDamage_duration:5, life_leech:7, pmh:1, all_attributes:10, mana_per_kill:2, discount:15, twoHanded:1, type:"bow", base:"Ashwood Bow"},
-{only:"amazon", rarity:"rw", 	name:"Zephyr ­ ­ - ­ ­ Ashwood Bow", sup:15, req_level:29, skills_bows:3, e_damage:33, frw:25, ias:25, target_defense:-25, ar:66, lDamage_min:1, lDamage_max:50, defense:25, skill_Phase_Run:3, twoHanded:1, type:"bow", base:"Ashwood Bow", pod_changes:1},
 {rarity:"regular", name:"Grand Matron Bow", skills_bows:3, sockets:4, twoHanded:1, type:"bow", base:"Grand Matron Bow"},
 {rarity:"regular", name:"Matriarchal Pike", skills_javelins:3, sockets:6, twoHanded:1, type:"spear", base:"Matriarchal Pike"},
 {rarity:"magic", only:"amazon", name:"Lancer's Javelin of Quickness", req_level:45, skills_javelins:6, ias:40, type:"javelin", base:"Maiden Javelin"},
@@ -1212,9 +1217,6 @@ var equipment = {
 {qlvl:1, only:"assassin", name:"Mage Slayer", req_level:27, aura:"Concentration", aura_lvl:6, fhr:20, e_max_damage_per_level:2.5, skill_Dragon_Flight:2, strength:15, light_radius:6, type:"claw", base:"Quhab", pd2:1},
 {qlvl:1, only:"assassin", name:"Aidan's Scar", req_level:85, ctc:[[30,20,"Amplify Damage","on striking"]], indestructible:1, ethereal:0, skills_shadow:4, ias:40, e_damage:480, damage_min:30, ar_per_level:6, vitality:-22, type:"claw", base:"Scissors Suwayyah", pd2:1},
 {qlvl:22, only:"assassin", set_Nat:1, name:"Natalya's Mark", type:"claw", req_level:79, e_damage:200, damage_vs_undead:200, damage_vs_demons:200, fDamage_min:12, fDamage_max:17, itd:1, ias:40, cDamage_min:50, cDamage_max:50, base:"Scissors Suwayyah", rarity:"set", set_bonuses:["set_Nat",{},{},{},{}], img:"Natalya's_Mark"},
-{only:"assassin", rarity:"rw", name:"Plague ­ ­ - ­ ­ Suwayyah", req_level:67, ctc:[[25,15,"Poison Nova","on striking"],[20,12,"Lower Resist","when struck"]], aura:"Cleansing", aura_lvl:17, all_skills:2, skill_Blade_Shield:3, skill_Venom:3, skill_Fade:3, damage_vs_demons:380, enemy_pRes:-23, dstrike_per_level:0.375, owounds:25, freezes_target:3, strength:10, type:"claw", base:"Suwayyah", pod_changes:1},
-{only:"assassin", rarity:"rw", name:"Chaos ­ ­ - ­ ­ Scissors Suwayyah", req_level:64, ctc:[[9,11,"Frozen Orb","on striking"],[11,9,"Charged Bolt","on striking"]], e_damage:290, ias:35, mDamage_min:216, mDamage_max:471, owounds:25, oskill_Zeal:1, strength:10, life_per_demon_kill:15, skill_Wake_of_Fire:3, skill_Blade_Shield:3, skill_Fade:3, type:"claw", base:"Scissors Suwayyah", pod_changes:1},
-{only:"assassin", rarity:"rw", name:"Pattern ­ ­ - ­ ­ Greater Claws", req_level:33, e_damage:80, fbr:30, ar_bonus:10, fDamage_min:12, fDamage_max:32, lDamage_min:1, lDamage_max:50, pDamage_all:75, pDamage_duration:5, strength:6, dexterity:6, all_res:15, mana_per_kill:2, skill_Wake_of_Fire:3, skill_Blade_Fury:3, skill_Fade:3, type:"claw", base:"Greater Claws", pod_changes:1},
 {rarity:"regular", name:"Scissors Suwayyah", sockets:3, skill_Blade_Shield:3, skill_Venom:3, skill_Dragon_Flight:3, type:"claw", base:"Scissors Suwayyah"},
 {only:"assassin", rarity:"magic", name:"Cunning Suwayyah of Evisceration", type:"claw", req_level:65, damage_max:63, skills_traps:3, skill_Wake_of_Fire:3, skill_Blade_Shield:3, skill_Lightning_Sentry:3, base:"Suwayyah"},
 {only:"assassin", rarity:"magic", name:"Shadow Claws of Simplicity", type:"claw", req_level:45, req:-30, skills_shadow:3, skill_Mind_Blast:3, skill_Venom:3, skill_Fade:3, base:"Greater Claws"},
@@ -1225,7 +1227,6 @@ var equipment = {
 {qlvl:81, only:"sorceress", name:"Death's Fathom", req_level:73, skills_sorceress:3, fcr:20, cDamage:30, lRes:40, fRes:40, type:"orb", base:"Dimensional Shard"},
 {qlvl:1, only:"sorceress", name:"Tempest", req_level:25, ctc:[[30,16,"Energy Shield","when struck"],[8,12,"Frost Nova","when struck"]], all_skills:2, fcr:30, mana:115, max_mana:20, mana_regen:30, type:"orb", base:"Glowing Orb", pd2:1},
 {qlvl:26, only:"sorceress", set_TR:1, name:"Tal Rasha's Lidless Eye", req_level:65, fcr:20, mana:77, life:57, energy:10, skill_Lightning_Mastery:2, skill_Fire_Mastery:2, skill_Cold_Mastery:2, type:"orb", base:"Swirling Crystal", rarity:"set", set_bonuses:["set_TR",{},{skills_sorceress:1},{enemy_fRes:-15},{enemy_lRes:-15},{cDamage:15}], img:"Tal_Rasha's_Lidless_Eye"},
-{only:"sorceress", rarity:"rw", name:"Plague ­ ­ - ­ ­ Jared's Stone", req_level:67, ctc:[[25,15,"Poison Nova","on striking"],[20,12,"Lower Resist","when struck"]], aura:"Cleansing", aura_lvl:17, all_skills:2, damage_vs_demons:380, enemy_pRes:-23, dstrike_per_level:0.375, owounds:25, freezes_target:3, strength:10, life:60, skill_Cold_Mastery:3, skill_Frozen_Orb:3, skill_Hydra:3, type:"orb", base:"Jared's Stone", pod_changes:1},
 {rarity:"regular", name:"Dimensional Shard", life:60, skill_Cold_Mastery:3, skill_Shiver_Armor:3, skill_Energy_Shield:3, sockets:3, type:"orb", base:"Dimensional Shard"},
 {only:"sorceress", rarity:"magic", name:"Glacial Stone of the Magus", type:"orb", req_level:67, life:60, fcr:20, skills_cold:3, skill_Shiver_Armor:3, skill_Chilling_Armor:3, skill_Cold_Mastery:3, base:"Jared's Stone"},
 {only:"sorceress", rarity:"magic", name:"Powered Stone of the Magus", type:"orb", req_level:67, life:60, fcr:20, skills_lightning:3, skill_Energy_Shield:3, skill_Lightning_Mastery:3, skill_Nova:3, base:"Jared's Stone"},
@@ -1464,49 +1465,6 @@ var equipment = {
 {qlvl:6, set_Cleglaw:1, name:"Cleglaw's Tooth", req_level:4, dstrike:50, ar_bonus:30, type:"sword", base:"Long Sword", rarity:"set", set_bonuses:["set_Cleglaw",{},{max_damage_per_level:1.25},{}], img:"Cleglaw's_Tooth"},
 {qlvl:5, set_Berserker:1, name:"Berserker's Hatchet", req_level:3, ar_bonus:30, mana_leech:5, type:"axe", base:"Double Axe", rarity:"set", set_bonuses:["set_Berserker",{},{e_damage:50},{}], img:"Berserker's_Hatchet"},
 {qlvl:3, set_Arctic:1, name:"Arctic Horn", twoHanded:1, req_level:2, e_damage:50, ar_bonus:20, extra_arrows_Cold_Arrow:2, type:"bow", base:"Short War Bow", rarity:"set", set_bonuses:["set_Arctic",{},{ar_per_level:8},{cDamage_min:20, cDamage_max:30},{}], pod_changes:1, img:"Arctic_Horn"},
-// Runewords
-{not:["amazon","assassin","sorceress","Iron Wolf","Barb (merc)"], rarity:"rw", name:"Plague ­ ­ - ­ ­ Phase Blade", sup:15, req_level:67, ctc:[[25,15,"Poison Nova","on striking"],[20,12,"Lower Resist","when struck"]], aura:"Cleansing", aura_lvl:17, all_skills:2, damage_vs_demons:380, enemy_pRes:-23, dstrike_per_level:0.375, owounds:25, freezes_target:3, strength:10, type:"sword", base:"Phase Blade", pod_changes:1},
-{not:["amazon","assassin","necromancer","paladin","sorceress"], rarity:"rw", name:"Breath of the Dying ­ ­ - ­ ­ War Pike", req_level:69, twoHanded:1, ctc:[[50,20,"Poison Nova","when you Kill an Enemy"]], indestructible:1, ias:60, e_damage:400, target_defense:-25, ar:50, damage_vs_undead:200, ar_vs_undead:50, mana_leech:7, life_leech:15, pmh:1, all_attributes:30, light_radius:1, req:-20, ethereal:1, type:"spear", base:"War Pike"},
-{rarity:"rw", name:"Pride ­ ­ - ­ ­ Giant Thresher", sup:15, req_level:67, ctc:[[25,17,"Fire Wall","when struck"]], aura:"Concentration", aura_lvl:20, ar_bonus:300, damage_vs_demons_per_level:1, lDamage_min:50, lDamage_max:280, dstrike:20, blind_on_hit:1, freezes_target:3, vitality:10, life_replenish:8, gf_per_level:1.875, twoHanded:1, type:"polearm", base:"Giant Thresher"},
-{rarity:"rw", name:"Hand of Justice ­ ­ - ­ ­ Caduceus", req_level:67, ctc:[[100,36,"Blaze","when you level-up"],[100,48,"Meteor","when you die"]], aura:"Holy Fire", aura_lvl:16, ias:33, e_damage:330, itd:1, enemy_fRes:-20, life_leech:7, dstrike:20, blind_on_hit:1, freezes_target:3, skill_Salvation:3, skill_Vengeance:3, skill_Redemption:3, type:"scepter", base:"Caduceus"},
-{not:["amazon","assassin","druid","necromancer","paladin","sorceress"], rarity:"rw", name:"Eternity ­ ­ - ­ ­ Colossus Sword", req_level:63, e_damage:310, indestructible:1, ethereal:1, damage_min:9, life_leech:7, cblow:20, blind_on_hit:1, slows_target:33, mana_regen:16, cbf:1, mf:30, twoHanded:1, type:"sword", base:"Colossus Sword", cskill:[[8,"Revive",88]]},
-{rarity:"rw", name:"Doom ­ ­ - ­ ­ Cryptic Axe", sup:15, req_level:67, ctc:[[5,18,"Volcano","on striking"]], aura:"Holy Freeze", aura_lvl:12, all_skills:2, ias:45, e_damage:370, enemy_cRes:-60, dstrike:20, owounds:25, pmh:1, freezes_target:3, req:-20, twoHanded:1, type:"polearm", base:"Cryptic Axe"},
-{not:["amazon","assassin","druid","necromancer","paladin","sorceress"], rarity:"rw", name:"Last Wish ­ ­ - ­ ­ Colossus Blade", sup:15, req_level:65, ctc:[[6,11,"Fade","when struck"],[10,18,"Life Tap","on striking"],[20,20,"Charged Bolt","on attack"]], aura:"Might", aura_lvl:17, e_damage:375, itd:1, cblow:70, pmh:1, blind_on_hit:1, mf_per_level:0.5, twoHanded:1, type:"sword", base:"Colossus Blade"},
-{not:["amazon","assassin","druid","necromancer","paladin","sorceress"], rarity:"rw", name:"Destruction ­ ­ - ­ ­ Colossus Sword", sup:15, req_level:65, ctc:[[23,12,"Volcano","on striking"],[5,23,"Molten Boulder","on striking"],[100,45,"Meteor","when you die"],[15,22,"Nova","on attack"]], e_damage:350, itd:1, mDamage_min:100, mDamage_max:180, mana_leech:7, cblow:20, dstrike:20, pmh:1, dexterity:10, twoHanded:1, type:"sword", base:"Colossus Sword"},
-{not:["barbarian","Barb (merc)"], rarity:"rw", name:"Destruction ­ ­ - ­ ­ Phase Blade", sup:15, req_level:65, ctc:[[23,12,"Volcano","on striking"],[5,23,"Molten Boulder","on striking"],[100,45,"Meteor","when you die"],[15,22,"Nova","on attack"]], e_damage:350, itd:1, mDamage_min:100, mDamage_max:180, mana_leech:7, cblow:20, dstrike:20, pmh:1, dexterity:10, type:"sword", base:"Phase Blade"},
-{not:["Barb (merc)"], rarity:"rw", name:"Phoenix ­ ­ - ­ ­ Phase Blade", sup:15, req_level:65, ctc:[[100,40,"Blaze","on level-up"],[40,22,"Fire Ball","on striking"]], aura:"Redemption", aura_lvl:10, e_damage:350, enemy_fRes:-28, missile_defense:400, fAbsorb_flat:21, itd:1, mana_leech:14, dstrike:20, type:"sword", base:"Phase Blade", pod_changes:1},
-{rarity:"rw", name:"Famine ­ ­ - ­ ­ Legendary Mallet", sup:15, req_level:65, e_damage:370, ias:30, itd:1, mDamage_min:180, mDamage_max:200, fDamage_min:50, fDamage_max:200, cDamage_min:50, cDamage_max:200, lDamage_min:51, lDamage_max:250, life_leech:12, pmh:1, strength:10, type:"hammer", base:"Legendary Mallet"},
-{rarity:"rw", name:"Fury ­ ­ - ­ ­ Berserker Axe", sup:15, req_level:65, e_damage:209, ias:40, itd:1, target_defense:-25, ar_bonus:20, life_leech:6, dstrike:33, owounds:66, pmh:1, skill_Frenzy:5, type:"axe", base:"Berserker Axe"},
-{rarity:"rw", name:"Infinity ­ ­ - ­ ­ Giant Thresher", sup:15, req_level:63, ctc:[[50,20,"Chain Lightning","on kill"]], aura:"Conviction", aura_lvl:12, e_damage:170, frw:35, enemy_lRes:-55, cblow:40, pmh:1, vitality_per_level:0.5, mf:30, twoHanded:1, type:"polearm", base:"Giant Thresher", pod_changes:1, cskill:[[21,"Cyclone Armor",30]]},
-{rarity:"rw", name:"Beast ­ ­ - ­ ­ Berserker Axe", sup:15, req_level:63, aura:"Fanaticism", aura_lvl:9, oskill_Werebear:3, oskill_Lycanthropy:3, ias:40, e_damage:270, cblow:20, owounds:25, pmh:1, strength:40, energy:10, mana_per_kill:2, type:"axe", base:"Berserker Axe", cskill:[[13,"Summon Grizzly",5]]},
-{rarity:"rw", name:"Wind ­ ­ - ­ ­ Tomahawk", sup:15, req_level:61, ctc:[[10,9,"Tornado","on striking"]], e_damage:160, frw:20, ias:40, fhr:15, target_defense:-50, ar:50, blind_on_hit:1, light_radius:1, type:"axe", base:"Tomahawk", cskill:[[13,"Twister",127]]},
-{not:["Barb (merc)"], rarity:"rw", name:"Grief ­ ­ - ­ ­ Phase Blade", type:"sword", sup:15, req_level:59, ias:40, itd:1, target_defense:-25, enemy_pRes:-25, dstrike:20, pmh:1, mana_per_kill:2, life_per_kill:15, fDamage_min:5, fDamage_max:30, min_damage_per_level:3.375, max_damage_per_level:3.625, base:"Phase Blade", pod_changes:1},
-{not:["Barb (merc)"], rarity:"rw", name:"Fortitude ­ ­ - ­ ­ Phase Blade", sup:15, req_level:59, ctc:[[20,15,"Chilling Armor","when struck"]], e_damage:300, defense_bonus:200, fcr:25, life_per_level:1.5, all_res:30, damage_to_mana:12, light_radius:1, damage_min:9, ar:50, dstrike:20, flee_on_hit:25, type:"sword", base:"Phase Blade"},
-{rarity:"rw", name:"Call to Arms ­ ­ - ­ ­ Scourge", sup:15, req_level:57, all_skills:1, ias:40, e_damage:290, fDamage_min:5, fDamage_max:30, life_leech:7, oskill_Battle_Cry:4, oskill_Battle_Orders:6, oskill_Battle_Command:6, pmh:1, life_replenish:12, mf:30, half_Battle_Orders:1, type:"mace", base:"Scourge", pod_changes:1},
-{not:["amazon","assassin","druid","necromancer","paladin","sorceress"], rarity:"rw", name:"Death ­ ­ - ­ ­ Colossus Sword", req_level:68, ctc:[[100,44,"Chain Lightning","on death"],[25,18,"Glacial Spike","on attack"]], indestructible:1, ethereal:1, e_damage:385, ar_bonus:20, ar:50, lDamage_min:1, lDamage_max:50, mana_leech:7, cblow:50, dstrike_per_level:0.5, light_radius:1, req:-20, type:"sword", twoHanded:1, base:"Colossus Sword", cskill:[[22,"Blood Golem",15]]},
-{not:["amazon","assassin","druid","necromancer","paladin","sorceress"], rarity:"rw", name:"Silence ­ ­ - ­ ­ Colossus Blade", sup:15, req_level:55, aura:"Cleansing", aura_lvl:7, all_skills:2, ias:20, e_damage:200, fhr:20, damage_vs_undead:75, ar_vs_undead:50, mana_leech:11, blind_on_hit:33, flee_on_hit:25, all_res:75, mana_per_kill:2, mf:30, req:-20, twoHanded:1, type:"sword", base:"Colossus Blade", pod_changes:1},
-{rarity:"rw", name:"Heart of the Oak ­ ­ - ­ ­ Flail", type:"mace", req_level:55, all_skills:3, fcr:40, mana_leech:7, dexterity:10, life_replenish:20, max_mana:15, all_res:40, max_life:8, cDamage_min:3, cDamage_max:14, base:"Flail", pod_changes:1},
-{rarity:"rw", name:"Kingslayer ­ ­ - ­ ­ Balrog Blade", sup:15, req_level:53, e_damage:270, ias:30, target_defense:-25, ar_bonus:20, cblow:33, owounds:50, oskill_Vengeance:1, pmh:1, strength:10, gf:40, twoHanded:1, type:"sword", base:"Balrog Blade"},
-{rarity:"rw", name:"Rift ­ ­ - ­ ­ Caduceus", sup:15, req_level:66, ctc:[[20,16,"Tornado","on striking"],[16,21,"Frozen Orb","on attack"]], ar_bonus:20, mDamage_min:160, mDamage_max:250, fDamage_min:60, fDamage_max:180, all_attributes:10, dexterity:10, damage_to_mana:38, gf:75, req:-20, skill_Redemption:1, skill_Vigor:1, skill_Conviction:1, type:"scepter", base:"Caduceus", cskill:[[15,"Iron Maiden",40]]},
-{rarity:"rw", name:"Oath ­ ­ - ­ ­ Thunder Maul", req_level:65, ctc:[[30,20,"Bone Spirit","on striking"]], indestructible:1, ethereal:1, e_damage:340, ias:50, damage_vs_demons:75, ar_vs_demons:100, pmh:1, energy:10, mAbsorb_flat:15, twoHanded:1, type:"hammer", base:"Thunder Maul", cskill:[[16,"Heart of Wolverine",20],[17,"Iron Golem",14]]},
-{rarity:"rw", name:"Venom ­ ­ - ­ ­ Fanged Knife", sup:15, req_level:59, itd:1, pDamage_all:273, pDamage_duration:6, mana_leech:7, pmh:1, flee_on_hit:25, type:"dagger", base:"Fanged Knife", pod_changes:1, cskill:[[13,"Poison Nova",11],[15,"Desecrate",27]]},
-{rarity:"rw", name:"Crescent Moon ­ ­ - ­ ­ Thresher", sup:15, req_level:57, ctc:[[10,17,"Chain Lightning","on striking"],[7,13,"Static Field","on striking"]], e_damage:220, ias:20, enemy_lRes:-35, owounds:25, mAbsorb_flat:11, mana_per_kill:2, twoHanded:1, type:"polearm", base:"Thresher", cskill:[[18,"Summon Spirit Wolf",30]]},
-{rarity:"rw", name:"Lawbringer ­ ­ - ­ ­ Legend Sword", sup:15, req_level:44, ctc:[[20,7,"Decrepify","on striking"]], aura:"Sanctuary", aura_lvl:18, target_defense:-50, fDamage_min:150, fDamage_max:210, cDamage_min:130, cDamage_max:180, life_leech:7, peace:1, missile_defense:250, dexterity:10, gf:75, twoHanded:1, type:"sword", base:"Legend Sword", pod_changes:1},
-{rarity:"rw", name:"Voice of Reason ­ ­ - ­ ­ Highland Blade", sup:15, req_level:49, ctc:[[15,13,"Frozen Orb","on striking"],[18,20,"Ice Blast","on striking"]], ar:50, damage_vs_demons:350, damage_vs_undead:375, ar_vs_undead:50, cDamage_min:100, cDamage_max:220, enemy_cRes:-24, dexterity:10, cbf:1, gf:75, light_radius:1, twoHanded:1, type:"sword", base:"Highland Blade"},
-{rarity:"rw", name:"Passion ­ ­ - ­ ­ Small Crescent", sup:15, req_level:45, e_damage:210, ias:25, ar_bonus:80, damage_vs_undead:75, ar_vs_undead:50, lDamage_min:1, lDamage_max:50, oskill_Bash:1, oskill_Zeal:1, blind_on_hit:10, flee_on_hit:25, gf:75, type:"axe", base:"Small Crescent", pod_changes:1, cskill:[[3,"Heart of Wolverine",12]]},
-{rarity:"rw", name:"Obedience ­ ­ - ­ ­ Thresher", sup:15, req_level:57, ctc:[[30,21,"Enflame","on kill"]], e_damage:370, fhr:40, target_defense:-25, cDamage_min:3, cDamage_max:14, enemy_fRes:-25, cblow:40, defense:300, strength:10, dexterity:10, all_res:30, req:-20, twoHanded:1, type:"polearm", base:"Thresher"},
-{rarity:"rw", name:"Black ­ ­ - ­ ­ Tyrant Club", sup:15, req_level:42, e_damage:120, ias:15, ar:200, cDamage_min:3, cDamage_max:14, cblow:40, knockback:1, vitality:10, mDamage_reduced:2, type:"mace", base:"Tyrant Club", cskill:[[4,"Corpse Explosion",12]]},
-{rarity:"rw", name:"Honor ­ ­ - ­ ­ Knout", sup:15, req_level:27, all_skills:1, e_damage:160, damage_min:9, damage_max:9, ar:250, life_leech:7, dstrike:25, strength:10, life_replenish:10, mana_per_kill:2, light_radius:1, type:"mace", base:"Knout"},
-{rarity:"rw", name:"Insight ­ ­ - ­ ­ Partizan", sup:15, req_level:27, aura:"Meditation", aura_lvl:17, e_damage:260, fcr:35, damage_min:9, ar_bonus:250, fDamage_min:5, fDamage_max:30, pDamage_all:75, pDamage_duration:5, oskill_Lethal_Strike:6, all_attributes:5, mana_per_kill:2, mf:23, twoHanded:1, type:"polearm", base:"Partizan"},
-{rarity:"rw", name:"Spirit ­ ­ - ­ ­ Crystal Sword", type:"sword", req_level:25, all_skills:2, fcr_per_level:0.375, fhr:55, life_leech:7, mana_per_level:1, missile_defense:75, mAbsorb_flat:8, pDamage_all:75, pDamage_duration:5, lDamage_min:1, lDamage_max:50, cDamage_min:3, cDamage_max:14, base:"Crystal Sword", pod_changes:1},
-{rarity:"rw", name:"King's Grace ­ ­ - ­ ­ Zweihander", sup:15, req_level:25, e_damage:100, ar:150, damage_vs_demons:100, ar_vs_demons:100, damage_vs_undead:50, ar_vs_undead:100, fDamage_min:5, fDamage_max:30, cDamage_min:3, cDamage_max:14, life_leech:7, twoHanded:1, type:"sword", base:"Zweihander"},
-{rarity:"rw", name:"Strength ­ ­ - ­ ­ Cutlass", sup:15, req_level:25, e_damage:35, life_leech:7, cblow:25, strength:20, vitality:10, mana_per_kill:2, life_per_hit:8, type:"sword", base:"Cutlass", pod_changes:1},
-{rarity:"rw", name:"Malice ­ ­ - ­ ­ Barbed Club", sup:15, req_level:20, e_damage:33, damage_max:9, target_defense:-25, ar:50, owounds:100, pmh:1, monster_defense_per_hit:-100, life_replenish:-5, type:"club", base:"Barbed Club"},
-{rarity:"rw", name:"Steel ­ ­ - ­ ­ Scimitar", sup:15, req_level:13, e_damage:20, ias:25, damage_min:3, damage_max:3, ar:50, owounds:50, mana_per_kill:2, light_radius:1, type:"sword", base:"Scimitar"},
-{rarity:"rw", name:"Holy Thunder ­ ­ - ­ ­ Divine Scepter", req_level:25, e_damage:60, damage_max:10, target_defense:-25, fDamage_min:5, fDamage_max:30, lDamage_min:21, lDamage_max:110, pDamage_all:75, pDamage_duration:5, lRes_max:5, lRes:60, skill_Fist_of_the_Heavens:3, skill_Vigor:3, skill_Holy_Shock:6, type:"scepter", base:"Divine Scepter", pod_changes:1, cskill:[[7,"Teleport",60]]},
-{rarity:"rw", name:"Leaf ­ ­ - ­ ­ Jo Staff", req_level:19, skills_fire_all:3, fDamage_min:5, fDamage_max:30, skill_Blaze:6, skill_Warmth:6, skill_Fire_Bolt:6, defense_per_level:2, cRes:33, mana_per_kill:2, twoHanded:1, type:"staff", base:"Jo Staff", pod_changes:1},
-{rarity:"rw", name:"Memory ­ ­ - ­ ­ Gothic Staff", req_level:37, skills_sorceress:3, fcr:33, damage_min:9, target_defense:-25, defense_bonus:50, vitality:10, energy:10, max_mana:20, phys_Lightning_Surge:35, skill_Static_Field:2, skill_Energy_Shield:6, skill_Lightning_Surge:3, skill_Lightning_Mastery:3, twoHanded:1, type:"staff", base:"Gothic Staff", pod_changes:1},
-{only:"necromancer", rarity:"rw", name:"White ­ ­ - ­ ­ Bone Wand", req_level:35, skills_poisonBone:3, fcr:20, flee_on_hit:25, vitality:10, mana:13, mDamage_reduced:4, skill_Summon_Mastery:4, skill_Bone_Armor:6, skill_Bone_Spear:5, skill_Teeth:3, type:"wand", base:"Bone Wand"},
 // Non-Unique
 {rarity:"regular", name:"Flying Knife", type:"thrown", base:"Flying Knife"},
 {rarity:"regular", name:"Cracked Phase Blade", inferior:true, type:"sword", base:"Phase Blade"},
@@ -1569,14 +1527,6 @@ var equipment = {
 {qlvl:9, set_Sigon:1, name:"Sigon's Guard", req_level:6, all_skills:1, ibc:20, type:"shield", base:"Tower Shield", rarity:"set", set_bonuses:["set_Sigon",{},{},{},{},{},{}], img:"Bverrit_Keep"},
 {qlvl:6, set_Cleglaw:1, name:"Cleglaw's Claw", req_level:4, defense:17, poison_length_reduced:75, type:"shield", base:"Small Shield", rarity:"set", set_bonuses:["set_Cleglaw",{},{all_res:15},{}], img:"Cleglaw's_Claw"},
 {qlvl:4, set_Hsarus:1, name:"Hsarus' Iron Fist", req_level:3, damage_reduced:2, strength:10, type:"shield", base:"Buckler", rarity:"set", set_bonuses:["set_Hsarus",{},{defense_per_level:2.5},{}], img:"Hsarus'_Iron_Fist"},
-{not:["paladin"], rarity:"rw", name:"Spirit ­ ­ - ­ ­ Monarch", req_level:54, all_skills:2, fcr:35, fhr:55, vitality:22, mana:112, cRes:35, lRes:35, pRes:35, missile_defense:250, thorns:14, mAbsorb_flat:8, type:"shield", base:"Monarch"},
-{not:["paladin"], rarity:"rw", name:"Phoenix ­ ­ - ­ ­ Monarch", req_level:65, ctc:[[100,40,"Blaze","on level-up"],[40,22,"Fire Ball","on striking"]], aura:"Redemption", aura_lvl:10, damage_bonus:350, enemy_fRes:-28, missile_defense:400, fAbsorb_flat:21, life:50, lRes_max:5, fRes_max:10, type:"shield", base:"Monarch", pod_changes:1},
-{not:["paladin"], rarity:"rw", name:"Dream ­ ­ - ­ ­ Troll Nest", req_level:65, ctc:[[10,15,"Confuse","when struck"]], aura:"Holy Shock", aura_lvl:13, e_def:30, defense:220, fhr:30, vitality:10, mana_per_level:0.625, all_res:20, mf:25, life:50, type:"shield", base:"Troll Nest", pod_changes:1},
-{not:["paladin"], rarity:"rw", name:"Dragon ­ ­ - ­ ­ Troll Nest", req_level:61, ctc:[[20,18,"Venom","when struck"],[12,15,"Hydra","on striking"]], aura:"Holy Fire", aura_lvl:14, defense:360, missile_defense:230, all_attributes:5, strength_per_level:0.375, lRes_max:5, damage_reduced:7, mana:50, type:"shield", base:"Troll Nest"},
-{not:["paladin"], rarity:"rw", name:"Sanctuary ­ ­ - ­ ­ Troll Nest", req_level:49, fhr:20, fbr:20, ibc:20, e_def:160, missile_defense:250, dexterity:20, all_res:70, mDamage_reduced:7, type:"shield", base:"Troll Nest", cskill:[[12,"Phase Run",60]]},
-{not:["paladin","necromancer"], rarity:"rw", name:"Splendor ­ ­ - ­ ­ Troll Nest", req_level:37, all_skills:1, fcr:10, fbr:20, e_def:100, energy:10, mana_regen:15, gf:50, mf:20, light_radius:3, type:"shield", base:"Troll Nest"},
-{not:["paladin","necromancer"], rarity:"rw", name:"Rhyme ­ ­ - ­ ­ Grim Shield", req_level:29, fbr:40, ibc:20, mana_regen:15, all_res:25, cbf:1, gf:50, mf:25, type:"shield", base:"Grim Shield"},
-{not:["paladin"], rarity:"rw", name:"Ancient's Pledge ­ ­ - ­ ­ Grim Shield", req_level:25, e_def:50, cRes:43, lRes:48, fRes:48, pRes:48, damage_to_mana:10, type:"shield", base:"Grim Shield"},
 {not:["paladin"], rarity:"craft", name:"Safety Monarch", req_level:43, damage_reduced:4, mDamage_reduced:2, mRes:10, e_def:230, all_res:20, defense_per_level:3, ibc:20, fbr:30, fhr:17, req:-30, type:"shield", base:"Monarch"},
 // Quivers
 {CODE:"cqv", name:"Rusted Bolts", type:"quiver", rarity:"regular"},
@@ -1607,46 +1557,6 @@ var equipment = {
 {rarity:"magic", name:"Fine Small Charm of Vita", size:"small", req_level:39, damage_max:3, ar:20, life:20},
 {rarity:"magic", name:"Sharp Large Charm of Vita", size:"large", req_level:66, damage_max:6, ar:48, life:35},
 {rarity:"magic", name:"Sharp Grand Charm of Vita", size:"grand", req_level:83, damage_max:10, ar:76, life:45},
-//{qlvl:1, name:"Horadrim Sigil", size:"grand", req_level:80, all_attributes:3},
-	// Hodradrim Sigil is a legacy item (non-ladder only) that was available during Season 6 and 7. (July 13, 2018 - July 31, 2019)
-	// It was limited to 1 per character, but no longer has such limitations since being removed from the base game in Patch #17 (Tourmaline).
-	// Possible affixes:
-	//	Amazon
-	//		Lightning Bolt Fires 2 Additional Projectiles
-	//		+X to Phase Run Duration
-	//		+X% Magic Arrow Damage Converted to Magic		(now available on Moonfire)
-	//		Magic Arrow Fires 2 Additional Arrows			(now available on Moonfire)
-	//		Fire Arrow Fires 2 Additional Arrows			(now available on Dragonbreath)
-	//		Ice Arrow Fires 2 Additional Arrows			(now available on Ice Shards)
-	//		Cold Arrow Fires 2 Additional Projectiles		(now available on Hailstorm)
-	//		+40% to Freezing Arrow Radius				(now available on M'avina's Embrace)
-	//	Assassin
-	//		+X Fire Damage per Fists of Ember Charge
-	//		+X% increased Charged Bolt Sentry projectile speed
-	//	Barbarian
-	//		+3 seconds to Frenzy Duration
-	//		X% Frenzy Damage Converted to Magic
-	//		Slows Targets by X% During Whirlwind
-	//		Concentrate gains +X% Avoid projectiles
-	//	Druid
-	//		+5 Seconds to Armageddon Duration
-	//		-15% to Enemy Poison Resist affected by Rabies
-	//		Summoned Grizzly Bear Cannot be Cursed
-	//		Can Summone One Additional Dire Wolf
-	//	Necromancer
-	//		Raised Skeletons have X% chance of Open Wounds
-	//		+X% increased Skeleton Mage projectile speed
-	//		Corpse Explosion deals +5% of Maximum Corpse Life	(now available on Corpsemourn)
-	//		Bone Spear Fires 2 Additional Projectiles		(now available with 100+ energy, also on Bonehew)
-	//	Paladin
-	//		X% Reduced Dashing Strike Cooldown
-	//		+X% Increased Holy Fire Area Damage Rate
-	//		Holy Bolt Fires 2 Additional Projectiles		(now available with 100+ energy)
-	//	Sorceress
-	//		+X% to Glacial Spike radius
-	//		+X% to Fire Blast radius
-	//		Can Summon One Additional Hydra				(now available on Hexfire)
-	//
 	],
     socketables: [
 {name:"Socketables"},
@@ -1658,8 +1568,6 @@ var equipment = {
 {name:"Scintillating Jewel of Fervor", type:"jewel", rarity:"magic", req_level:29, all_res:15, ias:15},
 {name:"Brute's Jewel of Fervor", type:"jewel", rarity:"magic", req_level:29, ias:15, melee_splash:1},
 {name:"Vermillion Jewel of Carnage", type:"jewel", rarity:"magic", req_level:44, damage_max:30},
-{name:"Brawler's Jewel", type:"jewel", rarity:"rare", req_level:34, all_res:10, fhr:7, e_damage:30, melee_splash:1},
-{name:"Mage's Jewel", type:"jewel", rarity:"rare", req_level:33, all_res:10, fhr:7, mana_per_kill:3, damage_to_mana:12},
 /*	magic only affix values
 {name:"Ruby Jewel", type:"jewel", rarity:"magic", req_level:50, e_damage:40},
 {name:"Jewel of Fervor", type:"jewel", rarity:"magic", req_level:29, ias:15},
@@ -1676,39 +1584,6 @@ var equipment = {
 {name:"Aureolin Jewel", type:"jewel", rarity:"magic", req_level:17, mana_per_kill:3},
 {name:"Dun Jewel", type:"jewel", rarity:"magic", req_level:5, damage_to_mana:12},
 */
-{CODE:"r01", RUNE:1, name:"El Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:11, weapon:{ar:50,light_radius:1}, armor:{defense:15,light_radius:1}},
-{CODE:"r02", RUNE:2, name:"Eld Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:11, weapon:{damage_vs_undead:75,ar_vs_undead:50}, armor:{slower_stam_drain:15}, shield:{block:7}},
-{CODE:"r03", RUNE:3, name:"Tir Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:13, weapon:{mana_per_kill:2}, armor:{mana_per_kill:2}},	// same
-{CODE:"r04", RUNE:4, name:"Nef Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:13, weapon:{knockback:1}, armor:{missile_defense:30}},
-{CODE:"r05", RUNE:5, name:"Eth Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:15, weapon:{target_defense:-25}, armor:{mana_regen:15}},
-{CODE:"r06", RUNE:6, name:"Ith Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:15, weapon:{damage_max:9}, armor:{damage_to_mana:15}},
-{CODE:"r07", RUNE:7, name:"Tal Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:17, weapon:{pDamage_all:75,pDamage_duration:5}, armor:{pRes:35}},
-{CODE:"r08", RUNE:8, name:"Ral Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:19, weapon:{fDamage_min:5,fDamage_max:30}, armor:{fRes:35}},
-{CODE:"r09", RUNE:9, name:"Ort Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:21, weapon:{lDamage_min:1,lDamage_max:50}, armor:{lRes:35}},
-{CODE:"r10", RUNE:10, name:"Thul Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:23, weapon:{cDamage_min:3,cDamage_max:14}, armor:{cRes:35}},
-{CODE:"r11", RUNE:11, name:"Amn Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:25, weapon:{life_leech:7}, armor:{thorns:14}},
-{CODE:"r12", RUNE:12, name:"Sol Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:27, weapon:{damage_min:9}, armor:{damage_reduced:7}},
-{CODE:"r13", RUNE:13, name:"Shael Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:29, weapon:{ias:20}, armor:{fhr:20}, shield:{fbr:20}},
-{CODE:"r14", RUNE:14, name:"Dol Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:31, weapon:{flee_on_hit:25}, armor:{life_replenish:7}},
-{CODE:"r15", RUNE:15, name:"Hel Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:0, weapon:{req:-20}, armor:{req:-15}},
-{CODE:"r16", RUNE:16, name:"Io Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:35, weapon:{vitality:10}, armor:{vitality:10}},	// same
-{CODE:"r17", RUNE:17, name:"Lum Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:37, weapon:{energy:10}, armor:{energy:10}},
-{CODE:"r18", RUNE:18, name:"Ko Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:39, weapon:{dexterity:10}, armor:{dexterity:10}},
-{CODE:"r19", RUNE:19, name:"Fal Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:41, weapon:{strength:10}, armor:{strength:10}},
-{CODE:"r20", RUNE:20, name:"Lem Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:43, weapon:{gf:75}, armor:{gf:50}},
-{CODE:"r21", RUNE:21, name:"Pul Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:45, weapon:{damage_vs_demons:75,ar_vs_demons:100}, armor:{e_def:30}},
-{CODE:"r22", RUNE:22, name:"Um Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:47, weapon:{owounds:25}, armor:{all_res:15}, shield:{all_res:22}},
-{CODE:"r23", RUNE:23, name:"Mal Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:49, weapon:{pmh:1}, armor:{mDamage_reduced:7}},
-{CODE:"r24", RUNE:24, name:"Ist Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:51, weapon:{mf:30}, armor:{mf:25}},
-{CODE:"r25", RUNE:25, name:"Gul Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:53, weapon:{ar_bonus:20}, armor:{pRes_max:5}},
-{CODE:"r26", RUNE:26, name:"Vex Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:55, weapon:{mana_leech:7}, armor:{fRes_max:5}},
-{CODE:"r27", RUNE:27, name:"Ohm Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:57, weapon:{e_damage:50}, armor:{cRes_max:5}},
-{CODE:"r28", RUNE:28, name:"Lo Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:59, weapon:{dstrike:20}, armor:{lRes_max:5}},
-{CODE:"r29", RUNE:29, name:"Sur Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:61, weapon:{blind_on_hit:20}, armor:{max_mana:5}, shield:{mana:50}},
-{CODE:"r30", RUNE:30, name:"Ber Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:63, weapon:{cblow:20}, armor:{pdr:8}},
-{CODE:"r31", RUNE:31, name:"Jah Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:65, weapon:{itd:1}, armor:{max_life:5}, shield:{life:50}},
-{CODE:"r32", RUNE:32, name:"Cham Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:67, weapon:{freezes_target:3}, armor:{cbf:1}},
-{CODE:"r33", RUNE:33, name:"Zod Rune", type:"rune", rarity:"regular", color:"ORANGE", req_level:69, weapon:{indestructible:1}, armor:{indestructible:1}},	// same
 
 {CODE:"gpb", GEMLEVEL:5, GEMTYPE:5, name:"Perfect Sapphire", type:"gem", rarity:"regular", req_level:18, weapon:{cDamage_min:10,cDamage_max:14}, armor:{mana:38}, shield:{cRes:40}},
 {CODE:"gpg", GEMLEVEL:5, GEMTYPE:3, name:"Perfect Emerald", type:"gem", rarity:"regular", req_level:18, weapon:{pDamage_all:100,pDamage_duration:7}, armor:{dexterity:10}, shield:{pRes:40}},
@@ -1724,28 +1599,6 @@ var equipment = {
 {CODE:"gzv", GEMLEVEL:4, GEMTYPE:1, name:"Flawless Amethyst", type:"gem", rarity:"regular", req_level:15, weapon:{ar:100}, armor:{strength:8}, shield:{defense:24}},
 {CODE:"glw", GEMLEVEL:4, GEMTYPE:2, name:"Flawless Diamond", type:"gem", rarity:"regular", req_level:15, weapon:{damage_min:5,damage_max:6}, armor:{ar:80}, shield:{all_res:14}},
 {CODE:"skl", GEMLEVEL:4, GEMTYPE:7, name:"Flawless Skull", type:"gem", rarity:"regular", req_level:15, weapon:{life_leech:3,mana_leech:3}, armor:{life_replenish:4,mana_regen:12}, shield:{damage_reduced:11}},
-{CODE:"gsb", GEMLEVEL:3, GEMTYPE:5, name:"Sapphire", type:"gem", rarity:"regular", req_level:12, weapon:{cDamage_min:4,cDamage_max:7}, armor:{mana:24}, shield:{cRes:22}},
-{CODE:"gsg", GEMLEVEL:3, GEMTYPE:3, name:"Emerald", type:"gem", rarity:"regular", req_level:12, weapon:{pDamage_all:40,pDamage_duration:5}, armor:{dexterity:6}, shield:{pRes:22}},
-{CODE:"gsy", GEMLEVEL:3, GEMTYPE:6, name:"Topaz", type:"gem", rarity:"regular", req_level:12, weapon:{lDamage_min:1,lDamage_max:22}, armor:{mf:16}, shield:{lRes:22}},
-{CODE:"gsr", GEMLEVEL:3, GEMTYPE:4, name:"Ruby", type:"gem", rarity:"regular", req_level:12, weapon:{fDamage_min:8,fDamage_max:12}, armor:{life:24}, shield:{fRes:22}},
-{CODE:"gsv", GEMLEVEL:3, GEMTYPE:1, name:"Amethyst", type:"gem", rarity:"regular", req_level:12, weapon:{ar:80}, armor:{strength:6}, shield:{defense:18}},
-{CODE:"gsw", GEMLEVEL:3, GEMTYPE:2, name:"Diamond", type:"gem", rarity:"regular", req_level:12, weapon:{damage_min:3,damage_max:4}, armor:{ar:60}, shield:{all_res:11}},
-{CODE:"sku", GEMLEVEL:3, GEMTYPE:7, name:"Skull", type:"gem", rarity:"regular", req_level:12, weapon:{life_leech:3,mana_leech:2}, armor:{life_replenish:3,mana_regen:12}, shield:{damage_reduced:6}},
-{CODE:"gfb", GEMLEVEL:2, GEMTYPE:5, name:"Flawed Sapphire", type:"gem", rarity:"regular", req_level:5, weapon:{cDamage_min:3,cDamage_max:5}, armor:{mana:17}, shield:{cRes:16}},
-{CODE:"gfg", GEMLEVEL:2, GEMTYPE:3, name:"Flawed Emerald", type:"gem", rarity:"regular", req_level:5, weapon:{pDamage_all:20,pDamage_duration:4}, armor:{dexterity:4}, shield:{pRes:16}},
-{CODE:"gfy", GEMLEVEL:2, GEMTYPE:6, name:"Flawed Topaz", type:"gem", rarity:"regular", req_level:5, weapon:{lDamage_min:1,lDamage_max:14}, armor:{mf:13}, shield:{lRes:16}},
-{CODE:"gfr", GEMLEVEL:2, GEMTYPE:4, name:"Flawed Ruby", type:"gem", rarity:"regular", req_level:5, weapon:{fDamage_min:5,fDamage_max:8}, armor:{life:17}, shield:{fRes:16}},
-{CODE:"gfv", GEMLEVEL:2, GEMTYPE:1, name:"Flawed Amethyst", type:"gem", rarity:"regular", req_level:5, weapon:{ar:60}, armor:{strength:4}, shield:{defense:12}},
-{CODE:"gfw", GEMLEVEL:2, GEMTYPE:2, name:"Flawed Diamond", type:"gem", rarity:"regular", req_level:5, weapon:{damage_min:2,damage_max:3}, armor:{ar:40}, shield:{all_res:8}},
-{CODE:"skf", GEMLEVEL:2, GEMTYPE:7, name:"Flawed Skull", type:"gem", rarity:"regular", req_level:5, weapon:{life_leech:2,mana_leech:2}, armor:{life_replenish:3,mana_regen:8}, shield:{damage_reduced:4}},
-{CODE:"gcb", GEMLEVEL:1, GEMTYPE:5, name:"Chipped Sapphire", type:"gem", rarity:"regular", req_level:0, weapon:{cDamage_min:1,cDamage_max:3}, armor:{mana:10}, shield:{cRes:12}},
-{CODE:"gcg", GEMLEVEL:1, GEMTYPE:3, name:"Chipped Emerald", type:"gem", rarity:"regular", req_level:0, weapon:{pDamage_all:10,pDamage_duration:3}, armor:{dexterity:3}, shield:{pRes:12}},
-{CODE:"gcy", GEMLEVEL:1, GEMTYPE:6, name:"Chipped Topaz", type:"gem", rarity:"regular", req_level:0, weapon:{lDamage_min:1,lDamage_max:8}, armor:{mf:9}, shield:{lRes:12}},
-{CODE:"gcr", GEMLEVEL:1, GEMTYPE:4, name:"Chipped Ruby", type:"gem", rarity:"regular", req_level:0, weapon:{fDamage_min:3,fDamage_max:4}, armor:{life:10}, shield:{fRes:12}},
-{CODE:"gcv", GEMLEVEL:1, GEMTYPE:1, name:"Chipped Amethyst", type:"gem", rarity:"regular", req_level:0, weapon:{ar:40}, armor:{strength:3}, shield:{defense:8}},
-{CODE:"gcw", GEMLEVEL:1, GEMTYPE:2, name:"Chipped Diamond", type:"gem", rarity:"regular", req_level:0, weapon:{damage_min:1,damage_max:2}, armor:{ar:20}, shield:{all_res:6}},
-{CODE:"skc", GEMLEVEL:1, GEMTYPE:7, name:"Chipped Skull", type:"gem", rarity:"regular", req_level:0, weapon:{life_leech:2,mana_leech:1}, armor:{life_replenish:2,mana_regen:8}, shield:{damage_reduced:2}},
-
 {CODE:"std", name:"Standard of Heroes", type:"other", rarity:"unique", color:"GOLD", req_level:90, glow:1, always_id:true},
 	],
     misc: [
