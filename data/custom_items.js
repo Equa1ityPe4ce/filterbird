@@ -1803,7 +1803,11 @@ function setItemCodes() {
 		else if (itemToCompare.rarity == "rw") { itemToCompare.NMAG = true; itemToCompare.RW = true; itemToCompare.always_id = true; }
 		else if (itemToCompare.rarity == "craft") { itemToCompare.CRAFT = true; itemToCompare.always_id = true; }
 	} else {itemToCompare.UNI = true }
-	if (itemToCompare.type == "rune") { itemToCompare.RUNENAME = itemToCompare.name.split(" ")[0] }
+	if (itemToCompare.type == "rune") { itemToCompare.RUNENAME = itemToCompare.name.split(" ")[0];
+	itemToCompare.QUANTITY = 1;
+	itemToCompare.QTY = 1;
+	// character.CHARSTAT70 = 1;
+	}
 	itemToCompare[itemToCompare.CODE] = true
 	//if (typeof(itemToCompare.velocity) != 'undefined') { if (itemToCompare.velocity < 0) { itemToCompare.velocity += 100000 } }	// negative values overflow for this in-game code
 	if (typeof(itemToCompare.always_id) == 'undefined') { itemToCompare.always_id = false }
@@ -1813,7 +1817,7 @@ function setItemCodes() {
 		// affix codes translated to in-game codes
 		for (affix in itemToCompare) { for (code in codes) { if (affix == code) { itemToCompare[codes[code]] = itemToCompare[affix] } } }
 		if (typeof(itemToCompare.sup) != 'undefined') { if (itemToCompare.sup > 0) { if (typeof(itemToCompare.ED) == 'undefined') { itemToCompare.ED = 0 }; itemToCompare.ED += itemToCompare.sup; } }
-		if (itemToCompare.CODE == "aq2" || itemToCompare.CODE == "cq2" || itemToCompare.CODE == "aqv" || itemToCompare.CODE == "cqv") { itemToCompare.QUANTITY = 500; character.CHARSTAT70 = 500; }
+		if (itemToCompare.CODE == "aq2" || itemToCompare.CODE == "cq2" || itemToCompare.CODE == "aqv" || itemToCompare.CODE == "cqv") { itemToCompare.QUANTITY = 400; character.CHARSTAT70 = 400; }
 		if (typeof(itemToCompare.sockets) != 'undefined') { itemToCompare.SOCK = itemToCompare.sockets }
 		itemToCompare.DEF = Math.ceil((~~itemToCompare.base_defense * (1+~~itemTemp.ethereal*0.5) * (1+~~itemTemp.e_def/100+~~itemTemp.sup/100)) + ~~itemTemp.defense + Math.floor(~~itemTemp.defense_per_level*character.CLVL))
 		itemToCompare.REQ_STR = Math.ceil(~~itemToCompare.req_strength * (1+(~~itemToCompare.req/100)) - ~~itemToCompare.ethereal*10)

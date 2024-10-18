@@ -33,10 +33,11 @@ var filter_text = "";
 // startup - runs when the page loads
 // ---------------------------------
 function startup() {
-	//document.getElementById("filter_text_1").innerHTML = "// filter code will be hidden in prod"
+	//document.getElementById("filter_text_1").innerHTML = "ItemDisplay[QTY=0]: %RED% ilvl %ILVL% %NAME%{%NAME%}"
 	//document.getElementById("filter_text_2").innerHTML = "// Load filter files from your Diablo II directory or copy/paste their rules here\r\n// If you're not simulating multiple filters, Filter #2 can be disabled via the menu"
 	loadItems()
 	loadOptions()
+	setILVL("85")
 	var r = Math.floor(Math.random()*5+1);
 	var background = "./images/act_"+r+".png";
 	document.getElementById("background_1").src = background
@@ -217,9 +218,9 @@ function setItem(value) {
 			itemToCompare = {}
 			for (affix in item) { itemToCompare[affix] = item[affix] }
 			itemToCompare.NAME = value.split(" (")[0].split(" ­ ")[0]
-			itemToCompare.ILVL = character.ILVL
+			itemToCompare.ILVL = 85
 			itemToCompare.PRICE = Number(document.getElementById("price").value)
-			itemToCompare.ID = true
+			itemToCompare.ID = true;
 			if (typeof(itemToCompare.base) != 'undefined') {
 				var base = bases[itemToCompare.base.split(" ").join("_").split("-").join("_").split("s'").join("s").split("'s").join("s")];
 				for (affix in base) { itemToCompare[affix] = base[affix] }
@@ -234,16 +235,21 @@ function setItem(value) {
 					else if (item.size == "large") { itemToCompare.CODE = "cm2"; itemToCompare.base = "Large Charm"; }
 					else if (item.size == "grand") { itemToCompare.CODE = "cm3"; itemToCompare.base = "Grand Charm"; }
 				}
-				else if (group == "socketables") {
 					if (item.type == "jewel") { itemToCompare.CODE = "jew"; itemToCompare.base = "Jewel"; }
-					else if (item.type == "rune") { itemToCompare.RUNENAME = itemToCompare.name.split(" ")[0] }
+					else if (item.type == "rune") {
+						itemToCompare.RUNENAME = itemToCompare.name.split(" ")[0];
+						itemToCompare.QUANTITY = 1;
+						itemToCompare.QTY = 1;
+						// character.CHARSTAT70 = 1;
+						}
 					else if (item.type == "gem") {
 						var g_level = [0,"Chipped","Flawed","Normal","Flawless","Perfect"];
 						var g_type = [0,"Amethyst","Diamond","Emerald","Ruby","Sapphire","Topaz","Skull"];
-						itemToCompare.GLEVEL = g_level[itemToCompare.GEMLEVEL]
-						itemToCompare.GTYPE = g_type[itemToCompare.GEMTYPE]
+						itemToCompare.GLEVEL = g_level[itemToCompare.GEMLEVEL];
+						itemToCompare.GTYPE = g_type[itemToCompare.GEMTYPE];
+						itemToCompare.QUANTITY = 1;
+						// character.CHARSTAT70 = 1;
 					}
-				}
 				else if (itemToCompare.CODE == "aq2") { itemToCompare.base = "Arrows" }
 				else if (itemToCompare.CODE == "cq2") { itemToCompare.base = "Bolts" }
 				else if (itemToCompare.CODE == "ma1" || itemToCompare.CODE == "ma2" || itemToCompare.CODE == "ma4" || itemToCompare.CODE == "ma5" || itemToCompare.CODE == "ma6" || itemToCompare.CODE == "ma7" || itemToCompare.CODE == "ma8" || itemToCompare.CODE == "ma9") {
@@ -278,7 +284,7 @@ function setItem(value) {
 				for (affix in itemToCompare) { for (code in codes) { if (affix == code) { itemToCompare[codes[code]] = itemToCompare[affix] } } }
 				if (typeof(itemToCompare.sup) != 'undefined') { if (itemToCompare.sup > 0) { if (typeof(itemToCompare.ED) == 'undefined') { itemToCompare.ED = 0 }; itemToCompare.ED += itemToCompare.sup; itemToCompare.SUP = true; if (item.rarity == "regular") { itemToCompare.NAME = "Superior "+itemToCompare.NAME } } }
 				if (typeof(itemToCompare.ethereal) != 'undefined' && itemToCompare.ethereal == 1) { itemToCompare.ETH = true }
-				if (itemToCompare.CODE == "aq2" || itemToCompare.CODE == "cq2" || itemToCompare.CODE == "aqv" || itemToCompare.CODE == "cqv") { itemToCompare.QUANTITY = 500; character.CHARSTAT70 = 500; }
+				if (itemToCompare.CODE == "aq2" || itemToCompare.CODE == "cq2" || itemToCompare.CODE == "aqv" || itemToCompare.CODE == "cqv") { itemToCompare.QUANTITY = 400; character.CHARSTAT70 = 400; }
 				itemToCompare.DEF = Math.ceil((~~itemToCompare.base_defense * (1+~~item.ethereal*0.5) * (1+~~item.e_def/100+~~item.sup/100)) + ~~item.defense + Math.floor(~~item.defense_per_level*character.CLVL))
 				itemToCompare.REQ_STR = Math.ceil(~~itemToCompare.req_strength * (1+(~~itemToCompare.req/100)) - ~~itemToCompare.ethereal*10)
 				itemToCompare.REQ_DEX = Math.ceil(~~itemToCompare.req_dexterity * (1+(~~itemToCompare.req/100)) - ~~itemToCompare.ethereal*10)
@@ -1068,10 +1074,10 @@ function equipmentHover(num) {
 	var extra_height = Math.max(0,(document.getElementById("tooltip_inventory").getBoundingClientRect().height - 50 - document.getElementById("output_processing_info").getBoundingClientRect().height))
 	if (settings.num_filters == 1) { extra_height += 24 }
 	//document.getElementById("extra_space").style.height = extra_height+"px"
-	
+
 	var inv_height = document.getElementById("tooltip_inventory").getBoundingClientRect().height
 	document.getElementById("tooltip_inventory_backdrop").style.height = inv_height+"px"
-	
+
 }
 
 // equipmentOut - stops showing equipment info (mouse-over ends)
