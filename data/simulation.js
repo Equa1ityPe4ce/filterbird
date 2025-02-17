@@ -470,7 +470,7 @@ function parseFile(file,num) {
 	var line_num = 0;
 	for (line in lines) { if (done == false) {
 		line_num = Number(line)+1;
-		document.getElementById("o3").innerHTML += "<br>ERROR: Cannot Evaluate<br>"+"#"+num+" Invalid formatting on line "+line_num+" (rule "+(rules_checked+1)+") ... "+"<l style='color:#aaa'>"+file.split("­").join("•").split("\n")[line]+"</l><br>"	// gets displayed if the function halts unexpectedly at any point
+		document.getElementById("o3").innerHTML = "<br>The filter loaded has critical errors which could cause instability with in-game filtering.<br>";
 		var rule = lines[line].split("/")[0];
 		var rule_with_tabs = lines_with_tabs[line].split("/")[0];
 		var index = rule.indexOf("ItemDisplay[");
