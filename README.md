@@ -23,6 +23,6 @@ This is a fork of the original FilterBird project by BetweenWalls. This fork is 
 **Reporting**: Please Message Equa1ity in discord with issues
 
 **Credits**
-* Origional Creator: BetweenWalls [REPO](https://github.com/BetweenWalls/filterbird)
+* Original Creator: BetweenWalls [REPO](https://github.com/BetweenWalls/filterbird)
 * Edits for the Launcher: Maaaark
 * Launcher Integration: Equa1ity
