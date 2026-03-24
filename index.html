@@ -51,7 +51,7 @@
 					<div id="character_class" style="display:inline"><label class="label">&nbsp;Class: </label><select id="dropdown_class" class="new-dropdown" onChange="setClass(this.value)">
 						<option class="gray-all">Amazon</option><option class="gray-all">Assassin</option><option class="gray-all">Barbarian</option><option class="gray-all">Druid</option><option class="gray-all">Necromancer</option><option class="gray-all">Paladin</option><option class="gray-all">Sorceress</option>
 					</select></div>
-					<div style="display:inline"><label class="label" for="filtlvl">&nbsp;Filter Level: </label><input id="filtlvl" name="filtlvl" class="num-input" type="number" min="0" max="9" value="1" onchange="setFilterLevel(this.value)"></div>
+					<div style="display:inline"><label class="label" for="filtlvl">&nbsp;Filter Level: </label><input id="filtlvl" name="filtlvl" class="num-input" type="number" min="0" max="15" value="1" onchange="setFilterLevel(this.value)"></div>
 					<br>
 					<div style="display:inline"><label class="label">Difficulty: </label><select id="dropdown_difficulty" class="new-dropdown" onChange="setDifficulty(this.selectedIndex)">
 						<option class="gray-all">Normal</option><option class="gray-all">Nightmare</option><option class="gray-all">Hell</option><option class="gray-all" selected>Auto (ilvl-based)</option>
@@ -180,14 +180,6 @@
 		<div style="text-align:center; width:745px;"><label class="label">*** Item stats are not up to date ***</label></div>
 
 
-		<div id="output_processing_info">
-			<div id="o1" style="color:white;"></div><div id="output_spacing"></div>
-			<div id="o2" style="color:white;"></div>
-			<div id="o3" style="color:red;"></div>
-			<div id="o4" style="color:white;"></div><div id="multiple_spacing"></div>
-			<div id="o5" style="color:white;"></div>
-		</div>
-
 		<div id="extra_space"></div>
 		<div id="debug" style="display:none;">
 			<button onClick="test()">Test</button>
@@ -204,6 +196,14 @@
 		<a id="item_affixes" style="display:block; color:#6666bb;"></a>
 	  </div>
 	</div>
+
+		<div id="output_processing_info">
+			<div id="o1" style="color:white;"></div><div id="output_spacing"></div>
+			<div id="o2" style="color:white;"></div>
+			<div id="o3" style="color:red;"></div>
+			<div id="o4" style="color:white;"></div><div id="multiple_spacing"></div>
+			<div id="o5" style="color:white;"></div>
+		</div>
 
 	</div>	<!-- /full_interface -->
 </div>	<!-- /main -->

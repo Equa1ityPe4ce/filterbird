@@ -1,6 +1,6 @@
 
 var itemToCompare = {name:"5000 Gold",NAME:"5000 Gold",CODE:"GOLD",GOLD:5000,ID:true,always_id:true,rarity:"regular"};
-var character = {CLVL:90,CHARSTAT14:199000,CHARSTAT15:199000,DIFFICULTY:2,ILVL:85,CHARSTAT70:0,CHARSTAT13:1000,AMAZON:true,ASSASSIN:false,BARBARIAN:false,DRUID:false,NECROMANCER:false,PALADIN:false,SORCERESS:false,SHOP:false,EQUIPPED:false,FILTLVL:1};
+var character = {CLVL:90,CHARSTAT14:199000,CHARSTAT15:199000,DIFFICULTY:2,ILVL:85,CHARSTAT70:0,CHARSTAT13:1000,AMAZON:true,ASSASSIN:false,BARBARIAN:false,DRUID:false,NECROMANCER:false,PALADIN:false,SORCERESS:false,SHOP:false,EQUIPPED:false,GROUND:false,INVENTORY:false,FILTLVL:1};
 var item_settings = {ID:false, ILVL_return:85};
 var settings = {auto_difficulty:true,version:0,validation:1,auto_simulate:1,max_errors:50,error_limit:1,num_filters:2,background:0,nowrap:true,nowrap_width:745};
 var notices = {duplicates:0,pd2_conditions:0,pod_conditions:0,colors:0,encoding:0};
@@ -13,10 +13,14 @@ var colors = {
 	GREEN:"#00f000",
 	DGREEN:"#255d16",
 	TAN:"#9b8c6d",
-	BLACK:"000000",
+	BLACK:"#000000",
 	ORANGE:"#c48736",
 	PURPLE:"#9b2aea",
-	RED:"#a94838"
+	RED:"#a94838",
+	TEAL:"#00c8c8",
+	CORAL:"#ff6644",
+	SAGE:"#80a060",
+	LIGHT_GRAY:"#c0c0c0"
 };
 var filter = [0,{text:"",result:["",""],o:""},{text:"",result:["",""],o:""}];	// stores most recent info, first index unused
 var item_old = {};
@@ -96,7 +100,18 @@ function startup() {
 	//toggleAutoSimulation(false);
 	//document.getElementById("debug").style.display = "block"
 	//loadedFromApp();
-
+    const urlParams = new URLSearchParams(window.location.search);
+    const fromweb = urlParams.get("fromweb");
+    if (fromweb !== null) {
+        if (fromweb === "true") {
+            loadedFromWeb("//Paste filter here");
+        } else {
+            fetch(fromweb)
+                .then(function(response) { return response.text(); })
+                .then(function(text) { loadedFromWeb(text); })
+                .catch(function() { loadedFromWeb("//Paste filter here"); });
+        }
+    }
 }
 
 
@@ -115,6 +130,16 @@ function simpleItemEdit() {
 	toggleAutoSimulation(true);
 	toggleCustom(false);
 	simulate(1)
+}
+
+function loadedFromWeb(filterText) {
+    toggleConditionValidation(true);
+	document.body.style.backgroundColor = "black";
+	document.getElementById("filter_text_1").style.display = "block";
+	document.getElementById("filter_text_1").value = filterText;
+    document.getElementById("o1").style.display = "block";
+	simulate(1);
+	document.getElementById("loading_window_1").style.display = "none";
 }
 
 function loadedFromApp() {
@@ -276,6 +301,8 @@ function setItem(value) {
 				itemToCompare.sockets = s
 			}
 			itemToCompare[itemToCompare.CODE] = true
+			var quiverCodes = ["aqv","cqv","aqv2","aqv3","cqv2","cqv3","aq2","cq2"];
+			if (quiverCodes.indexOf(itemToCompare.CODE) >= 0 || itemToCompare.type == "quiver") { itemToCompare.QUIVER = true; }
 			if (typeof(itemToCompare.velocity) != 'undefined') { if (itemToCompare.velocity < 0) { itemToCompare.velocity += 100000 } }	// negative values overflow for this in-game code
 			if (typeof(itemToCompare.always_id) == 'undefined') { itemToCompare.always_id = false }
 			if (itemToCompare.always_id == false && item_settings.ID == false) { itemToCompare.ID = false }
@@ -284,7 +311,7 @@ function setItem(value) {
 				for (affix in itemToCompare) { for (code in codes) { if (affix == code) { itemToCompare[codes[code]] = itemToCompare[affix] } } }
 				if (typeof(itemToCompare.sup) != 'undefined') { if (itemToCompare.sup > 0) { if (typeof(itemToCompare.ED) == 'undefined') { itemToCompare.ED = 0 }; itemToCompare.ED += itemToCompare.sup; itemToCompare.SUP = true; if (item.rarity == "regular") { itemToCompare.NAME = "Superior "+itemToCompare.NAME } } }
 				if (typeof(itemToCompare.ethereal) != 'undefined' && itemToCompare.ethereal == 1) { itemToCompare.ETH = true }
-				if (itemToCompare.CODE == "aq2" || itemToCompare.CODE == "cq2" || itemToCompare.CODE == "aqv" || itemToCompare.CODE == "cqv") { itemToCompare.QUANTITY = 400; character.CHARSTAT70 = 400; }
+				if (itemToCompare.CODE == "aq2" || itemToCompare.CODE == "cq2" || itemToCompare.CODE == "aqv" || itemToCompare.CODE == "cqv" || itemToCompare.CODE == "aqv2" || itemToCompare.CODE == "aqv3" || itemToCompare.CODE == "cqv2" || itemToCompare.CODE == "cqv3") { itemToCompare.QUANTITY = 400; character.CHARSTAT70 = 400; }
 				itemToCompare.DEF = Math.ceil((~~itemToCompare.base_defense * (1+~~item.ethereal*0.5) * (1+~~item.e_def/100+~~item.sup/100)) + ~~item.defense + Math.floor(~~item.defense_per_level*character.CLVL))
 				itemToCompare.REQ_STR = Math.ceil(~~itemToCompare.req_strength * (1+(~~itemToCompare.req/100)) - ~~itemToCompare.ethereal*10)
 				itemToCompare.REQ_DEX = Math.ceil(~~itemToCompare.req_dexterity * (1+(~~itemToCompare.req/100)) - ~~itemToCompare.ethereal*10)
@@ -467,6 +494,46 @@ function parseFile(file,num) {
 	var rules_checked = 0;
 	var lines = file.split("\t").join("").split("­").join("•").split("\n");
 	var lines_with_tabs = file.split("­").join("•").split("\n");
+
+	// Gather aliases: Alias[NAME]: VALUE
+	var aliases = {};
+	for (var ali = 0; ali < lines.length; ali++) {
+		var aliRule = lines[ali].split("/")[0];
+		var aliIndex = aliRule.indexOf("Alias[");
+		if (aliIndex >= 0 && aliRule.substring(0, aliIndex).trim() === "") {
+			var aliEnd = aliRule.indexOf("]:", aliIndex);
+			if (aliEnd >= 0) {
+				var aliName = aliRule.substring(aliIndex + 6, aliEnd).trim();
+				var aliValue = aliRule.substring(aliEnd + 2).trim();
+				if (aliName.length > 0) { aliases[aliName.toUpperCase()] = aliValue; }
+			}
+		}
+	}
+	// Replace alias names in ItemDisplay lines:
+	// - plain ALIASNAME as whole token (no %) in the conditions section [ ]
+	// - %ALIASNAME% in the output section after ]:
+	if (Object.keys(aliases).length > 0) {
+		var applyAliasesToLine = function(line) {
+			var idxDisplay = line.indexOf("ItemDisplay[");
+			if (idxDisplay < 0) { return line; }
+			var condStart = idxDisplay + 12;
+			var condEnd = line.indexOf("]:", condStart);
+			if (condEnd < 0) { return line; }
+			var prefix = line.substring(0, condStart);
+			var cond = line.substring(condStart, condEnd);
+			var output = line.substring(condEnd + 2);
+			for (var aliName in aliases) {
+				var reAlias = new RegExp("\\b" + aliName + "\\b", "gi");
+				cond = cond.replace(reAlias, aliases[aliName]);
+				output = output.split("%" + aliName + "%").join(aliases[aliName]);
+				output = output.split("%" + aliName.toLowerCase() + "%").join(aliases[aliName]);
+			}
+			return prefix + cond + "]:" + output;
+		};
+		for (var ali = 0; ali < lines.length; ali++) { lines[ali] = applyAliasesToLine(lines[ali]); }
+		for (var ali = 0; ali < lines_with_tabs.length; ali++) { lines_with_tabs[ali] = applyAliasesToLine(lines_with_tabs[ali]); }
+	}
+
 	var line_num = 0;
 	for (line in lines) { if (done == false) {
 		line_num = Number(line)+1;
@@ -532,7 +599,7 @@ function parseFile(file,num) {
 					cond = Number(cond)
 					var c = cond_list[cond];
 					// TODO: Check whether the "BETEEN" operator is present and reconfigure it to use multiple conditions with ">" and "<" (may need a different solution for PREFIX/SUFFIX/AUTOMOD)
-					var nonbool_conditions = ["GOLD","RUNE","GEMLEVEL","GEMTYPE","QTY","DEF","LVLREQ","PRICE","ALVL","CRAFTALVL","QLVL","ILVL","SOCK","ED","MAXDUR","AR","RES","FRES","CRES","LRES","PRES","FRW","IAS","FCR","FHR","FBR","MINDMG","MAXDMG","STR","DEX","LIFE","MANA","MFIND","GFIND","MAEK","DTM","REPLIFE","REPAIR","ARPER","FOOLS","ALLSK"];
+					var nonbool_conditions = ["GOLD","RUNE","GEMLEVEL","GEMTYPE","QTY","DEF","LVLREQ","PRICE","BUYPRICE","ALVL","CRAFTALVL","QLVL","ILVL","SOCK","ED","MAXDUR","AR","RES","FRES","CRES","LRES","PRES","FRW","IAS","FCR","FHR","FBR","MINDMG","MAXDMG","STR","DEX","LIFE","MANA","MFIND","GFIND","MAEK","DTM","REPLIFE","REPAIR","ARPER","FOOLS","ALLSK"];
 					if (c == "GEM") { c = "GEMLEVEL" }
 					if (c == "RUNENUM" || c == "RUNENAME") { c = "RUNE" }
 					var number = false;
@@ -555,8 +622,8 @@ function parseFile(file,num) {
 								if (settings.version == 1 && all_codes[cr] == 1) { pod_conditions = true }
 							}
 							if (cr.substr(0,8) == "CHARSTAT" || cr.substr(0,8) == "ITEMSTAT") { if (Number(cr.slice(8)) >= 0 && Number(cr.slice(8)) <= 500) {
-								if (settings.version == 0) { recognized = true }
-								else { pod_conditions = true }
+								recognized = true
+
 							} }
 							if (cr.substr(0,4) == "STAT") { if (Number(cr.slice(4)) >= 0 && Number(cr.slice(4)) <= 504) {
 								recognized = true
@@ -568,6 +635,7 @@ function parseFile(file,num) {
 								cond_list[cond] = ("SK"+Number(cr.slice(2)))
 								c = cond_list[cond]
 							} }
+							if (cr.substr(0,5) == "MULTI" && cr.includes("‚")) { var multiParts = cr.slice(5).split("‚"); if (multiParts.length == 2 && !isNaN(Number(multiParts[0])) && !isNaN(Number(multiParts[1]))) { recognized = true } }
 							if (pod_conditions == true) {
 								if (notices.pod_conditions == 0) { document.getElementById("o4").innerHTML += "<br>PoD code(s) detected - the PoD version of FilterBird can be enabled from the menu." }
 								notices.pod_conditions = 1
@@ -591,7 +659,7 @@ function parseFile(file,num) {
 							if (typeof(character[c]) == 'undefined') { character[c] = 0 }
 							else if (~~Number(character[c]) < 0) { value_is_negative = true }
 						}
-						else if (typeof(itemToCompare[c]) == 'undefined' && (c.substr(0,4) == "STAT" || c.substr(0,5) == "TABSK" || c.substr(0,4) == "CLSK" || c.substr(0,2) == "SK" || c.substr(0,4) == "CHSK" || c.substr(0,2) == "OS")) { itemToCompare[c] = 0 }
+						else if (typeof(itemToCompare[c]) == 'undefined' && (c.substr(0,4) == "STAT" || c.substr(0,5) == "MULTI" || c.substr(0,5) == "TABSK" || c.substr(0,4) == "CLSK" || c.substr(0,2) == "SK" || c.substr(0,4) == "CHSK" || c.substr(0,2) == "OS")) { itemToCompare[c] = 0 }
 						else if (typeof(itemToCompare[c]) == 'undefined') {
 							for (let i = 0; i < nonbool_conditions.length; i++) {
 								if (c == nonbool_conditions[i]) { itemToCompare[c] = 0 }
@@ -601,7 +669,7 @@ function parseFile(file,num) {
 						else if (~~Number(itemToCompare[c]) < 0) { value_is_negative = true }
 						// add to formula
 						if (c_falsify == true) { formula += "false " }
-						else if (c == "CLVL" || c == "DIFFICULTY" || c.substr(0,8) == "CHARSTAT" || c == "AMAZON" || c == "ASSASSIN" || c == "BARBARIAN" || c == "DRUID" || c == "NECROMANCER" || c == "PALADIN" || c == "SORCERESS" || c == "SHOP" || c == "EQUIPPED" || c == "FILTLVL") {
+						else if (c == "CLVL" || c == "DIFFICULTY" || c.substr(0,8) == "CHARSTAT" || c == "AMAZON" || c == "ASSASSIN" || c == "BARBARIAN" || c == "DRUID" || c == "NECROMANCER" || c == "PALADIN" || c == "SORCERESS" || c == "SHOP" || c == "EQUIPPED" || c == "GROUND" || c == "INVENTORY" || c == "FILTLVL") {
 							if (value_is_negative == true) { formula += (2000000000+Number(character[c]))+" " }			// converts negative values to their equivalent 'unsigned' value
 							else { formula += character[c]+" " }
 						}
@@ -671,8 +739,8 @@ function parseFile(file,num) {
 				// TODO: Change split/join replacements to use deliminator other than "_" between the identifying key and the keyword, so no exceptions need to be made when splitting off the keyword (e.g. for [DARK,GREEN] since it contains the deliminator)
 				out_format = out_format.split("%DGREEN%").join(",invalid_DGREEN,").split("%CLVL%").join(",invalid_CLVL,")
 				out_format = out_format.split("%DARK_GREEN%").join(",color_DGREEN,").split("%QTY%").join(",ref_QUANTITY,").split("%RANGE%").join(",ref_range,").split("%WPNSPD%").join(",ref_baseSpeed,").split("%ALVL%").join(",ref_ALVL,").split("%NL%").join(",misc_NL,").split("%MAP%").join(",ignore_MAP,").split("%NOTIFY-DEAD%").join(",ignore_NOTIFY-DEAD,").split("%LVLREQ%").join(",ref_reqlevel,").split("%CRAFTALVL%").join(",ref_CRAFTALVL,")
-				out_format = out_format.split("%LIGHT_GRAY%").join(",color_GRAY,").split("%CORAL%").join(",color_GRAY,").split("%SAGE%").join(",color_GRAY,").split("%TEAL%").join(",color_GRAY,")
-				out_format = out_format.split("%CLASS%").join(",invalid_CLASS,").split("%CL%").join(",misc_NL,").split("%QUAL%").join(",invalid_QUAL,").split("%QT%").join(",invalid_QT,").split("%BASENAME%").join(",invalid_BASENAME,")
+				out_format = out_format.split("%LIGHT_GRAY%").join(",color_LIGHT_GRAY,").split("%CORAL%").join(",color_CORAL,").split("%SAGE%").join(",color_SAGE,").split("%TEAL%").join(",color_TEAL,")
+				out_format = out_format.split("%CLASS%").join(",invalid_CLASS,").split("%CL%").join(",misc_NL,").split("%QUAL%").join(",invalid_QUAL,").split("%QT%").join(",invalid_QT,").split("%BASENAME%").join(",ref_BASENAME,")
 				if (settings.version == 1) {
 					var notifs = ["%PX-","%DOT-","%MAP-","%BORDER-"];
 					for (n in notifs) {									// TODO: implement more efficient way to split notification keywords
@@ -692,8 +760,9 @@ function parseFile(file,num) {
 						out_format = out_format.split("%NOTIFY-"+av+"%").join(",ignore_notification,").split("%NOTIFY-"+av.toUpperCase()+"%").join(",ignore_notification,").split("%notify-"+av+"%").join(",ignore_notification,").split("%notify-"+av.toUpperCase()+"%").join(",ignore_notification,")
 						//else { out_format = out_format.split("%NOTIFY-"+av+"%").join(",invalid_notification,").split("%NOTIFY-"+av.toUpperCase()+"%").join(",invalid_notification,").split("%notify-"+av+"%").join(",invalid_notification,").split("%notify-"+av.toUpperCase()+"%").join(",invalid_notification,") }
 					} }
+					out_format = out_format.replace(/%SOUNDID-\d+%/gi, ",ignore_sound,");
 				}
-				for (let lvl = 0; lvl <= 9; lvl++) {
+				for (let lvl = 0; lvl <= 15; lvl++) {
 					out_format = out_format.split("%TIER-"+lvl+"%").join(",ignore_TIER-"+lvl+",")
 				}
 				if (settings.version == 0) {
@@ -863,9 +932,9 @@ function parseFile(file,num) {
 	var description_active = false;
 	if (output_total.includes("{") == true && output_total.includes("}") == true) { if (output_total.indexOf("{") < output_total.lastIndexOf("}")) { description_active = true } }
 
-	var out_format = output_total.split(",").join("‾").split(" ").join(", ,").split("%CONTINUE%").join(",misc_CONTINUE,").split("%NAME%").join(",ref_NAME,").split("%WHITE%").join(",color_WHITE,").split("%GRAY%").join(",color_GRAY,").split("%BLUE%").join(",color_BLUE,").split("%YELLOW%").join(",color_YELLOW,").split("%GOLD%").join(",color_GOLD,").split("%GREEN%").join(",color_GREEN,").split("%BLACK%").join(",color_BLACK,").split("%TAN%").join(",color_TAN,").split("%PURPLE%").join(",color_PURPLE,").split("%ORANGE%").join(",color_ORANGE,").split("%RED%").join(",color_RED,").split("%ILVL%").join(",ref_ILVL,").split("%SOCKETS%").join(",ref_SOCK,").split("%PRICE%").join(",ref_PRICE,").split("%RUNENUM%").join(",ref_RUNE,").split("%RUNENAME%").join(",ref_RUNENAME,").split("%GEMLEVEL%").join(",ref_GLEVEL,").split("%GEMTYPE%").join(",ref_GTYPE,").split("%CODE%").join(",ref_CODE,").split("\t").join(",\t,").split("{").join(",{,").split("}").join(",},").split("‗").join(",‗,");
+	var out_format = output_total.split(",").join("‾").split(" ").join(", ,").split("%CONTINUE%").join(",misc_CONTINUE,").split("%NAME%").join(",ref_NAME,").split("%BASENAME%").join(",ref_BASENAME,").split("%WHITE%").join(",color_WHITE,").split("%GRAY%").join(",color_GRAY,").split("%BLUE%").join(",color_BLUE,").split("%YELLOW%").join(",color_YELLOW,").split("%GOLD%").join(",color_GOLD,").split("%GREEN%").join(",color_GREEN,").split("%BLACK%").join(",color_BLACK,").split("%TAN%").join(",color_TAN,").split("%PURPLE%").join(",color_PURPLE,").split("%ORANGE%").join(",color_ORANGE,").split("%RED%").join(",color_RED,").split("%ILVL%").join(",ref_ILVL,").split("%SOCKETS%").join(",ref_SOCK,").split("%PRICE%").join(",ref_PRICE,").split("%RUNENUM%").join(",ref_RUNE,").split("%RUNENAME%").join(",ref_RUNENAME,").split("%GEMLEVEL%").join(",ref_GLEVEL,").split("%GEMTYPE%").join(",ref_GTYPE,").split("%CODE%").join(",ref_CODE,").split("\t").join(",\t,").split("{").join(",{,").split("}").join(",},").split("‗").join(",‗,");
 	if (settings.version == 1) { out_format = out_format.split("%DARK_GREEN%").join(",color_DGREEN,").split("%QTY%").join(",ref_QUANTITY,").split("%RANGE%").join(",ref_range,").split("%WPNSPD%").join(",ref_baseSpeed,").split("%ALVL%").join(",ref_ALVL,").split("%NL%").join(",misc_NL,").split("%CL%").join(",misc_NL,").split("%MAP%").join(",ignore_MAP,").split("%NOTIFY-DEAD%").join(",ignore_NOTIFY-DEAD,").split("%LVLREQ%").join(",ref_reqlevel,").split("%CRAFTALVL%").join(",ref_CRAFTALVL,") }
-	if (settings.version == 1) { out_format = out_format.split("%LIGHT_GRAY%").join(",color_GRAY,").split("%CORAL%").join(",color_GRAY,").split("%SAGE%").join(",color_GRAY,").split("%TEAL%").join(",color_GRAY,") }
+	if (settings.version == 1) { out_format = out_format.split("%LIGHT_GRAY%").join(",color_LIGHT_GRAY,").split("%CORAL%").join(",color_CORAL,").split("%SAGE%").join(",color_SAGE,").split("%TEAL%").join(",color_TEAL,") }
 	if (settings.version == 1) {
 		var notifs = ["%PX-","%DOT-","%MAP-","%BORDER-"];
 		for (n in notifs) {
@@ -883,8 +952,9 @@ function parseFile(file,num) {
 			var av = a.toString(16);
 			out_format = out_format.split("%NOTIFY-"+av+"%").join(",ignore_notification,").split("%NOTIFY-"+av.toUpperCase()+"%").join(",ignore_notification,").split("%notify-"+av+"%").join(",ignore_notification,").split("%notify-"+av.toUpperCase()+"%").join(",ignore_notification,")
 		} }
+		out_format = out_format.replace(/%SOUNDID-\d+%/gi, ",ignore_sound,");
 	}
-	for (let lvl = 0; lvl <= 9; lvl++) {
+	for (let lvl = 0; lvl <= 15; lvl++) {
 		out_format = out_format.split("%TIER-"+lvl+"%").join(",ignore_TIER-"+lvl+",")
 	}
 	if (settings.version == 0) {
@@ -938,6 +1008,7 @@ function parseFile(file,num) {
 		} else if (key == "ref") {
 			if (o == "ref_CLVL") { temp = character.CLVL }
 			else if (o == "ref_NAME") { blank = true }
+		else if (o == "ref_BASENAME") { temp = (typeof(itemToCompare.base) != 'undefined') ? itemToCompare.base : itemToCompare.NAME }
 			else if (settings.version == 1 && o == "ref_RUNENAME" && itemToCompare.RUNE > 0) { color = colors["ORANGE"]; temp = itemToCompare.name.split(" ")[0]; }	// TODO: why isn't itemToCompare.RUNENAME setup by this point? (for stacked runes)
 			else if (o == "ref_GLEVEL") {
 				if (itemToCompare.type == "gem") {
