@@ -2041,6 +2041,8 @@ function setPrice(val) {
 	if (val > max) { val = max }
 	document.getElementById("price").value = val
 	itemToCompare.PRICE = val
+	itemToCompare.BUYPRICE = val
+	itemToCompare.SELLPRICE = val
 	simulate()
 }
 
