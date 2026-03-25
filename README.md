@@ -17,23 +17,7 @@ https://equa1itype4ce.github.io/filterbird/index.html?v=PD2&fromweb=https%3A%2F%
 ```
 When a URL is provided, FilterBird will fetch the filter text from that URL and load it automatically. If the fetch fails, it falls back to the empty editor. Both modes set the page background to black and show the filter input.
 
-**Known Issues**:
-* Nothing special is done to display item notifications or minimap icons
-* All PD2 items use the same attributes as those in the PoD version (with the exception of PD2-specific equipment and pointmod attribute names)
-* PD2-specific equipment items and runeword options aren't hidden if the PoD version is selected (and vice versa)
-* Unique and set items cannot have their attributes customized
-* Crafted items don't have predetermined affixes
-* Wirt's Leg and quest weapons cannot be customized
-* Item condition issues:
-  * "CHSK" codes for skill charges and "OS" codes for oskills are unimplemented
-  * PRICE is not updated automatically
-  * Unimplemented PoD-specific conditions: AREALVL (may be others due to poor documentation, please report them)
-  * Unimplemented PD2-specific conditions: PREFIX, SUFFIX, MAPID
-  * STAT360 (item corruption) is only partially implemented - it checks whether a corruption exists, but not which corruption
-  * There may be some numbered "STAT" codes which aren't implemented - please report them
-* Many PD2 changes after s6 have not been implemented, or have only been partially implemented
-
-**Reporting**: Please Message Equa1ity in discord with issues
+**Reporting**: Found a bug or missing feature? [Open an issue on GitHub](https://github.com/Equa1ityPe4ce/filterbird/issues/new) and we'll take a look.
 
 **Credits**
 * Original Creator: BetweenWalls [REPO](https://github.com/BetweenWalls/filterbird)
