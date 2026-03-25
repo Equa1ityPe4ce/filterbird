@@ -1972,8 +1972,7 @@ function setPD2Codes() {
 	}
 	if (settings.version == 1) {
 		document.getElementById("character_class").style.display = "inline-table"
-		document.getElementById("character_shop").style.display = "inline-table"
-		document.getElementById("character_equipped").style.display = "inline-table"
+		document.getElementById("character_location").style.display = "inline"
 		document.getElementById("character_gold").style.display = "none"
 		if (selected_group_index < 9) { document.getElementById("select_price").style.display = "block" }	// shows price for all equipment groups (excludes "charm", "socketable", "miscellaneous")
 		if (selected_group_index > 9) {
@@ -1997,8 +1996,7 @@ function setPD2Codes() {
 		// TODO: Reset list of pointmods when changing between versions (can currently be done manually by changing the basic item info)
 	} else {
 		document.getElementById("character_class").style.display = "none"
-		document.getElementById("character_shop").style.display = "none"
-		document.getElementById("character_equipped").style.display = "none"
+		document.getElementById("character_location").style.display = "none"
 		document.getElementById("character_gold").style.display = "inline-table"
 		if (selected_group_index < 9) { document.getElementById("select_price").style.display = "block" }	// shows price for all equipment groups (excludes "charm", "socketable", "miscellaneous")
 		if (selected_group_index > 9) {
@@ -2041,6 +2039,8 @@ function setPrice(val) {
 	if (val > max) { val = max }
 	document.getElementById("price").value = val
 	itemToCompare.PRICE = val
+	itemToCompare.BUYPRICE = val
+	itemToCompare.SELLPRICE = val
 	simulate()
 }
 

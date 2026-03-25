@@ -56,8 +56,14 @@
 					<div style="display:inline"><label class="label">Difficulty: </label><select id="dropdown_difficulty" class="new-dropdown" onChange="setDifficulty(this.selectedIndex)">
 						<option class="gray-all">Normal</option><option class="gray-all">Nightmare</option><option class="gray-all">Hell</option><option class="gray-all" selected>Auto (ilvl-based)</option>
 					</select></div>
-					<div id="character_shop" style="display:inline"><label class="label" for="shop">&nbsp;Shop </label><input id="shop" type="checkbox" name="shop" onchange="setShop(this.checked)"></div>
-					<div id="character_equipped" style="display:inline"><label class="label" for="equipped">&nbsp;Equipped </label><input id="equipped" type="checkbox" name="equipped" onchange="setEquipped(this.checked)"></div>
+					<div id="character_location" style="display:inline"><label class="label">&nbsp;State:</label>
+						<input type="radio" id="loc_none" name="location" value="NONE" checked onchange="setLocation(this.value)" style="display:none"><label for="loc_none" style="display:none">None</label>
+						<input type="radio" id="loc_shop" name="location" value="SHOP" onchange="setLocation(this.value)"><label class="label" for="loc_shop">Shop</label>
+						<input type="radio" id="loc_equipped" name="location" value="EQUIPPED" onchange="setLocation(this.value)"><label class="label" for="loc_equipped">Equipped</label>
+						<input type="radio" id="loc_stash" name="location" value="STASH" onchange="setLocation(this.value)"><label class="label" for="loc_stash">Stash</label>
+						<input type="radio" id="loc_merc" name="location" value="MERC" onchange="setLocation(this.value)"><label class="label" for="loc_merc">Merc</label>
+						<input type="radio" id="loc_ground" name="location" value="GROUND" onchange="setLocation(this.value)"><label class="label" for="loc_ground">Ground</label>
+					</div>
 				</div>
 				<div id="character_gold" style="display:inline-table;">
 					<div><label class="label" for="gold_stash">Gold in Stash: </label><input id="gold_stash" name="gold_stash" class="num-input" style="max-width:72px;" type="number" min="0" max="2500000" value="199000" onchange="setGoldStash(this.value)"></div>

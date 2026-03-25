@@ -1,6 +1,6 @@
 
 var itemToCompare = {name:"5000 Gold",NAME:"5000 Gold",CODE:"GOLD",GOLD:5000,ID:true,always_id:true,rarity:"regular"};
-var character = {CLVL:90,CHARSTAT14:199000,CHARSTAT15:199000,DIFFICULTY:2,ILVL:85,CHARSTAT70:0,CHARSTAT13:1000,AMAZON:true,ASSASSIN:false,BARBARIAN:false,DRUID:false,NECROMANCER:false,PALADIN:false,SORCERESS:false,SHOP:false,EQUIPPED:false,GROUND:false,INVENTORY:false,FILTLVL:1};
+var character = {CLVL:90,CHARSTAT14:199000,CHARSTAT15:199000,DIFFICULTY:2,ILVL:85,CHARSTAT70:0,CHARSTAT13:1000,AMAZON:true,ASSASSIN:false,BARBARIAN:false,DRUID:false,NECROMANCER:false,PALADIN:false,SORCERESS:false,SHOP:false,EQUIPPED:false,GROUND:false,INVENTORY:false,STASH:false,MERC:false,FILTLVL:1};
 var item_settings = {ID:false, ILVL_return:85};
 var settings = {auto_difficulty:true,version:0,validation:1,auto_simulate:1,max_errors:50,error_limit:1,num_filters:2,background:0,nowrap:true,nowrap_width:745};
 var notices = {duplicates:0,pd2_conditions:0,pod_conditions:0,colors:0,encoding:0};
@@ -245,6 +245,8 @@ function setItem(value) {
 			itemToCompare.NAME = value.split(" (")[0].split(" ­ ")[0]
 			itemToCompare.ILVL = 85
 			itemToCompare.PRICE = Number(document.getElementById("price").value)
+			itemToCompare.BUYPRICE = itemToCompare.PRICE
+			itemToCompare.SELLPRICE = itemToCompare.PRICE
 			itemToCompare.ID = true;
 			if (typeof(itemToCompare.base) != 'undefined') {
 				var base = bases[itemToCompare.base.split(" ").join("_").split("-").join("_").split("s'").join("s").split("'s").join("s")];
@@ -585,6 +587,9 @@ function parseFile(file,num) {
 			}
 			if (index_end > index+12 && rule.substring(0,index).length == 0) {
 				conditions = conditions.split(",").join("‚")	// Refactors "MULTI" conditions since they use commas (uses the "Single low-9 quotation mark" instead of "comma")
+				// Expand range operator ~: !CODE~min-max → (CODE<min OR CODE>max), CODE~min-max → CODE>=min CODE<=max
+				conditions = conditions.replace(/!(\w+)~(-?\d+)-(-?\d+)/g, '($1<$2 OR $1>$3)');
+				conditions = conditions.replace(/(\w+)~(-?\d+)-(-?\d+)/g, '$1>=$2 $1<=$3');
 				var match_override = false;
 				var cond_format = conditions.split("  ").join(" ").split("(").join(",(,").split(")").join(",),").split("!").join(",!,").split("<=").join(",≤,").split(">=").join(",≥,").split(">").join(",>,").split("<").join(",<,").split("=").join(",=,").split(" AND ").join(" ").split(" OR ").join(",|,").split("+").join(",+,").split(" ").join(",&,").split(",,").join(",");
 				var cond_list = cond_format.split(",");
@@ -598,8 +603,7 @@ function parseFile(file,num) {
 				for (cond in cond_list) {
 					cond = Number(cond)
 					var c = cond_list[cond];
-					// TODO: Check whether the "BETEEN" operator is present and reconfigure it to use multiple conditions with ">" and "<" (may need a different solution for PREFIX/SUFFIX/AUTOMOD)
-					var nonbool_conditions = ["GOLD","RUNE","GEMLEVEL","GEMTYPE","QTY","DEF","LVLREQ","PRICE","BUYPRICE","ALVL","CRAFTALVL","QLVL","ILVL","SOCK","ED","MAXDUR","AR","RES","FRES","CRES","LRES","PRES","FRW","IAS","FCR","FHR","FBR","MINDMG","MAXDMG","STR","DEX","LIFE","MANA","MFIND","GFIND","MAEK","DTM","REPLIFE","REPAIR","ARPER","FOOLS","ALLSK"];
+					var nonbool_conditions = ["GOLD","RUNE","GEMLEVEL","GEMTYPE","QTY","DEF","LVLREQ","PRICE","BUYPRICE","SELLPRICE","ALVL","CRAFTALVL","QLVL","ILVL","SOCK","ED","MAXDUR","AR","RES","FRES","CRES","LRES","PRES","FRW","IAS","FCR","FHR","FBR","MINDMG","MAXDMG","STR","DEX","LIFE","MANA","MFIND","GFIND","MAEK","DTM","REPLIFE","REPAIR","ARPER","FOOLS","ALLSK"];
 					if (c == "GEM") { c = "GEMLEVEL" }
 					if (c == "RUNENUM" || c == "RUNENAME") { c = "RUNE" }
 					var number = false;
@@ -669,7 +673,7 @@ function parseFile(file,num) {
 						else if (~~Number(itemToCompare[c]) < 0) { value_is_negative = true }
 						// add to formula
 						if (c_falsify == true) { formula += "false " }
-						else if (c == "CLVL" || c == "DIFFICULTY" || c.substr(0,8) == "CHARSTAT" || c == "AMAZON" || c == "ASSASSIN" || c == "BARBARIAN" || c == "DRUID" || c == "NECROMANCER" || c == "PALADIN" || c == "SORCERESS" || c == "SHOP" || c == "EQUIPPED" || c == "GROUND" || c == "INVENTORY" || c == "FILTLVL") {
+						else if (c == "CLVL" || c == "DIFFICULTY" || c.substr(0,8) == "CHARSTAT" || c == "AMAZON" || c == "ASSASSIN" || c == "BARBARIAN" || c == "DRUID" || c == "NECROMANCER" || c == "PALADIN" || c == "SORCERESS" || c == "SHOP" || c == "EQUIPPED" || c == "GROUND" || c == "INVENTORY" || c == "STASH" || c == "MERC" || c == "FILTLVL") {
 							if (value_is_negative == true) { formula += (2000000000+Number(character[c]))+" " }			// converts negative values to their equivalent 'unsigned' value
 							else { formula += character[c]+" " }
 						}
@@ -740,7 +744,7 @@ function parseFile(file,num) {
 				out_format = out_format.split("%DGREEN%").join(",invalid_DGREEN,").split("%CLVL%").join(",invalid_CLVL,")
 				out_format = out_format.split("%DARK_GREEN%").join(",color_DGREEN,").split("%QTY%").join(",ref_QUANTITY,").split("%RANGE%").join(",ref_range,").split("%WPNSPD%").join(",ref_baseSpeed,").split("%ALVL%").join(",ref_ALVL,").split("%NL%").join(",misc_NL,").split("%MAP%").join(",ignore_MAP,").split("%NOTIFY-DEAD%").join(",ignore_NOTIFY-DEAD,").split("%LVLREQ%").join(",ref_reqlevel,").split("%CRAFTALVL%").join(",ref_CRAFTALVL,")
 				out_format = out_format.split("%LIGHT_GRAY%").join(",color_LIGHT_GRAY,").split("%CORAL%").join(",color_CORAL,").split("%SAGE%").join(",color_SAGE,").split("%TEAL%").join(",color_TEAL,")
-				out_format = out_format.split("%CLASS%").join(",invalid_CLASS,").split("%CL%").join(",misc_NL,").split("%QUAL%").join(",invalid_QUAL,").split("%QT%").join(",invalid_QT,").split("%BASENAME%").join(",ref_BASENAME,")
+				out_format = out_format.split("%CLASS%").join(",invalid_CLASS,").split("%CL%").join(",misc_NL,").split("%QUAL%").join(",invalid_QUAL,").split("%QT%").join(",invalid_QT,").split("%BASENAME%").join(",ref_BASENAME,").split("%LBRACE%").join(",misc_LBRACE,").split("%RBRACE%").join(",misc_RBRACE,")
 				if (settings.version == 1) {
 					var notifs = ["%PX-","%DOT-","%MAP-","%BORDER-"];
 					for (n in notifs) {									// TODO: implement more efficient way to split notification keywords
@@ -933,6 +937,7 @@ function parseFile(file,num) {
 	if (output_total.includes("{") == true && output_total.includes("}") == true) { if (output_total.indexOf("{") < output_total.lastIndexOf("}")) { description_active = true } }
 
 	var out_format = output_total.split(",").join("‾").split(" ").join(", ,").split("%CONTINUE%").join(",misc_CONTINUE,").split("%NAME%").join(",ref_NAME,").split("%BASENAME%").join(",ref_BASENAME,").split("%WHITE%").join(",color_WHITE,").split("%GRAY%").join(",color_GRAY,").split("%BLUE%").join(",color_BLUE,").split("%YELLOW%").join(",color_YELLOW,").split("%GOLD%").join(",color_GOLD,").split("%GREEN%").join(",color_GREEN,").split("%BLACK%").join(",color_BLACK,").split("%TAN%").join(",color_TAN,").split("%PURPLE%").join(",color_PURPLE,").split("%ORANGE%").join(",color_ORANGE,").split("%RED%").join(",color_RED,").split("%ILVL%").join(",ref_ILVL,").split("%SOCKETS%").join(",ref_SOCK,").split("%PRICE%").join(",ref_PRICE,").split("%RUNENUM%").join(",ref_RUNE,").split("%RUNENAME%").join(",ref_RUNENAME,").split("%GEMLEVEL%").join(",ref_GLEVEL,").split("%GEMTYPE%").join(",ref_GTYPE,").split("%CODE%").join(",ref_CODE,").split("\t").join(",\t,").split("{").join(",{,").split("}").join(",},").split("‗").join(",‗,");
+	out_format = out_format.split("%LBRACE%").join(",misc_LBRACE,").split("%RBRACE%").join(",misc_RBRACE,")
 	if (settings.version == 1) { out_format = out_format.split("%DARK_GREEN%").join(",color_DGREEN,").split("%QTY%").join(",ref_QUANTITY,").split("%RANGE%").join(",ref_range,").split("%WPNSPD%").join(",ref_baseSpeed,").split("%ALVL%").join(",ref_ALVL,").split("%NL%").join(",misc_NL,").split("%CL%").join(",misc_NL,").split("%MAP%").join(",ignore_MAP,").split("%NOTIFY-DEAD%").join(",ignore_NOTIFY-DEAD,").split("%LVLREQ%").join(",ref_reqlevel,").split("%CRAFTALVL%").join(",ref_CRAFTALVL,") }
 	if (settings.version == 1) { out_format = out_format.split("%LIGHT_GRAY%").join(",color_LIGHT_GRAY,").split("%CORAL%").join(",color_CORAL,").split("%SAGE%").join(",color_SAGE,").split("%TEAL%").join(",color_TEAL,") }
 	if (settings.version == 1) {
@@ -999,7 +1004,9 @@ function parseFile(file,num) {
 		var key = o.split("_")[0];
 		var blank = false;
 
-		if (key == "misc" || key == "ignore") {
+		if (o == "misc_LBRACE") { temp = "{" }
+		else if (o == "misc_RBRACE") { temp = "}" }
+		else if (key == "misc" || key == "ignore") {
 			blank = true
 		} else if (key == "color") {
 			blank = true
@@ -1473,24 +1480,14 @@ function setGoldChar(value) {
 	character.CHARSTAT14 = Number(value)
 	simulate()
 }
-// setShop - handles 'shop' checkbox
+// setLocation - handles location radio group (None/Shop/Equipped/Stash/Merc/Ground)
 // ---------------------------------
-function setShop(checked) {
-	character.SHOP = checked
-	if (checked == true) { if (character.EQUIPPED == true) {
-		document.getElementById("equipped").checked = false;
-		character.EQUIPPED = false;
-	} }
-	simulate()
-}
-// setEquipped - handles 'equipped' checkbox
-// ---------------------------------
-function setEquipped(checked) {
-	character.EQUIPPED = checked
-	if (checked == true) { if (character.SHOP == true) {
-		document.getElementById("shop").checked = false;
-		character.SHOP = false;
-	} }
+function setLocation(value) {
+	character.SHOP     = (value == "SHOP")
+	character.EQUIPPED = (value == "EQUIPPED")
+	character.STASH    = (value == "STASH")
+	character.MERC     = (value == "MERC")
+	character.GROUND   = (value == "GROUND")
 	simulate()
 }
 // setFilterLevel -
