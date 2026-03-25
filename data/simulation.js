@@ -1480,36 +1480,14 @@ function setGoldChar(value) {
 	character.CHARSTAT14 = Number(value)
 	simulate()
 }
-// setShop - handles 'shop' checkbox
+// setLocation - handles location radio group (None/Shop/Equipped/Stash/Merc/Ground)
 // ---------------------------------
-function setShop(checked) {
-	character.SHOP = checked
-	if (checked == true) { if (character.EQUIPPED == true) {
-		document.getElementById("equipped").checked = false;
-		character.EQUIPPED = false;
-	} }
-	simulate()
-}
-// setEquipped - handles 'equipped' checkbox
-// ---------------------------------
-function setEquipped(checked) {
-	character.EQUIPPED = checked
-	if (checked == true) { if (character.SHOP == true) {
-		document.getElementById("shop").checked = false;
-		character.SHOP = false;
-	} }
-	simulate()
-}
-// setStash - handles 'stash' checkbox
-// ---------------------------------
-function setStash(checked) {
-	character.STASH = checked
-	simulate()
-}
-// setMerc - handles 'merc' checkbox
-// ---------------------------------
-function setMerc(checked) {
-	character.MERC = checked
+function setLocation(value) {
+	character.SHOP     = (value == "SHOP")
+	character.EQUIPPED = (value == "EQUIPPED")
+	character.STASH    = (value == "STASH")
+	character.MERC     = (value == "MERC")
+	character.GROUND   = (value == "GROUND")
 	simulate()
 }
 // setFilterLevel -
