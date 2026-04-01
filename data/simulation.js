@@ -663,7 +663,23 @@ function parseFile(file,num) {
 							if (typeof(character[c]) == 'undefined') { character[c] = 0 }
 							else if (~~Number(character[c]) < 0) { value_is_negative = true }
 						}
-						else if (typeof(itemToCompare[c]) == 'undefined' && (c.substr(0,4) == "STAT" || c.substr(0,5) == "MULTI" || c.substr(0,5) == "TABSK" || c.substr(0,4) == "CLSK" || c.substr(0,2) == "SK" || c.substr(0,4) == "CHSK" || c.substr(0,2) == "OS")) { itemToCompare[c] = 0 }
+						else if (typeof(itemToCompare[c]) == 'undefined' && c.substr(0,5) == "MULTI" && c.includes("‚")) {
+							var mParts = c.slice(5).split("‚");
+							var mStat = Number(mParts[0]);
+							var mLayer = Number(mParts[1]);
+							var mappedKey = null;
+							if (mStat == 107) { mappedKey = "SK" + mLayer; }
+							else if (mStat == 97) { mappedKey = "TABSK" + mLayer; }
+							else if (mStat == 83) { mappedKey = "CLSK" + mLayer; }
+							else if (mStat == 188) { mappedKey = "CHSK" + mLayer; }
+							else if (mStat == 126) { mappedKey = "OS" + mLayer; }
+							if (mappedKey != null && typeof(itemToCompare[mappedKey]) != 'undefined') {
+								itemToCompare[c] = itemToCompare[mappedKey];
+							} else {
+								itemToCompare[c] = 0;
+							}
+						}
+						else if (typeof(itemToCompare[c]) == 'undefined' && (c.substr(0,4) == "STAT" || c.substr(0,5) == "TABSK" || c.substr(0,4) == "CLSK" || c.substr(0,2) == "SK" || c.substr(0,4) == "CHSK" || c.substr(0,2) == "OS")) { itemToCompare[c] = 0 }
 						else if (typeof(itemToCompare[c]) == 'undefined') {
 							for (let i = 0; i < nonbool_conditions.length; i++) {
 								if (c == nonbool_conditions[i]) { itemToCompare[c] = 0 }
