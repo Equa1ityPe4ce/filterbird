@@ -402,7 +402,7 @@ function computeNewFilterProperties(item) {
 	item.BASEMAXTHROW = ~~item.throw_max
 	// BASEMINKICK, BASEMAXKICK - boot kick damage
 	item.BASEMINKICK = ~~item.kick_min
-	item.BASEMAXKICK = ~~item.kick_min ? ~~item.kick_min + 3 : 0  // kick_max is typically kick_min + 3 in D2
+	item.BASEMAXKICK = ~~item.kick_max
 
 	// UPDEX, UPSTR, UPLVL - stat requirements of the upgraded version
 	computeUpgradeStats(item)
@@ -411,7 +411,12 @@ function computeNewFilterProperties(item) {
 // getItemDimensions - returns {w, h} for the item's inventory dimensions
 // ---------------------------------
 function getItemDimensions(item) {
-	// Check type/group-based dimensions
+	// Use per-item dimensions from bases data if available
+	if (item.invheight) {
+		return {w: item.invwidth || 2, h: item.invheight}
+	}
+
+	// Fall back to type/group-based dimensions
 	var type = item.type || ""
 	var group = item.group || ""
 	var code = item.CODE || ""
@@ -453,7 +458,8 @@ function getItemDimensions(item) {
 	if (type == "belt") return {w:2, h:2}
 
 	// Weapon types
-	if (type == "dagger" || type == "claw" || type == "h2h") return {w:1, h:2}
+	if (type == "dagger") return {w:1, h:2}
+	if (type == "claw" || type == "h2h") return {w:1, h:3}
 	if (type == "wand" || type == "orb") return {w:1, h:2}
 	if (type == "throwing" || type == "thrown") return {w:1, h:2}
 
@@ -712,7 +718,7 @@ function parseFile(file,num) {
 	}
 
 	// evaluateFormula - evaluates a formula expression string for the current item
-	// Supports: +, -, *, /, ^, ==, !=, >=, <=, >, <, parentheses
+	// Supports: +, -, *, /, ^, ==, !=, >=, <=, >, <, unary +, unary -, !, parentheses
 	// Supports functions: if, and, or, min, max, floor, ceil, round, mod, average, sqrt, pow, count, countif, ln, exp, xor, abs
 	// Supports variables: STAT<n>, CHARSTAT<n>, MULTI<stat>,<layer>, and any item property
 	function evaluateFormula(expr) {
@@ -746,7 +752,14 @@ function parseFile(file,num) {
 				continue;
 			}
 			// Operators
-			if (ch == '+') { tokens.push({type:'op', val:'+'}); i++; continue; }
+			if (ch == '+') {
+				// Unary plus: if previous token is not a number, closing paren, or variable
+				if (tokens.length == 0 || (tokens[tokens.length-1].type == 'op' && tokens[tokens.length-1].val != ')') || tokens[tokens.length-1].type == 'lparen' || tokens[tokens.length-1].type == 'comma') {
+					tokens.push({type:'op', val:'POS'});
+					i++; continue;
+				}
+				tokens.push({type:'op', val:'+'}); i++; continue;
+			}
 			if (ch == '-') {
 				// Unary minus: if previous token is not a number, closing paren, or variable
 				if (tokens.length == 0 || (tokens[tokens.length-1].type == 'op' && tokens[tokens.length-1].val != ')') || tokens[tokens.length-1].type == 'lparen' || tokens[tokens.length-1].type == 'comma') {
@@ -772,6 +785,7 @@ function parseFile(file,num) {
 			// Comparison operators
 			if (ch == '=' && i+1 < expr.length && expr[i+1] == '=') { tokens.push({type:'op', val:'=='}); i+=2; continue; }
 			if (ch == '!' && i+1 < expr.length && expr[i+1] == '=') { tokens.push({type:'op', val:'!='}); i+=2; continue; }
+			if (ch == '!') { tokens.push({type:'op', val:'NOT'}); i++; continue; }
 			if (ch == '>' && i+1 < expr.length && expr[i+1] == '=') { tokens.push({type:'op', val:'>='}); i+=2; continue; }
 			if (ch == '<' && i+1 < expr.length && expr[i+1] == '=') { tokens.push({type:'op', val:'<='}); i+=2; continue; }
 			if (ch == '>') { tokens.push({type:'op', val:'>'}); i++; continue; }
@@ -883,6 +897,15 @@ function parseFile(file,num) {
 			var val = parseUnary(tokens, pos);
 			return -val;
 		}
+		if (pos.i < tokens.length && tokens[pos.i].type == 'op' && tokens[pos.i].val == 'POS') {
+			pos.i++;
+			return parseUnary(tokens, pos);
+		}
+		if (pos.i < tokens.length && tokens[pos.i].type == 'op' && tokens[pos.i].val == 'NOT') {
+			pos.i++;
+			var val = parseUnary(tokens, pos);
+			return val ? 0 : 1;
+		}
 		return parseAtom(tokens, pos);
 	}
 
@@ -936,7 +959,7 @@ function parseFile(file,num) {
 			case 'LN': return (args.length > 0 && args[0] > 0) ? Math.log(args[0]) : 0;
 			case 'EXP': return (args.length > 0) ? Math.exp(args[0]) : 0;
 			case 'COUNT': { var c=0; for (var i=0;i<args.length;i++) { if (args[i]) c++; } return c; }
-			case 'COUNTIF': { var c=0; for (var i=0;i<args.length;i++) { if (args[i]) c++; } return c; }
+			case 'COUNTIF': { if (args.length < 2) return 0; var target=args[args.length-1]; var c=0; for (var i=0;i<args.length-1;i++) { if (args[i]==target) c++; } return c; }
 			default: return 0;
 		}
 	}
