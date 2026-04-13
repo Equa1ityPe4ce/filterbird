@@ -187,6 +187,66 @@ var runewords = {
 	Sorceress Orbs		+1-60 to Life or +1-80 to Mana
 */
 
+// Item inventory dimensions (width x height) by item type/group
+// Used for WIDTH, HEIGHT, AREA filter conditions
+var item_dimensions = {
+	// Armor - all helms are 2x2
+	helm:{w:2,h:2},
+	// Body armor is 2x3
+	body:{w:2,h:3},
+	// Shields are 2x2 (small) or 2x3 (large) or 2x4 (tower)
+	// Since shields vary, dimensions are stored per base item below
+	shield:{w:2,h:3},
+	// Gloves, boots, belts are 2x2
+	gloves:{w:2,h:2},
+	boots:{w:2,h:2},
+	belt:{w:2,h:2},
+	// Weapons vary widely - dimensions stored per base
+	// Misc items
+	ring:{w:1,h:1},
+	amulet:{w:1,h:1},
+	jewel:{w:1,h:1},
+	small_charm:{w:1,h:1},
+	large_charm:{w:1,h:2},
+	grand_charm:{w:1,h:3},
+	rune:{w:1,h:1},
+	gem:{w:1,h:1},
+	gold:{w:1,h:1},
+	key:{w:1,h:1},
+	arrows:{w:1,h:3},
+	bolts:{w:1,h:3},
+	scroll:{w:1,h:1},
+	potion:{w:1,h:1},
+	essence:{w:1,h:1},
+	organ:{w:1,h:1},
+	token:{w:1,h:1},
+	map:{w:1,h:1},
+	relic:{w:1,h:1},
+	// Weapons by type (common defaults)
+	axe_1h:{w:1,h:3},
+	axe_2h:{w:2,h:3},
+	mace_1h:{w:1,h:3},
+	mace_2h:{w:2,h:3},
+	hammer:{w:2,h:3},
+	sword_1h:{w:1,h:3},
+	sword_2h:{w:1,h:4},
+	dagger:{w:1,h:2},
+	throwing:{w:1,h:2},
+	javelin:{w:1,h:3},
+	spear:{w:2,h:4},
+	polearm:{w:2,h:4},
+	bow:{w:2,h:3},
+	crossbow:{w:2,h:3},
+	staff:{w:1,h:4},
+	wand:{w:1,h:2},
+	scepter:{w:1,h:3},
+	orb:{w:1,h:2},
+	claw:{w:1,h:3},
+	amazon_bow:{w:2,h:4},
+	amazon_javelin:{w:1,h:3},
+	amazon_spear:{w:2,h:4}
+};
+
 var bases = {	// Note: damage_vs_undead:50 is included for blunt weapons, but other automods are variable and so aren't included in bases[].
 	// helm
 	Cap:{qlvl:1,CODE:"cap",ARMOR:true,EQ1:true,group:"helm", type:"helm", base_defense:5, def_low:3, def_high:5, durability:12, max_sockets:2, upgrade:"War Hat", tier:1, nonmetal:1},
@@ -1620,7 +1680,17 @@ var all_codes = {
 	OS251:2,OS252:2,OS253:2,OS254:2,OS255:2,OS256:2,OS257:2,OS258:2,OS259:2,OS260:2,OS261:2,OS262:2,OS263:2,OS264:2,OS265:2,OS266:2,OS267:2,OS268:2,OS269:2,OS270:2,OS271:2,OS272:2,OS273:2,OS274:2,OS275:2,OS276:2,OS277:2,OS278:2,OS279:2,OS280:2,
 	OS357:2,OS364:2,OS367:2,OS369:2,OS371:2,OS381:2,OS383:2,OS366:2,OS374:2,OS376:2,OS378:2,OS370:2,
 	FILTERLVL:1,FILTLVL:3,
-	CHARSTAT14:3,CHARSTAT15:3,MAPTIER:2,SOCKETS:2,EDEF:2,EDAM:2,AUTOMOD:2,CLASS:2,CLUB:2,TMACE:2,HAMMER:2
+	CHARSTAT14:3,CHARSTAT15:3,MAPTIER:2,SOCKETS:2,EDEF:2,EDAM:2,AUTOMOD:2,CLASS:2,CLUB:2,TMACE:2,HAMMER:2,
+	WIDTH:2,HEIGHT:2,AREA:2,
+	MAXSOCKETS:2,
+	UPDEX:2,UPSTR:2,UPLVL:2,
+	MAXRES:2,
+	ALLATTRIB:2,
+	BASEBLOCK:2,
+	REQLVL:2,REQSTR:2,REQDEX:2,
+	BASEMINONEH:2,BASEMAXONEH:2,BASEMINTWOH:2,BASEMAXTWOH:2,
+	BASEMINSMITE:2,BASEMAXSMITE:2,BASEMINTHROW:2,BASEMAXTHROW:2,
+	BASEMINKICK:2,BASEMAXKICK:2
 };
 
 // TODO: Create list of mutually exclusive condition groups to expand syntax/error checking ...might be better to have a list of incompatible codes for all codes (except item codes, which could be handled separately) - there can only be 1 item code, and all codes are incompatible with any item code that is a subset of its' other incompatible codes (e.g. HELM is incompatible with SHIELD and all item codes that inherit SHIELD such as buc or kit)

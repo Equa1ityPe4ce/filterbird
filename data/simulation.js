@@ -336,6 +336,8 @@ function setItem(value) {
 			}
 			itemToCompare.ITEMSTAT31 = itemToCompare.DEF
 			itemToCompare.ITEMSTAT18 = itemToCompare.ITEMSTAT17
+			// Compute new filter properties (WIDTH, HEIGHT, AREA, etc.)
+			computeNewFilterProperties(itemToCompare)
 			// TODO: Validate ILVL
 		} } }
 		if (typeof(itemToCompare.RW) == 'undefined') { itemToCompare.RW = false }
@@ -347,6 +349,164 @@ function setItem(value) {
 	reloadWindow(0);
 }
 
+
+// computeNewFilterProperties - computes WIDTH, HEIGHT, AREA, MAXSOCKETS, upgrade stats,
+// MAXRES, ALLATTRIB, BASEBLOCK, REQLVL, REQSTR, REQDEX, and base damage properties
+// ---------------------------------
+function computeNewFilterProperties(item) {
+	// WIDTH, HEIGHT, AREA - inventory dimensions
+	var dims = getItemDimensions(item)
+	item.WIDTH = dims.w
+	item.HEIGHT = dims.h
+	item.AREA = dims.w * dims.h
+
+	// MAXSOCKETS - maximum sockets the item base can have
+	item.MAXSOCKETS = ~~item.max_sockets
+
+	// BASEBLOCK - base block chance from shield
+	item.BASEBLOCK = ~~item.block
+
+	// REQLVL, REQSTR, REQDEX - current requirements (may differ from LVLREQ for magic+ items)
+	item.REQLVL = ~~item.req_level
+	item.REQSTR = ~~item.REQ_STR || ~~item.req_strength
+	item.REQDEX = ~~item.REQ_DEX || ~~item.req_dexterity
+
+	// MAXRES - total max resistances (fire + cold + lightning + poison)
+	var maxres = 0
+	maxres += ~~item.fRes_max + ~~item.cRes_max + ~~item.lRes_max + ~~item.pRes_max
+	item.MAXRES = maxres
+
+	// ALLATTRIB - all attributes (strength + dexterity + vitality + energy combined, or explicit all_attributes)
+	var allattrib = ~~item.all_attributes
+	item.ALLATTRIB = allattrib
+
+	// Base damage properties
+	// BASEMINONEH, BASEMAXONEH - 1-handed base damage
+	item.BASEMINONEH = ~~item.base_damage_min
+	item.BASEMAXONEH = ~~item.base_damage_max
+	// BASEMINTWOH, BASEMAXTWOH - 2-handed base damage (alternate damage for 2h weapons)
+	item.BASEMINTWOH = ~~item.base_min_alternate
+	item.BASEMAXTWOH = ~~item.base_max_alternate
+	// If item is purely 2-handed (no 1h stats), swap
+	if (item.twoHands == 1 && item.base_min_alternate == undefined) {
+		item.BASEMINTWOH = item.BASEMINONEH
+		item.BASEMAXTWOH = item.BASEMAXONEH
+		item.BASEMINONEH = 0
+		item.BASEMAXONEH = 0
+	}
+	// BASEMINSMITE, BASEMAXSMITE - shield smite damage
+	item.BASEMINSMITE = ~~item.smite_min
+	item.BASEMAXSMITE = ~~item.smite_max
+	// BASEMINTHROW, BASEMAXTHROW - throw damage
+	item.BASEMINTHROW = ~~item.throw_min
+	item.BASEMAXTHROW = ~~item.throw_max
+	// BASEMINKICK, BASEMAXKICK - boot kick damage
+	item.BASEMINKICK = ~~item.kick_min
+	item.BASEMAXKICK = ~~item.kick_min ? ~~item.kick_min + 3 : 0  // kick_max is typically kick_min + 3 in D2
+
+	// UPDEX, UPSTR, UPLVL - stat requirements of the upgraded version
+	computeUpgradeStats(item)
+}
+
+// getItemDimensions - returns {w, h} for the item's inventory dimensions
+// ---------------------------------
+function getItemDimensions(item) {
+	// Check type/group-based dimensions
+	var type = item.type || ""
+	var group = item.group || ""
+	var code = item.CODE || ""
+
+	// Charms
+	if (code == "cm1") return {w:1, h:1}
+	if (code == "cm2") return {w:1, h:2}
+	if (code == "cm3" || code == "cm4") return {w:1, h:3}
+
+	// Rings, amulets, jewels
+	if (code == "rin") return {w:1, h:1}
+	if (code == "amu") return {w:1, h:1}
+	if (code == "jew") return {w:1, h:1}
+
+	// Gold
+	if (code == "GOLD") return {w:1, h:1}
+
+	// Runes and gems
+	if (type == "rune" || type == "gem") return {w:1, h:1}
+
+	// Potions, scrolls, keys
+	if (type == "potion" || type == "scroll" || type == "key") return {w:1, h:1}
+
+	// Maps and relics
+	if (type == "map" || type == "relic") return {w:1, h:1}
+
+	// Arrows and bolts
+	if (code == "aq2" || code == "cq2" || code == "aqv" || code == "cqv") return {w:1, h:3}
+
+	// Essences, tokens, organs
+	if (type == "essence" || type == "token" || type == "organ") return {w:1, h:1}
+
+	// Armor types
+	if (type == "helm") return {w:2, h:2}
+	if (type == "body" || group == "body") return {w:2, h:3}
+	if (type == "shield") return {w:2, h:3}
+	if (type == "gloves") return {w:2, h:2}
+	if (type == "boots") return {w:2, h:2}
+	if (type == "belt") return {w:2, h:2}
+
+	// Weapon types
+	if (type == "dagger" || type == "claw" || type == "h2h") return {w:1, h:2}
+	if (type == "wand" || type == "orb") return {w:1, h:2}
+	if (type == "throwing" || type == "thrown") return {w:1, h:2}
+
+	// Axes - 1h vs 2h
+	if (type == "axe") {
+		if (item.twoHands == 1) return {w:2, h:3}
+		return {w:1, h:3}
+	}
+	// Maces
+	if (type == "mace" || type == "club" || type == "hammer") {
+		if (item.twoHands == 1) return {w:2, h:3}
+		return {w:1, h:3}
+	}
+	// Swords
+	if (type == "sword") {
+		if (item.twoHands == 1) return {w:1, h:4}
+		return {w:1, h:3}
+	}
+	// Scepters
+	if (type == "scepter") return {w:1, h:3}
+	// Staves
+	if (type == "staff") return {w:1, h:4}
+	// Spears and polearms
+	if (type == "spear" || type == "polearm") return {w:2, h:4}
+	// Javelins
+	if (type == "javelin") return {w:1, h:3}
+	// Bows and crossbows
+	if (type == "bow" || type == "crossbow" || type == "xbow") return {w:2, h:3}
+
+	// Amazon weapons
+	if (type == "amazon bow" || type == "amazon spear") return {w:2, h:4}
+	if (type == "amazon javelin") return {w:1, h:3}
+
+	// Default
+	return {w:1, h:1}
+}
+
+// computeUpgradeStats - computes UPDEX, UPSTR, UPLVL for upgraded item version
+// ---------------------------------
+function computeUpgradeStats(item) {
+	item.UPDEX = 0
+	item.UPSTR = 0
+	item.UPLVL = 0
+	if (typeof(item.upgrade) != 'undefined' && item.upgrade != "") {
+		var upgradeName = item.upgrade.split(" ").join("_").split("-").join("_").split("s'").join("s").split("'s").join("s")
+		if (typeof(bases[upgradeName]) != 'undefined') {
+			var up = bases[upgradeName]
+			item.UPDEX = ~~up.req_dexterity
+			item.UPSTR = ~~up.req_strength
+			item.UPLVL = ~~up.req_level
+		}
+	}
+}
 
 function simulate(manual) {
 	reloadWindow(1);
@@ -536,6 +696,327 @@ function parseFile(file,num) {
 		for (var ali = 0; ali < lines_with_tabs.length; ali++) { lines_with_tabs[ali] = applyAliasesToLine(lines_with_tabs[ali]); }
 	}
 
+	// Gather explicit formulas: Formula[KEY]: expression
+	var formulas = {};
+	for (var fi = 0; fi < lines.length; fi++) {
+		var fRule = lines[fi].split("/")[0];
+		var fIndex = fRule.indexOf("Formula[");
+		if (fIndex >= 0 && fRule.substring(0, fIndex).trim() === "") {
+			var fEnd = fRule.indexOf("]:", fIndex);
+			if (fEnd >= 0) {
+				var fKey = fRule.substring(fIndex + 8, fEnd).trim();
+				var fExpr = fRule.substring(fEnd + 2).trim();
+				if (fKey.length > 0) { formulas[fKey.toUpperCase()] = fExpr; }
+			}
+		}
+	}
+
+	// evaluateFormula - evaluates a formula expression string for the current item
+	// Supports: +, -, *, /, ^, ==, !=, >=, <=, >, <, parentheses
+	// Supports functions: if, and, or, min, max, floor, ceil, round, mod, average, sqrt, pow, count, countif, ln, exp, xor, abs
+	// Supports variables: STAT<n>, CHARSTAT<n>, MULTI<stat>,<layer>, and any item property
+	function evaluateFormula(expr) {
+		try {
+			// Tokenize the expression
+			var tokens = tokenizeFormula(expr);
+			if (tokens === null) return null;
+			var pos = {i: 0};
+			var result = parseExpression(tokens, pos);
+			if (result === null || !isFinite(result)) return null;
+			return result;
+		} catch(e) {
+			return null;
+		}
+	}
+
+	function tokenizeFormula(expr) {
+		var tokens = [];
+		var i = 0;
+		while (i < expr.length) {
+			var ch = expr[i];
+			// Skip whitespace
+			if (ch == ' ' || ch == '\t') { i++; continue; }
+			// Numbers (including decimals)
+			if ((ch >= '0' && ch <= '9') || (ch == '.' && i+1 < expr.length && expr[i+1] >= '0' && expr[i+1] <= '9')) {
+				var num = "";
+				while (i < expr.length && ((expr[i] >= '0' && expr[i] <= '9') || expr[i] == '.')) { num += expr[i]; i++; }
+				var val = parseFloat(num);
+				if (isNaN(val)) return null;
+				tokens.push({type:'num', val:val});
+				continue;
+			}
+			// Operators
+			if (ch == '+') { tokens.push({type:'op', val:'+'}); i++; continue; }
+			if (ch == '-') {
+				// Unary minus: if previous token is not a number, closing paren, or variable
+				if (tokens.length == 0 || (tokens[tokens.length-1].type == 'op' && tokens[tokens.length-1].val != ')') || tokens[tokens.length-1].type == 'lparen' || tokens[tokens.length-1].type == 'comma') {
+					// Parse as negative number or unary minus
+					i++;
+					var num = "-";
+					if (i < expr.length && ((expr[i] >= '0' && expr[i] <= '9') || expr[i] == '.')) {
+						while (i < expr.length && ((expr[i] >= '0' && expr[i] <= '9') || expr[i] == '.')) { num += expr[i]; i++; }
+						tokens.push({type:'num', val:parseFloat(num)});
+					} else {
+						tokens.push({type:'op', val:'NEG'});
+					}
+					continue;
+				}
+				tokens.push({type:'op', val:'-'}); i++; continue;
+			}
+			if (ch == '*') { tokens.push({type:'op', val:'*'}); i++; continue; }
+			if (ch == '/') { tokens.push({type:'op', val:'/'}); i++; continue; }
+			if (ch == '^') { tokens.push({type:'op', val:'^'}); i++; continue; }
+			if (ch == '(') { tokens.push({type:'lparen'}); i++; continue; }
+			if (ch == ')') { tokens.push({type:'rparen'}); i++; continue; }
+			if (ch == ',') { tokens.push({type:'comma'}); i++; continue; }
+			// Comparison operators
+			if (ch == '=' && i+1 < expr.length && expr[i+1] == '=') { tokens.push({type:'op', val:'=='}); i+=2; continue; }
+			if (ch == '!' && i+1 < expr.length && expr[i+1] == '=') { tokens.push({type:'op', val:'!='}); i+=2; continue; }
+			if (ch == '>' && i+1 < expr.length && expr[i+1] == '=') { tokens.push({type:'op', val:'>='}); i+=2; continue; }
+			if (ch == '<' && i+1 < expr.length && expr[i+1] == '=') { tokens.push({type:'op', val:'<='}); i+=2; continue; }
+			if (ch == '>') { tokens.push({type:'op', val:'>'}); i++; continue; }
+			if (ch == '<') { tokens.push({type:'op', val:'<'}); i++; continue; }
+			// Identifiers (variable names or function names)
+			if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || ch == '_') {
+				var ident = "";
+				while (i < expr.length && ((expr[i] >= 'a' && expr[i] <= 'z') || (expr[i] >= 'A' && expr[i] <= 'Z') || (expr[i] >= '0' && expr[i] <= '9') || expr[i] == '_')) { ident += expr[i]; i++; }
+				var identUpper = ident.toUpperCase();
+				// Check if it's a function
+				var funcs = ["IF","AND","OR","MIN","MAX","FLOOR","CEIL","ROUND","MOD","AVERAGE","SQRT","POW","COUNT","COUNTIF","LN","EXP","XOR","ABS"];
+				if (funcs.indexOf(identUpper) >= 0) {
+					tokens.push({type:'func', val:identUpper});
+					continue;
+				}
+				// It's a variable - resolve its value
+				var varVal = resolveFormulaVar(identUpper);
+				tokens.push({type:'num', val:varVal});
+				continue;
+			}
+			// Unknown character, skip
+			i++;
+		}
+		return tokens;
+	}
+
+	function resolveFormulaVar(name) {
+		// STAT<n>
+		if (name.substr(0,4) == "STAT" && !isNaN(Number(name.slice(4)))) {
+			return ~~itemToCompare["STAT"+Number(name.slice(4))];
+		}
+		// CHARSTAT<n>
+		if (name.substr(0,8) == "CHARSTAT" && !isNaN(Number(name.slice(8)))) {
+			var csVal = character["CHARSTAT"+Number(name.slice(8))];
+			if (typeof(csVal) != 'undefined') return Number(csVal);
+			return ~~itemToCompare["CHARSTAT"+Number(name.slice(8))];
+		}
+		// MULTI<stat>,<layer> - handled differently since comma is already tokenized
+		// Check direct item properties
+		if (typeof(itemToCompare[name]) != 'undefined' && typeof(itemToCompare[name]) == 'number') {
+			return Number(itemToCompare[name]);
+		}
+		// Check character properties
+		if (typeof(character[name]) != 'undefined' && typeof(character[name]) == 'number') {
+			return Number(character[name]);
+		}
+		// Boolean properties return 1/0
+		if (typeof(itemToCompare[name]) != 'undefined' && typeof(itemToCompare[name]) == 'boolean') {
+			return itemToCompare[name] ? 1 : 0;
+		}
+		return 0;
+	}
+
+	// Recursive descent parser for formula expressions
+	function parseExpression(tokens, pos) {
+		return parseComparison(tokens, pos);
+	}
+
+	function parseComparison(tokens, pos) {
+		var left = parseAddSub(tokens, pos);
+		while (pos.i < tokens.length && tokens[pos.i].type == 'op' && (tokens[pos.i].val == '==' || tokens[pos.i].val == '!=' || tokens[pos.i].val == '>=' || tokens[pos.i].val == '<=' || tokens[pos.i].val == '>' || tokens[pos.i].val == '<')) {
+			var op = tokens[pos.i].val; pos.i++;
+			var right = parseAddSub(tokens, pos);
+			if (op == '==') left = (left == right) ? 1 : 0;
+			else if (op == '!=') left = (left != right) ? 1 : 0;
+			else if (op == '>=') left = (left >= right) ? 1 : 0;
+			else if (op == '<=') left = (left <= right) ? 1 : 0;
+			else if (op == '>') left = (left > right) ? 1 : 0;
+			else if (op == '<') left = (left < right) ? 1 : 0;
+		}
+		return left;
+	}
+
+	function parseAddSub(tokens, pos) {
+		var left = parseMulDiv(tokens, pos);
+		while (pos.i < tokens.length && tokens[pos.i].type == 'op' && (tokens[pos.i].val == '+' || tokens[pos.i].val == '-')) {
+			var op = tokens[pos.i].val; pos.i++;
+			var right = parseMulDiv(tokens, pos);
+			if (op == '+') left = left + right;
+			else left = left - right;
+		}
+		return left;
+	}
+
+	function parseMulDiv(tokens, pos) {
+		var left = parsePower(tokens, pos);
+		while (pos.i < tokens.length && tokens[pos.i].type == 'op' && (tokens[pos.i].val == '*' || tokens[pos.i].val == '/')) {
+			var op = tokens[pos.i].val; pos.i++;
+			var right = parsePower(tokens, pos);
+			if (op == '*') left = left * right;
+			else left = (right != 0) ? left / right : null;
+		}
+		return left;
+	}
+
+	function parsePower(tokens, pos) {
+		var left = parseUnary(tokens, pos);
+		while (pos.i < tokens.length && tokens[pos.i].type == 'op' && tokens[pos.i].val == '^') {
+			pos.i++;
+			var right = parseUnary(tokens, pos);
+			left = Math.pow(left, right);
+		}
+		return left;
+	}
+
+	function parseUnary(tokens, pos) {
+		if (pos.i < tokens.length && tokens[pos.i].type == 'op' && tokens[pos.i].val == 'NEG') {
+			pos.i++;
+			var val = parseUnary(tokens, pos);
+			return -val;
+		}
+		return parseAtom(tokens, pos);
+	}
+
+	function parseAtom(tokens, pos) {
+		if (pos.i >= tokens.length) return 0;
+		var tok = tokens[pos.i];
+		if (tok.type == 'num') { pos.i++; return tok.val; }
+		if (tok.type == 'func') {
+			var fname = tok.val; pos.i++;
+			// Expect '('
+			if (pos.i < tokens.length && tokens[pos.i].type == 'lparen') { pos.i++; } else return 0;
+			// Parse arguments
+			var args = [];
+			if (pos.i < tokens.length && tokens[pos.i].type != 'rparen') {
+				args.push(parseExpression(tokens, pos));
+				while (pos.i < tokens.length && tokens[pos.i].type == 'comma') {
+					pos.i++;
+					args.push(parseExpression(tokens, pos));
+				}
+			}
+			// Expect ')'
+			if (pos.i < tokens.length && tokens[pos.i].type == 'rparen') { pos.i++; }
+			return evalFunc(fname, args);
+		}
+		if (tok.type == 'lparen') {
+			pos.i++;
+			var val = parseExpression(tokens, pos);
+			if (pos.i < tokens.length && tokens[pos.i].type == 'rparen') { pos.i++; }
+			return val;
+		}
+		pos.i++;
+		return 0;
+	}
+
+	function evalFunc(fname, args) {
+		switch(fname) {
+			case 'IF': return (args.length >= 3) ? (args[0] ? args[1] : args[2]) : 0;
+			case 'AND': { for (var i=0;i<args.length;i++) { if (!args[i]) return 0; } return 1; }
+			case 'OR': { for (var i=0;i<args.length;i++) { if (args[i]) return 1; } return 0; }
+			case 'XOR': { var count=0; for (var i=0;i<args.length;i++) { if (args[i]) count++; } return (count%2==1)?1:0; }
+			case 'MIN': return (args.length > 0) ? Math.min.apply(null, args) : 0;
+			case 'MAX': return (args.length > 0) ? Math.max.apply(null, args) : 0;
+			case 'FLOOR': return (args.length > 0) ? Math.floor(args[0]) : 0;
+			case 'CEIL': return (args.length > 0) ? Math.ceil(args[0]) : 0;
+			case 'ROUND': return (args.length > 0) ? Math.round(args[0]) : 0;
+			case 'ABS': return (args.length > 0) ? Math.abs(args[0]) : 0;
+			case 'MOD': return (args.length >= 2 && args[1] != 0) ? (args[0] % args[1]) : 0;
+			case 'AVERAGE': { if (args.length == 0) return 0; var s=0; for (var i=0;i<args.length;i++) s+=args[i]; return s/args.length; }
+			case 'SQRT': return (args.length > 0 && args[0] >= 0) ? Math.sqrt(args[0]) : 0;
+			case 'POW': return (args.length >= 2) ? Math.pow(args[0], args[1]) : 0;
+			case 'LN': return (args.length > 0 && args[0] > 0) ? Math.log(args[0]) : 0;
+			case 'EXP': return (args.length > 0) ? Math.exp(args[0]) : 0;
+			case 'COUNT': { var c=0; for (var i=0;i<args.length;i++) { if (args[i]) c++; } return c; }
+			case 'COUNTIF': { var c=0; for (var i=0;i<args.length;i++) { if (args[i]) c++; } return c; }
+			default: return 0;
+		}
+	}
+
+	// formatFormulaResult - formats a formula result for display
+	function formatFormulaResult(val) {
+		if (val === null || !isFinite(val)) return "f_err";
+		if (Math.abs(val) >= 1000000) return val.toExponential(2);
+		if (val == Math.floor(val)) return String(Math.floor(val));
+		var rounded = Math.round(val * 100) / 100;
+		return String(rounded);
+	}
+
+	// processFormulasInString - replaces $f(...) and %FORMULAX% in a string
+	// Returns the string with formulas evaluated and replaced
+	function processFormulasInString(str) {
+		// Replace %FORMULAX% references
+		for (var fKey in formulas) {
+			var fExprStr = formulas[fKey];
+			str = str.split("%FORMULA"+fKey+"%").join(function() {
+				var fResult = evaluateFormula(fExprStr);
+				return formatFormulaResult(fResult);
+			}());
+		}
+		// Replace $f(...) inline formulas
+		var maxIterations = 100;
+		var iterations = 0;
+		while (str.indexOf("$f(") >= 0 && iterations < maxIterations) {
+			iterations++;
+			var fStart = str.indexOf("$f(");
+			// Find matching closing paren
+			var depth = 0;
+			var fEnd = -1;
+			for (var fi = fStart + 2; fi < str.length; fi++) {
+				if (str[fi] == '(') depth++;
+				else if (str[fi] == ')') { depth--; if (depth == 0) { fEnd = fi; break; } }
+			}
+			if (fEnd == -1) break; // unmatched paren
+			var fExprStr = str.substring(fStart + 3, fEnd);
+			var fResult = evaluateFormula(fExprStr);
+			var fFormatted = formatFormulaResult(fResult);
+			str = str.substring(0, fStart) + fFormatted + str.substring(fEnd + 1);
+		}
+		return str;
+	}
+
+	// processFormulasInConditions - replaces $f(...) in condition strings
+	// In conditions, $f() evaluates to a numeric value for comparison
+	// FORMULAX references are also resolved
+	function processFormulasInConditions(str) {
+		// Replace FORMULAX references (without %) in conditions
+		for (var fKey in formulas) {
+			var fExprStr = formulas[fKey];
+			var re = new RegExp("\\bFORMULA"+fKey+"\\b", "g");
+			str = str.replace(re, function() {
+				var fResult = evaluateFormula(fExprStr);
+				return (fResult !== null) ? String(Math.floor(fResult)) : "0";
+			});
+		}
+		// Replace $f(...) inline formulas in conditions
+		var maxIterations = 100;
+		var iterations = 0;
+		while (str.indexOf("$f(") >= 0 && iterations < maxIterations) {
+			iterations++;
+			var fStart = str.indexOf("$f(");
+			var depth = 0;
+			var fEnd = -1;
+			for (var fi = fStart + 2; fi < str.length; fi++) {
+				if (str[fi] == '(') depth++;
+				else if (str[fi] == ')') { depth--; if (depth == 0) { fEnd = fi; break; } }
+			}
+			if (fEnd == -1) break;
+			var fExprStr = str.substring(fStart + 3, fEnd);
+			var fResult = evaluateFormula(fExprStr);
+			var fFormatted = (fResult !== null) ? String(Math.floor(fResult)) : "0";
+			str = str.substring(0, fStart) + fFormatted + str.substring(fEnd + 1);
+		}
+		return str;
+	}
+
 	var line_num = 0;
 	for (line in lines) { if (done == false) {
 		line_num = Number(line)+1;
@@ -547,7 +1028,9 @@ function parseFile(file,num) {
 		var index_end = rule.indexOf("]:");
 		if (settings.validation == 1 && errors < settings.max_errors) {
 			if (!(rule_with_tabs.substring(0,rule_with_tabs.indexOf("ItemDisplayFilterName[]:")).length == 0)) {
-				if (!(index >= 0 && rule_with_tabs.substring(0,index_with_tabs).length == 0) && rule_with_tabs.length > 0) { document.getElementById("o"+num).innerHTML += "#"+num+" Improper formatting on line "+line_num+" ... "+"<l style='color:#aaa'>"+file.split("­").join("•").split("\n")[line]+"</l><br>"; errors++; }	// displays an error if the line is not a rule and has other characters prior to any "/" characters
+				var isFormula = (rule_with_tabs.indexOf("Formula[") >= 0 && rule_with_tabs.substring(0,rule_with_tabs.indexOf("Formula[")).trim() === "");
+				var isAlias = (rule_with_tabs.indexOf("Alias[") >= 0 && rule_with_tabs.substring(0,rule_with_tabs.indexOf("Alias[")).trim() === "");
+				if (!(index >= 0 && rule_with_tabs.substring(0,index_with_tabs).length == 0) && rule_with_tabs.length > 0 && !isFormula && !isAlias) { document.getElementById("o"+num).innerHTML += "#"+num+" Improper formatting on line "+line_num+" ... "+"<l style='color:#aaa'>"+file.split("­").join("•").split("\n")[line]+"</l><br>"; errors++; }	// displays an error if the line is not a rule and has other characters prior to any "/" characters
 			}
 		}
 		if (index >= 0 && rule_with_tabs.substring(0,index_with_tabs).length == 0) {	// line begins with ItemDisplay[
@@ -557,7 +1040,11 @@ function parseFile(file,num) {
 			var conditions = rule.substring(0,index).concat(rule.substring(index+12)).split("]:")[0];
 			while (conditions.includes("  ")) { conditions = conditions.split("  ").join(" "); }	// remove multiple spaces within conditions
 			conditions = conditions.split("( ").join("(").split(" )").join(")")						// removes extra spaces within parentheses
+			// Process formulas in conditions ($f() and FORMULAX references)
+			conditions = processFormulasInConditions(conditions);
 			var output = lines_with_tabs[line].substring(0,index).concat(lines_with_tabs[line].substring(index+12)).split("]:")[1];
+			// Process formulas in output ($f() and %FORMULAX% references)
+			if (typeof(output) == 'string') { output = processFormulasInString(output); }
 			if (conditions[0] == " " || conditions[conditions.length-1] == " ") {
 				//if (settings.validation == 1 && errors < settings.max_errors) { document.getElementById("o"+num).innerHTML += "#"+num+" Irregular formatting on line "+line_num+" ... "+"<l style='color:#aaa'>"+file.split("­").join("•").split("\n")[line]+"</l><br>"; errors++; }	// displays an error if the rule's conditions have space on either side (cosmetic only)
 				conditions = conditions.trim()
@@ -603,7 +1090,7 @@ function parseFile(file,num) {
 				for (cond in cond_list) {
 					cond = Number(cond)
 					var c = cond_list[cond];
-					var nonbool_conditions = ["GOLD","RUNE","GEMLEVEL","GEMTYPE","QTY","DEF","LVLREQ","PRICE","BUYPRICE","SELLPRICE","ALVL","CRAFTALVL","QLVL","ILVL","SOCK","ED","MAXDUR","AR","RES","FRES","CRES","LRES","PRES","FRW","IAS","FCR","FHR","FBR","MINDMG","MAXDMG","STR","DEX","LIFE","MANA","MFIND","GFIND","MAEK","DTM","REPLIFE","REPAIR","ARPER","FOOLS","ALLSK"];
+					var nonbool_conditions = ["GOLD","RUNE","GEMLEVEL","GEMTYPE","QTY","DEF","LVLREQ","PRICE","BUYPRICE","SELLPRICE","ALVL","CRAFTALVL","QLVL","ILVL","SOCK","ED","MAXDUR","AR","RES","FRES","CRES","LRES","PRES","FRW","IAS","FCR","FHR","FBR","MINDMG","MAXDMG","STR","DEX","LIFE","MANA","MFIND","GFIND","MAEK","DTM","REPLIFE","REPAIR","ARPER","FOOLS","ALLSK","WIDTH","HEIGHT","AREA","MAXSOCKETS","UPDEX","UPSTR","UPLVL","MAXRES","ALLATTRIB","BASEBLOCK","REQLVL","REQSTR","REQDEX","BASEMINONEH","BASEMAXONEH","BASEMINTWOH","BASEMAXTWOH","BASEMINSMITE","BASEMAXSMITE","BASEMINTHROW","BASEMAXTHROW","BASEMINKICK","BASEMAXKICK"];
 					if (c == "GEM") { c = "GEMLEVEL" }
 					if (c == "RUNENUM" || c == "RUNENAME") { c = "RUNE" }
 					var number = false;
@@ -761,6 +1248,9 @@ function parseFile(file,num) {
 				out_format = out_format.split("%DARK_GREEN%").join(",color_DGREEN,").split("%QTY%").join(",ref_QUANTITY,").split("%RANGE%").join(",ref_range,").split("%WPNSPD%").join(",ref_baseSpeed,").split("%ALVL%").join(",ref_ALVL,").split("%NL%").join(",misc_NL,").split("%MAP%").join(",ignore_MAP,").split("%NOTIFY-DEAD%").join(",ignore_NOTIFY-DEAD,").split("%LVLREQ%").join(",ref_reqlevel,").split("%CRAFTALVL%").join(",ref_CRAFTALVL,")
 				out_format = out_format.split("%LIGHT_GRAY%").join(",color_LIGHT_GRAY,").split("%CORAL%").join(",color_CORAL,").split("%SAGE%").join(",color_SAGE,").split("%TEAL%").join(",color_TEAL,")
 				out_format = out_format.split("%CLASS%").join(",invalid_CLASS,").split("%CL%").join(",misc_NL,").split("%QUAL%").join(",invalid_QUAL,").split("%QT%").join(",invalid_QT,").split("%BASENAME%").join(",ref_BASENAME,").split("%LBRACE%").join(",misc_LBRACE,").split("%RBRACE%").join(",misc_RBRACE,")
+				// New filter code output tokens (validation)
+				out_format = out_format.split("%WIDTH%").join(",ref_WIDTH,").split("%HEIGHT%").join(",ref_HEIGHT,").split("%AREA%").join(",ref_AREA,").split("%MAXSOCKETS%").join(",ref_MAXSOCKETS,").split("%UPDEX%").join(",ref_UPDEX,").split("%UPSTR%").join(",ref_UPSTR,").split("%UPLVL%").join(",ref_UPLVL,").split("%MAXRES%").join(",ref_MAXRES,").split("%ALLATTRIB%").join(",ref_ALLATTRIB,").split("%BASEBLOCK%").join(",ref_BASEBLOCK,").split("%REQLVL%").join(",ref_REQLVL,").split("%REQSTR%").join(",ref_REQSTR,").split("%REQDEX%").join(",ref_REQDEX,")
+				out_format = out_format.split("%BASEMINONEH%").join(",ref_BASEMINONEH,").split("%BASEMAXONEH%").join(",ref_BASEMAXONEH,").split("%BASEMINTWOH%").join(",ref_BASEMINTWOH,").split("%BASEMAXTWOH%").join(",ref_BASEMAXTWOH,").split("%BASEMINSMITE%").join(",ref_BASEMINSMITE,").split("%BASEMAXSMITE%").join(",ref_BASEMAXSMITE,").split("%BASEMINTHROW%").join(",ref_BASEMINTHROW,").split("%BASEMAXTHROW%").join(",ref_BASEMAXTHROW,").split("%BASEMINKICK%").join(",ref_BASEMINKICK,").split("%BASEMAXKICK%").join(",ref_BASEMAXKICK,")
 				if (settings.version == 1) {
 					var notifs = ["%PX-","%DOT-","%MAP-","%BORDER-"];
 					for (n in notifs) {									// TODO: implement more efficient way to split notification keywords
@@ -948,6 +1438,8 @@ function parseFile(file,num) {
 
 	if (desc_output_total != "") { desc_output_total = "{%BLUE%"+desc_output_total+"}" }
 	output_total = desc_output_total+"%"+getColor(itemToCompare)+"%"+output_total
+	// Process any remaining formula references in the combined output
+	output_total = processFormulasInString(output_total);
 	var description_braces = 0;
 	var description_active = false;
 	if (output_total.includes("{") == true && output_total.includes("}") == true) { if (output_total.indexOf("{") < output_total.lastIndexOf("}")) { description_active = true } }
@@ -987,6 +1479,9 @@ function parseFile(file,num) {
 	// POST-SEASON-6 CHANGES: This section is my first editing of simulation.js since a long absence and may not account for everything
 	if (settings.version == 1) {
 		out_format = out_format.split("%SOCKETS%").join(",ref_SOCK,").split("%DEF%").join(",ref_DEF,").split("%ED%").join(",ref_ED,").split("%EDEF%").join(",ref_EDEF,").split("%EDAM%").join(",ref_EDAM,").split("%AR%").join(",ref_AR,").split("%RES%").join(",ref_RES,").split("%FRES%").join(",ref_FRES,").split("%CRES%").join(",ref_CRES,").split("%LRES%").join(",ref_LRES,").split("%PRES%").join(",ref_PRES,").split("%FRW%").join(",ref_FRW,").split("%IAS%").join(",ref_IAS,").split("%FCR%").join(",ref_FCR,").split("%FHR%").join(",ref_FHR,").split("%FBR%").join(",ref_FBR,").split("%MINDMG%").join(",ref_MINDMG,").split("%MAXDMG%").join(",ref_MAXDMG,").split("%STR%").join(",ref_STR,").split("%DEX%").join(",ref_DEX,").split("%LIFE%").join(",ref_LIFE,").split("%MANA%").join(",ref_MANA,").split("%MFIND%").join(",ref_MFIND,").split("%GFIND%").join(",ref_GFIND,").split("%MAEK%").join(",ref_MAEK,").split("%DTM%").join(",ref_DTM,").split("%REPLIFE%").join(",ref_REPLIFE,").split("%REPAIR%").join(",ref_REPAIR,").split("%ARPER%").join(",ref_ARPER,").split("%FOOLS%").join(",ref_FOOLS,").split("%%").join(",ref_,")
+		// New filter code output tokens
+		out_format = out_format.split("%WIDTH%").join(",ref_WIDTH,").split("%HEIGHT%").join(",ref_HEIGHT,").split("%AREA%").join(",ref_AREA,").split("%MAXSOCKETS%").join(",ref_MAXSOCKETS,").split("%UPDEX%").join(",ref_UPDEX,").split("%UPSTR%").join(",ref_UPSTR,").split("%UPLVL%").join(",ref_UPLVL,").split("%MAXRES%").join(",ref_MAXRES,").split("%ALLATTRIB%").join(",ref_ALLATTRIB,").split("%BASEBLOCK%").join(",ref_BASEBLOCK,").split("%REQLVL%").join(",ref_REQLVL,").split("%REQSTR%").join(",ref_REQSTR,").split("%REQDEX%").join(",ref_REQDEX,")
+		out_format = out_format.split("%BASEMINONEH%").join(",ref_BASEMINONEH,").split("%BASEMAXONEH%").join(",ref_BASEMAXONEH,").split("%BASEMINTWOH%").join(",ref_BASEMINTWOH,").split("%BASEMAXTWOH%").join(",ref_BASEMAXTWOH,").split("%BASEMINSMITE%").join(",ref_BASEMINSMITE,").split("%BASEMAXSMITE%").join(",ref_BASEMAXSMITE,").split("%BASEMINTHROW%").join(",ref_BASEMINTHROW,").split("%BASEMAXTHROW%").join(",ref_BASEMAXTHROW,").split("%BASEMINKICK%").join(",ref_BASEMINKICK,").split("%BASEMAXKICK%").join(",ref_BASEMAXKICK,")
 			for (let stat = 0; stat <= 504; stat++) {
 			if (typeof(itemToCompare["STAT"+stat]) != 'undefined') { out_format = out_format.split("%STAT"+stat+"%").join(",ref_STAT"+stat+",") }
 			else { out_format = out_format.split("%STAT"+stat+"%").join(",0,") }
