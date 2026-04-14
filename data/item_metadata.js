@@ -187,66 +187,6 @@ var runewords = {
 	Sorceress Orbs		+1-60 to Life or +1-80 to Mana
 */
 
-// Item inventory dimensions (width x height) by item type/group
-// Used for WIDTH, HEIGHT, AREA filter conditions
-var item_dimensions = {
-	// Armor - all helms are 2x2
-	helm:{w:2,h:2},
-	// Body armor is 2x3
-	body:{w:2,h:3},
-	// Shields are 2x2 (small) or 2x3 (large) or 2x4 (tower)
-	// Since shields vary, dimensions are stored per base item below
-	shield:{w:2,h:3},
-	// Gloves, boots, belts are 2x2
-	gloves:{w:2,h:2},
-	boots:{w:2,h:2},
-	belt:{w:2,h:2},
-	// Weapons vary widely - dimensions stored per base
-	// Misc items
-	ring:{w:1,h:1},
-	amulet:{w:1,h:1},
-	jewel:{w:1,h:1},
-	small_charm:{w:1,h:1},
-	large_charm:{w:1,h:2},
-	grand_charm:{w:1,h:3},
-	rune:{w:1,h:1},
-	gem:{w:1,h:1},
-	gold:{w:1,h:1},
-	key:{w:1,h:1},
-	arrows:{w:1,h:3},
-	bolts:{w:1,h:3},
-	scroll:{w:1,h:1},
-	potion:{w:1,h:1},
-	essence:{w:1,h:1},
-	organ:{w:1,h:1},
-	token:{w:1,h:1},
-	map:{w:1,h:1},
-	relic:{w:1,h:1},
-	// Weapons by type (common defaults)
-	axe_1h:{w:1,h:3},
-	axe_2h:{w:2,h:3},
-	mace_1h:{w:1,h:3},
-	mace_2h:{w:2,h:3},
-	hammer:{w:2,h:3},
-	sword_1h:{w:1,h:3},
-	sword_2h:{w:1,h:4},
-	dagger:{w:1,h:2},
-	throwing:{w:1,h:2},
-	javelin:{w:1,h:3},
-	spear:{w:2,h:4},
-	polearm:{w:2,h:4},
-	bow:{w:2,h:3},
-	crossbow:{w:2,h:3},
-	staff:{w:1,h:4},
-	wand:{w:1,h:2},
-	scepter:{w:1,h:3},
-	orb:{w:1,h:2},
-	claw:{w:1,h:3},
-	amazon_bow:{w:2,h:4},
-	amazon_javelin:{w:1,h:3},
-	amazon_spear:{w:2,h:4}
-};
-
 var bases = {	// Note: damage_vs_undead:50 is included for blunt weapons, but other automods are variable and so aren't included in bases[].
 	// helm
 	Cap:{qlvl:1,CODE:"cap",ARMOR:true,EQ1:true,group:"helm", type:"helm", base_defense:5, def_low:3, def_high:5, durability:12, max_sockets:2, upgrade:"War Hat", tier:1, nonmetal:1},
@@ -327,10 +267,10 @@ var bases = {	// Note: damage_vs_undead:50 is included for blunt weapons, but ot
 	Buckler:{qlvl:1,CODE:"buc",ARMOR:true,EQ3:true,shield:true,group:"offhand", type:"shield", invheight:2, base_defense:6, def_low:4, def_high:6, req_strength:12, durability:12, max_sockets:1, upgrade:"Defender", velocity:0, block:30, smite_min:1, smite_max:3, tier:1},
 	Small_Shield:{qlvl:5,CODE:"sml",ARMOR:true,EQ3:true,shield:true,group:"offhand", type:"shield", invheight:2, base_defense:10, def_low:8, def_high:10, req_strength:22, durability:16, max_sockets:2, upgrade:"Round Shield", velocity:0, block:35, smite_min:2, smite_max:3, tier:1},
 	Large_Shield:{qlvl:11,CODE:"lrg",ARMOR:true,EQ3:true,shield:true,group:"offhand", type:"shield", base_defense:14, def_low:12, def_high:14, req_strength:34, durability:24, max_sockets:3, upgrade:"Scutum", velocity:-5, block:42, smite_min:2, smite_max:4, tier:1},
-	Spiked_Shield:{qlvl:11,CODE:"spk",ARMOR:true,EQ3:true,shield:true,group:"offhand", type:"shield", base_defense:25, def_low:15, def_high:25, req_strength:30, durability:40, max_sockets:2, upgrade:"Barbed Shield", velocity:0, block:40, smite_min:5, smite_max:9, tier:1, nonmetal:1},
+	Spiked_Shield:{qlvl:11,CODE:"spk",ARMOR:true,EQ3:true,shield:true,group:"offhand", type:"shield", invwidth:2, invheight:2, base_defense:25, def_low:15, def_high:25, req_strength:30, durability:40, max_sockets:2, upgrade:"Barbed Shield", velocity:0, block:40, smite_min:5, smite_max:9, tier:1, nonmetal:1},
 	Kite_Shield:{qlvl:15,CODE:"kit",ARMOR:true,EQ3:true,shield:true,group:"offhand", type:"shield", base_defense:18, def_low:16, def_high:18, req_strength:47, durability:30, max_sockets:3, upgrade:"Dragon Shield", velocity:0, block:38, smite_min:2, smite_max:5, tier:1},
-	Bone_Shield:{qlvl:19,CODE:"bsh",ARMOR:true,EQ3:true,shield:true,group:"offhand", type:"shield", base_defense:30, def_low:10, def_high:30, req_strength:25, durability:40, max_sockets:2, upgrade:"Grim Shield", velocity:0, block:50, smite_min:3, smite_max:6, tier:1, nonmetal:1},
-	Tower_Shield:{qlvl:22,CODE:"tow",ARMOR:true,EQ3:true,shield:true,group:"offhand", type:"shield", base_defense:25, def_low:22, def_high:25, req_strength:75, durability:60, max_sockets:3, upgrade:"Pavise", velocity:-10, block:54, smite_min:1, smite_max:5, tier:1},
+	Bone_Shield:{qlvl:19,CODE:"bsh",ARMOR:true,EQ3:true,shield:true,group:"offhand", type:"shield", invwidth:2, invheight:2, base_defense:30, def_low:10, def_high:30, req_strength:25, durability:40, max_sockets:2, upgrade:"Grim Shield", velocity:0, block:50, smite_min:3, smite_max:6, tier:1, nonmetal:1},
+	Tower_Shield:{qlvl:22,CODE:"tow",ARMOR:true,EQ3:true,shield:true,group:"offhand", type:"shield", invwidth:2, invheight:4, base_defense:25, def_low:22, def_high:25, req_strength:75, durability:60, max_sockets:3, upgrade:"Pavise", velocity:-10, block:54, smite_min:1, smite_max:5, tier:1},
 	Gothic_Shield:{qlvl:30,CODE:"gts",ARMOR:true,EQ3:true,shield:true,group:"offhand", type:"shield", invheight:4, base_defense:35, def_low:30, def_high:35, req_strength:60, durability:40, max_sockets:3, upgrade:"Ancient Shield", velocity:-5, block:46, smite_min:2, smite_max:6, tier:1},
 	Defender:{qlvl:34,CODE:"xuc",ARMOR:true,EQ3:true,shield:true,group:"offhand", type:"shield", invheight:2, base_defense:49, def_low:41, def_high:49, req_level:22, req_strength:38, durability:68, max_sockets:1, upgrade:"Heater", downgrade:"Buckler", velocity:0, block:40, smite_min:8, smite_max:12, tier:2},
 	Round_Shield:{qlvl:37,CODE:"xml",ARMOR:true,EQ3:true,shield:true,group:"offhand", type:"shield", invheight:2, base_defense:55, def_low:47, def_high:55, req_level:25, req_strength:53, durability:64, max_sockets:2, upgrade:"Luna", downgrade:"Small Shield", velocity:0, block:42, smite_min:7, smite_max:14, tier:2},
@@ -338,7 +278,7 @@ var bases = {	// Note: damage_vs_undead:50 is included for blunt weapons, but ot
 	Barbed_Shield:{qlvl:42,CODE:"xpk",ARMOR:true,EQ3:true,shield:true,group:"offhand", type:"shield", base_defense:78, def_low:68, def_high:78, req_level:25, req_strength:65, durability:55, max_sockets:2, upgrade:"Blade Barrier", downgrade:"Spiked Shield", velocity:0, block:47, smite_min:18, smite_max:35, tier:2, nonmetal:1},
 	Dragon_Shield:{qlvl:45,CODE:"xit",ARMOR:true,EQ3:true,shield:true,group:"offhand", type:"shield", base_defense:67, def_low:59, def_high:67, req_level:25, req_strength:91, durability:76, max_sockets:3, upgrade:"Monarch", downgrade:"Kite Shield", velocity:0, block:48, smite_min:15, smite_max:24, tier:2},
 	Grim_Shield:{qlvl:48,CODE:"xsh",ARMOR:true,EQ3:true,shield:true,group:"offhand", type:"shield", base_defense:151, def_low:50, def_high:151, req_level:25, req_strength:58, durability:70, max_sockets:2, upgrade:"Troll Nest", downgrade:"Bone Shield", velocity:0, block:50, smite_min:14, smite_max:20, tier:2, nonmetal:1},
-	Pavise:{qlvl:50,CODE:"xow",ARMOR:true,EQ3:true,shield:true,group:"offhand", type:"shield", base_defense:78, def_low:68, def_high:78, req_level:25, req_strength:133, durability:72, max_sockets:3, upgrade:"Aegis", downgrade:"Tower Shield", velocity:-10, block:54, smite_min:10, smite_max:17, tier:2},
+	Pavise:{qlvl:50,CODE:"xow",ARMOR:true,EQ3:true,shield:true,group:"offhand", type:"shield", invwidth:2, invheight:4, base_defense:78, def_low:68, def_high:78, req_level:25, req_strength:133, durability:72, max_sockets:3, upgrade:"Aegis", downgrade:"Tower Shield", velocity:-10, block:54, smite_min:10, smite_max:17, tier:2},
 	Ancient_Shield:{qlvl:56,CODE:"xts",ARMOR:true,EQ3:true,shield:true,group:"offhand", type:"shield", invheight:4, base_defense:93, def_low:80, def_high:93, req_level:25, req_strength:110, durability:80, max_sockets:3, upgrade:"Ward", downgrade:"Gothic Shield", velocity:-5, block:46, smite_min:12, smite_max:16, tier:2},
 	Heater:{qlvl:58,CODE:"uuc",ARMOR:true,EQ3:true,shield:true,group:"offhand", type:"shield", invheight:2, base_defense:110, def_low:95, def_high:110, req_level:43, req_strength:77, durability:88, max_sockets:2, downgrade:"Defender", velocity:0, block:52, smite_min:16, smite_max:30, tier:3},
 	Luna:{qlvl:61,CODE:"uml",ARMOR:true,EQ3:true,shield:true,group:"offhand", type:"shield", invheight:2, base_defense:123, def_low:108, def_high:123, req_level:45, req_strength:100, durability:84, max_sockets:2, downgrade:"Round Shield", velocity:0, block:50, smite_min:17, smite_max:29, tier:3},

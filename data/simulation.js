@@ -361,15 +361,15 @@ function computeNewFilterProperties(item) {
 	item.AREA = dims.w * dims.h
 
 	// MAXSOCKETS - maximum sockets the item base can have
-	item.MAXSOCKETS = ~~item.max_sockets
+	item.MAXSOCKETS = Math.min(~~item.max_sockets, item.WIDTH * item.HEIGHT)
 
 	// BASEBLOCK - base block chance from shield
 	item.BASEBLOCK = ~~item.block
 
 	// REQLVL, REQSTR, REQDEX - current requirements (may differ from LVLREQ for magic+ items)
 	item.REQLVL = ~~item.req_level
-	item.REQSTR = ~~item.REQ_STR || ~~item.req_strength
-	item.REQDEX = ~~item.REQ_DEX || ~~item.req_dexterity
+	item.REQSTR = ~~item.req_strength
+	item.REQDEX = ~~item.req_dexterity
 
 	// MAXRES - total max resistances (fire + cold + lightning + poison)
 	var maxres = 0
@@ -849,6 +849,7 @@ function parseFile(file,num) {
 		while (pos.i < tokens.length && tokens[pos.i].type == 'op' && (tokens[pos.i].val == '==' || tokens[pos.i].val == '!=' || tokens[pos.i].val == '>=' || tokens[pos.i].val == '<=' || tokens[pos.i].val == '>' || tokens[pos.i].val == '<')) {
 			var op = tokens[pos.i].val; pos.i++;
 			var right = parseAddSub(tokens, pos);
+			if (left === null || right === null) { left = null; continue; }
 			if (op == '==') left = (left == right) ? 1 : 0;
 			else if (op == '!=') left = (left != right) ? 1 : 0;
 			else if (op == '>=') left = (left >= right) ? 1 : 0;
@@ -864,6 +865,7 @@ function parseFile(file,num) {
 		while (pos.i < tokens.length && tokens[pos.i].type == 'op' && (tokens[pos.i].val == '+' || tokens[pos.i].val == '-')) {
 			var op = tokens[pos.i].val; pos.i++;
 			var right = parseMulDiv(tokens, pos);
+			if (left === null || right === null) { left = null; continue; }
 			if (op == '+') left = left + right;
 			else left = left - right;
 		}
@@ -875,6 +877,7 @@ function parseFile(file,num) {
 		while (pos.i < tokens.length && tokens[pos.i].type == 'op' && (tokens[pos.i].val == '*' || tokens[pos.i].val == '/')) {
 			var op = tokens[pos.i].val; pos.i++;
 			var right = parsePower(tokens, pos);
+			if (left === null || right === null) { left = null; continue; }
 			if (op == '*') left = left * right;
 			else left = (right != 0) ? left / right : null;
 		}
@@ -886,6 +889,7 @@ function parseFile(file,num) {
 		while (pos.i < tokens.length && tokens[pos.i].type == 'op' && tokens[pos.i].val == '^') {
 			pos.i++;
 			var right = parseUnary(tokens, pos);
+			if (left === null || right === null) { left = null; continue; }
 			left = Math.pow(left, right);
 		}
 		return left;
