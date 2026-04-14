@@ -782,10 +782,10 @@ function parseFile(file,num) {
 			if (ch == '<' && i+1 < expr.length && expr[i+1] == '=') { tokens.push({type:'op', val:'<='}); i+=2; continue; }
 			if (ch == '>') { tokens.push({type:'op', val:'>'}); i++; continue; }
 			if (ch == '<') { tokens.push({type:'op', val:'<'}); i++; continue; }
-			// Identifiers (variable names or function names)
-			if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || ch == '_') {
+			// Identifiers (variable names or function names) — only A-Z and _
+			if ((ch >= 'A' && ch <= 'Z') || ch == '_') {
 				var ident = "";
-				while (i < expr.length && ((expr[i] >= 'a' && expr[i] <= 'z') || (expr[i] >= 'A' && expr[i] <= 'Z') || (expr[i] >= '0' && expr[i] <= '9') || expr[i] == '_')) { ident += expr[i]; i++; }
+				while (i < expr.length && ((expr[i] >= 'A' && expr[i] <= 'Z') || expr[i] == '_')) { ident += expr[i]; i++; }
 				// Check if it's a function (expr is already uppercased)
 				var funcs = ["IF","AND","OR","MIN","MAX","FLOOR","CEIL","ROUND","MOD","AVERAGE","SQRT","POW","COUNT","COUNTIF","LN","EXP","XOR","ABS","SIGN"];
 				if (funcs.indexOf(ident) >= 0) {
@@ -802,18 +802,16 @@ function parseFile(file,num) {
 		return tokens;
 	}
 
-	function resolveFormulaVar(name) {
-		// STAT<n>
-		if (name.substr(0,4) == "STAT" && !isNaN(Number(name.slice(4)))) {
-			return ~~itemToCompare["STAT"+Number(name.slice(4))];
+	function resolveFormulaVar(name, varArgs) {
+		// Variables with integer args: STAT<n>, CHARSTAT<n>
+		if (name == "STAT" && varArgs.length == 1) {
+			return ~~itemToCompare["STAT"+varArgs[0]];
 		}
-		// CHARSTAT<n>
-		if (name.substr(0,8) == "CHARSTAT" && !isNaN(Number(name.slice(8)))) {
-			var csVal = character["CHARSTAT"+Number(name.slice(8))];
+		if (name == "CHARSTAT" && varArgs.length == 1) {
+			var csVal = character["CHARSTAT"+varArgs[0]];
 			if (typeof(csVal) != 'undefined') return Number(csVal);
-			return ~~itemToCompare["CHARSTAT"+Number(name.slice(8))];
+			return ~~itemToCompare["CHARSTAT"+varArgs[0]];
 		}
-		// MULTI<stat>,<layer> - handled differently since comma is already tokenized
 		// Check direct item properties
 		if (typeof(itemToCompare[name]) != 'undefined' && typeof(itemToCompare[name]) == 'number') {
 			return Number(itemToCompare[name]);
@@ -826,7 +824,8 @@ function parseFile(file,num) {
 		if (typeof(itemToCompare[name]) != 'undefined' && typeof(itemToCompare[name]) == 'boolean') {
 			return itemToCompare[name] ? 1 : 0;
 		}
-		return 0;
+		// Unknown variable resolves to null
+		return null;
 	}
 
 	// Recursive descent parser for formula expressions
@@ -889,29 +888,42 @@ function parseFile(file,num) {
 		if (pos.i < tokens.length && tokens[pos.i].type == 'op' && tokens[pos.i].val == '-') {
 			pos.i++;
 			var val = parseUnary(tokens, pos);
+			if (val === null) return null;
 			return -val;
 		}
 		if (pos.i < tokens.length && tokens[pos.i].type == 'op' && tokens[pos.i].val == '+') {
 			pos.i++;
-			return parseUnary(tokens, pos);
+			var val = parseUnary(tokens, pos);
+			if (val === null) return null;
+			return val;
 		}
 		if (pos.i < tokens.length && tokens[pos.i].type == 'op' && tokens[pos.i].val == 'NOT') {
 			pos.i++;
 			var val = parseUnary(tokens, pos);
+			if (val === null) return null;
 			return val ? 0 : 1;
 		}
 		return parseAtom(tokens, pos);
 	}
 
 	function parseAtom(tokens, pos) {
-		if (pos.i >= tokens.length) return 0;
+		if (pos.i >= tokens.length) return null;
 		var tok = tokens[pos.i];
 		if (tok.type == 'num') { pos.i++; return tok.val; }
-		if (tok.type == 'var') { pos.i++; return resolveFormulaVar(tok.val); }
+		if (tok.type == 'var') {
+			pos.i++;
+			// Collect integer args following the variable name
+			var varArgs = [];
+			while (pos.i < tokens.length && tokens[pos.i].type == 'num' && tokens[pos.i].val == Math.floor(tokens[pos.i].val)) {
+				varArgs.push(tokens[pos.i].val);
+				pos.i++;
+			}
+			return resolveFormulaVar(tok.val, varArgs);
+		}
 		if (tok.type == 'func') {
 			var fname = tok.val; pos.i++;
 			// Expect '('
-			if (pos.i < tokens.length && tokens[pos.i].type == 'lparen') { pos.i++; } else return 0;
+			if (pos.i < tokens.length && tokens[pos.i].type == 'lparen') { pos.i++; } else return null;
 			// Parse arguments
 			var args = [];
 			if (pos.i < tokens.length && tokens[pos.i].type != 'rparen') {
@@ -923,6 +935,8 @@ function parseFile(file,num) {
 			}
 			// Expect ')'
 			if (pos.i < tokens.length && tokens[pos.i].type == 'rparen') { pos.i++; }
+			// If any arg is null, propagate null
+			for (var ai = 0; ai < args.length; ai++) { if (args[ai] === null) return null; }
 			return evalFunc(fname, args);
 		}
 		if (tok.type == 'lparen') {
@@ -932,7 +946,7 @@ function parseFile(file,num) {
 			return val;
 		}
 		pos.i++;
-		return 0;
+		return null;
 	}
 
 	function evalFunc(fname, args) {
@@ -962,11 +976,11 @@ function parseFile(file,num) {
 
 	// formatFormulaResult - formats a formula result for display
 	function formatFormulaResult(val) {
-		if (val === null || !isFinite(val)) return "f_err";
-		if (Math.abs(val) >= 1000000) return val.toExponential(2);
-		if (val == Math.floor(val)) return String(Math.floor(val));
-		var rounded = Math.round(val * 100) / 100;
-		return String(rounded);
+		if (val === null || typeof val !== 'number' || isNaN(val) || !isFinite(val)) return "f_err";
+		var str = val.toFixed(2);
+		// Remove trailing zeros and decimal point
+		str = str.replace(/\.?0+$/, "");
+		return str;
 	}
 
 	// processFormulasInString - replaces $f(...) and %FORMULAX% in a string
