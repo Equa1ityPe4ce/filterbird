@@ -308,6 +308,12 @@ function setItem(value) {
 			if (typeof(itemToCompare.velocity) != 'undefined') { if (itemToCompare.velocity < 0) { itemToCompare.velocity += 100000 } }	// negative values overflow for this in-game code
 			if (typeof(itemToCompare.always_id) == 'undefined') { itemToCompare.always_id = false }
 			if (itemToCompare.always_id == false && item_settings.ID == false) { itemToCompare.ID = false }
+			// Save physical item properties before the ID branch can clear them via unequipped
+			var saved_type = itemToCompare.type;
+			var saved_group = itemToCompare.group;
+			var saved_max_sockets = itemToCompare.max_sockets;
+			var saved_invwidth = itemToCompare.invwidth;
+			var saved_invheight = itemToCompare.invheight;
 			if (itemToCompare.ID == true) {
 				// affix codes translated to in-game codes
 				for (affix in itemToCompare) { for (code in codes) { if (affix == code) { itemToCompare[codes[code]] = itemToCompare[affix] } } }
@@ -336,6 +342,12 @@ function setItem(value) {
 			}
 			itemToCompare.ITEMSTAT31 = itemToCompare.DEF
 			itemToCompare.ITEMSTAT18 = itemToCompare.ITEMSTAT17
+			// Restore physical item properties that may have been cleared by the unidentified path
+			itemToCompare.type = saved_type;
+			itemToCompare.group = saved_group;
+			itemToCompare.max_sockets = saved_max_sockets;
+			itemToCompare.invwidth = saved_invwidth;
+			itemToCompare.invheight = saved_invheight;
 			// Compute new filter properties (WIDTH, HEIGHT, AREA, etc.)
 			computeNewFilterProperties(itemToCompare)
 			// TODO: Validate ILVL
@@ -719,7 +731,7 @@ function parseFile(file,num) {
 
 	// evaluateFormula - evaluates a formula expression string for the current item
 	// Supports: +, -, *, /, ^, ==, !=, >=, <=, >, <, unary +, unary -, !, parentheses
-	// Supports functions: if, and, or, min, max, floor, ceil, round, mod, average, sqrt, pow, count, countif, ln, exp, xor, abs
+	// Supports functions: if, and, or, min, max, floor, ceil, round, mod, average, sqrt, pow, count, countif, ln, exp, xor, abs, sign
 	// Supports variables: STAT<n>, CHARSTAT<n>, MULTI<stat>,<layer>, and any item property
 	function evaluateFormula(expr) {
 		try {
@@ -728,6 +740,7 @@ function parseFile(file,num) {
 			if (tokens === null) return null;
 			var pos = {i: 0};
 			var result = parseExpression(tokens, pos);
+			if (pos.i < tokens.length) return null;
 			if (result === null || !isFinite(result)) return null;
 			return result;
 		} catch(e) {
@@ -736,6 +749,7 @@ function parseFile(file,num) {
 	}
 
 	function tokenizeFormula(expr) {
+		expr = expr.toUpperCase();
 		var tokens = [];
 		var i = 0;
 		while (i < expr.length) {
@@ -752,30 +766,8 @@ function parseFile(file,num) {
 				continue;
 			}
 			// Operators
-			if (ch == '+') {
-				// Unary plus: if previous token is not a number, closing paren, or variable
-				if (tokens.length == 0 || (tokens[tokens.length-1].type == 'op' && tokens[tokens.length-1].val != ')') || tokens[tokens.length-1].type == 'lparen' || tokens[tokens.length-1].type == 'comma') {
-					tokens.push({type:'op', val:'POS'});
-					i++; continue;
-				}
-				tokens.push({type:'op', val:'+'}); i++; continue;
-			}
-			if (ch == '-') {
-				// Unary minus: if previous token is not a number, closing paren, or variable
-				if (tokens.length == 0 || (tokens[tokens.length-1].type == 'op' && tokens[tokens.length-1].val != ')') || tokens[tokens.length-1].type == 'lparen' || tokens[tokens.length-1].type == 'comma') {
-					// Parse as negative number or unary minus
-					i++;
-					var num = "-";
-					if (i < expr.length && ((expr[i] >= '0' && expr[i] <= '9') || expr[i] == '.')) {
-						while (i < expr.length && ((expr[i] >= '0' && expr[i] <= '9') || expr[i] == '.')) { num += expr[i]; i++; }
-						tokens.push({type:'num', val:parseFloat(num)});
-					} else {
-						tokens.push({type:'op', val:'NEG'});
-					}
-					continue;
-				}
-				tokens.push({type:'op', val:'-'}); i++; continue;
-			}
+			if (ch == '+') { tokens.push({type:'op', val:'+'}); i++; continue; }
+			if (ch == '-') { tokens.push({type:'op', val:'-'}); i++; continue; }
 			if (ch == '*') { tokens.push({type:'op', val:'*'}); i++; continue; }
 			if (ch == '/') { tokens.push({type:'op', val:'/'}); i++; continue; }
 			if (ch == '^') { tokens.push({type:'op', val:'^'}); i++; continue; }
@@ -794,16 +786,14 @@ function parseFile(file,num) {
 			if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || ch == '_') {
 				var ident = "";
 				while (i < expr.length && ((expr[i] >= 'a' && expr[i] <= 'z') || (expr[i] >= 'A' && expr[i] <= 'Z') || (expr[i] >= '0' && expr[i] <= '9') || expr[i] == '_')) { ident += expr[i]; i++; }
-				var identUpper = ident.toUpperCase();
-				// Check if it's a function
-				var funcs = ["IF","AND","OR","MIN","MAX","FLOOR","CEIL","ROUND","MOD","AVERAGE","SQRT","POW","COUNT","COUNTIF","LN","EXP","XOR","ABS"];
-				if (funcs.indexOf(identUpper) >= 0) {
-					tokens.push({type:'func', val:identUpper});
+				// Check if it's a function (expr is already uppercased)
+				var funcs = ["IF","AND","OR","MIN","MAX","FLOOR","CEIL","ROUND","MOD","AVERAGE","SQRT","POW","COUNT","COUNTIF","LN","EXP","XOR","ABS","SIGN"];
+				if (funcs.indexOf(ident) >= 0) {
+					tokens.push({type:'func', val:ident});
 					continue;
 				}
-				// It's a variable - resolve its value
-				var varVal = resolveFormulaVar(identUpper);
-				tokens.push({type:'num', val:varVal});
+				// It's a variable - defer resolution to the parser
+				tokens.push({type:'var', val:ident});
 				continue;
 			}
 			// Unknown character, skip
@@ -886,22 +876,22 @@ function parseFile(file,num) {
 
 	function parsePower(tokens, pos) {
 		var left = parseUnary(tokens, pos);
-		while (pos.i < tokens.length && tokens[pos.i].type == 'op' && tokens[pos.i].val == '^') {
+		if (pos.i < tokens.length && tokens[pos.i].type == 'op' && tokens[pos.i].val == '^') {
 			pos.i++;
-			var right = parseUnary(tokens, pos);
-			if (left === null || right === null) { left = null; continue; }
+			var right = parsePower(tokens, pos);
+			if (left === null || right === null) return null;
 			left = Math.pow(left, right);
 		}
 		return left;
 	}
 
 	function parseUnary(tokens, pos) {
-		if (pos.i < tokens.length && tokens[pos.i].type == 'op' && tokens[pos.i].val == 'NEG') {
+		if (pos.i < tokens.length && tokens[pos.i].type == 'op' && tokens[pos.i].val == '-') {
 			pos.i++;
 			var val = parseUnary(tokens, pos);
 			return -val;
 		}
-		if (pos.i < tokens.length && tokens[pos.i].type == 'op' && tokens[pos.i].val == 'POS') {
+		if (pos.i < tokens.length && tokens[pos.i].type == 'op' && tokens[pos.i].val == '+') {
 			pos.i++;
 			return parseUnary(tokens, pos);
 		}
@@ -917,6 +907,7 @@ function parseFile(file,num) {
 		if (pos.i >= tokens.length) return 0;
 		var tok = tokens[pos.i];
 		if (tok.type == 'num') { pos.i++; return tok.val; }
+		if (tok.type == 'var') { pos.i++; return resolveFormulaVar(tok.val); }
 		if (tok.type == 'func') {
 			var fname = tok.val; pos.i++;
 			// Expect '('
@@ -964,6 +955,7 @@ function parseFile(file,num) {
 			case 'EXP': return (args.length > 0) ? Math.exp(args[0]) : 0;
 			case 'COUNT': { var c=0; for (var i=0;i<args.length;i++) { if (args[i]) c++; } return c; }
 			case 'COUNTIF': { if (args.length < 2) return 0; var target=args[args.length-1]; var c=0; for (var i=0;i<args.length-1;i++) { if (args[i]==target) c++; } return c; }
+			case 'SIGN': return (args.length > 0) ? (args[0] > 0 ? 1 : args[0] < 0 ? -1 : 0) : 0;
 			default: return 0;
 		}
 	}
