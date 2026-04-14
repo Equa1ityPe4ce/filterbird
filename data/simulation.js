@@ -803,7 +803,7 @@ function parseFile(file,num) {
 	}
 
 	function resolveFormulaVar(name, varArgs) {
-		// Variables with integer args: STAT<n>, CHARSTAT<n>
+		// Variables with integer args: STAT(n), CHARSTAT(n), MULTI(stat,layer)
 		if (name == "STAT" && varArgs.length == 1) {
 			return ~~itemToCompare["STAT"+varArgs[0]];
 		}
@@ -811,6 +811,11 @@ function parseFile(file,num) {
 			var csVal = character["CHARSTAT"+varArgs[0]];
 			if (typeof(csVal) != 'undefined') return Number(csVal);
 			return ~~itemToCompare["CHARSTAT"+varArgs[0]];
+		}
+		if (name == "MULTI" && varArgs.length == 2) {
+			var multiKey = "MULTI"+varArgs[0]+"_"+varArgs[1];
+			if (typeof(itemToCompare[multiKey]) != 'undefined') return Number(itemToCompare[multiKey]);
+			return null;
 		}
 		// Check direct item properties
 		if (typeof(itemToCompare[name]) != 'undefined' && typeof(itemToCompare[name]) == 'number') {
@@ -912,11 +917,19 @@ function parseFile(file,num) {
 		if (tok.type == 'num') { pos.i++; return tok.val; }
 		if (tok.type == 'var') {
 			pos.i++;
-			// Collect integer args following the variable name
+			// Only STAT (1 arg), CHARSTAT (1 arg), MULTI (2 args) take comma-separated integer args
+			var varArgCounts = {"STAT": 1, "CHARSTAT": 1, "MULTI": 2};
+			var expectedArgs = varArgCounts[tok.val] || 0;
 			var varArgs = [];
-			while (pos.i < tokens.length && tokens[pos.i].type == 'num' && tokens[pos.i].val == Math.floor(tokens[pos.i].val)) {
-				varArgs.push(tokens[pos.i].val);
-				pos.i++;
+			for (var va = 0; va < expectedArgs; va++) {
+				if (pos.i < tokens.length && tokens[pos.i].type == 'num' && tokens[pos.i].val == Math.floor(tokens[pos.i].val)) {
+					varArgs.push(tokens[pos.i].val);
+					pos.i++;
+				} else break;
+				// Consume comma between args (but not after the last)
+				if (va < expectedArgs - 1 && pos.i < tokens.length && tokens[pos.i].type == 'comma') {
+					pos.i++;
+				}
 			}
 			return resolveFormulaVar(tok.val, varArgs);
 		}
