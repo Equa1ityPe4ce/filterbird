@@ -796,8 +796,8 @@ function parseFile(file,num) {
 				tokens.push({type:'var', val:ident});
 				continue;
 			}
-			// Unknown character, skip
-			i++;
+			// Unknown character is an error
+			return null;
 		}
 		return tokens;
 	}
@@ -931,6 +931,8 @@ function parseFile(file,num) {
 					pos.i++;
 				}
 			}
+			// Too few args is an error
+			if (varArgs.length < expectedArgs) return null;
 			return resolveFormulaVar(tok.val, varArgs);
 		}
 		if (tok.type == 'func') {
