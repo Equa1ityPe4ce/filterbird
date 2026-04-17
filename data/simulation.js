@@ -843,7 +843,7 @@ function parseFile(file,num) {
 		while (pos.i < tokens.length && tokens[pos.i].type == 'op' && (tokens[pos.i].val == '==' || tokens[pos.i].val == '!=' || tokens[pos.i].val == '>=' || tokens[pos.i].val == '<=' || tokens[pos.i].val == '>' || tokens[pos.i].val == '<')) {
 			var op = tokens[pos.i].val; pos.i++;
 			var right = parseAddSub(tokens, pos);
-			if (left === null || right === null) { left = null; continue; }
+			if (left === null || right === null) { left = null; break; }
 			if (op == '==') left = (left == right) ? 1 : 0;
 			else if (op == '!=') left = (left != right) ? 1 : 0;
 			else if (op == '>=') left = (left >= right) ? 1 : 0;
@@ -859,7 +859,7 @@ function parseFile(file,num) {
 		while (pos.i < tokens.length && tokens[pos.i].type == 'op' && (tokens[pos.i].val == '+' || tokens[pos.i].val == '-')) {
 			var op = tokens[pos.i].val; pos.i++;
 			var right = parseMulDiv(tokens, pos);
-			if (left === null || right === null) { left = null; continue; }
+			if (left === null || right === null) { left = null; break; }
 			if (op == '+') left = left + right;
 			else left = left - right;
 		}
@@ -871,7 +871,7 @@ function parseFile(file,num) {
 		while (pos.i < tokens.length && tokens[pos.i].type == 'op' && (tokens[pos.i].val == '*' || tokens[pos.i].val == '/')) {
 			var op = tokens[pos.i].val; pos.i++;
 			var right = parsePower(tokens, pos);
-			if (left === null || right === null) { left = null; continue; }
+			if (left === null || right === null) { left = null; break; }
 			if (op == '*') left = left * right;
 			else left = (right != 0) ? left / right : null;
 		}
@@ -926,8 +926,11 @@ function parseFile(file,num) {
 					varArgs.push(tokens[pos.i].val);
 					pos.i++;
 				} else break;
-				// Consume comma between args (but not after the last)
-				if (va < expectedArgs - 1 && pos.i < tokens.length && tokens[pos.i].type == 'comma') {
+				// Commas are REQUIRED between args (but not after the last)
+				if (va < expectedArgs - 1) {
+					if (pos.i >= tokens.length || tokens[pos.i].type != 'comma') {
+						return null; // Error: missing comma between arguments
+					}
 					pos.i++;
 				}
 			}
@@ -966,7 +969,7 @@ function parseFile(file,num) {
 
 	function evalFunc(fname, args) {
 		switch(fname) {
-			case 'IF': return (args.length >= 3) ? (args[0] ? args[1] : args[2]) : 0;
+			case 'IF': return (args.length === 3) ? (args[0] ? args[1] : args[2]) : null;
 			case 'AND': { for (var i=0;i<args.length;i++) { if (!args[i]) return 0; } return 1; }
 			case 'OR': { for (var i=0;i<args.length;i++) { if (args[i]) return 1; } return 0; }
 			case 'XOR': { var count=0; for (var i=0;i<args.length;i++) { if (args[i]) count++; } return (count%2==1)?1:0; }
@@ -1004,10 +1007,9 @@ function parseFile(file,num) {
 		// Replace %FORMULAX% references
 		for (var fKey in formulas) {
 			var fExprStr = formulas[fKey];
-			str = str.split("%FORMULA"+fKey+"%").join(function() {
-				var fResult = evaluateFormula(fExprStr);
-				return formatFormulaResult(fResult);
-			}());
+			var fResult = evaluateFormula(fExprStr);
+			var fFormatted = formatFormulaResult(fResult);
+			str = str.split("%FORMULA"+fKey+"%").join(fFormatted);
 		}
 		// Replace $f(...) inline formulas
 		var maxIterations = 100;
