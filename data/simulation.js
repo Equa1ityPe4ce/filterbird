@@ -760,8 +760,8 @@ function parseFile(file,num) {
 			if ((ch >= '0' && ch <= '9') || (ch == '.' && i+1 < expr.length && expr[i+1] >= '0' && expr[i+1] <= '9')) {
 				var num = "";
 				while (i < expr.length && ((expr[i] >= '0' && expr[i] <= '9') || expr[i] == '.')) { num += expr[i]; i++; }
-				var val = parseFloat(num);
-				if (isNaN(val)) return null;
+				var val = Number(num);
+				if (isNaN(val) || !isFinite(val)) return null;
 				tokens.push({type:'num', val:val});
 				continue;
 			}
