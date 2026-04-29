@@ -62,7 +62,7 @@ The simulator recognizes a wide range of filter conditions including:
 - **All individual item codes** for bases, gems, runes (including PD2-specific stacked runes and uber items)
 
 ### Display Keywords
-Supports standard display formatting including color codes (%WHITE%, %GRAY%, %BLUE%, %YELLOW%, %GOLD%, %GREEN%, %DARK_GREEN%, %TAN%, %BLACK%, %ORANGE%, %PURPLE%, %RED%, %CORAL%, %SAGE%, %TEAL%, %LIGHT_GRAY%), item references (%NAME%, %PRICE%, %ILVL%, %ALVL%, %CRAFTALVL%, %LVLREQ%, %QTY%, %RANGE%, %WPNSPD%, %NL%, %CL%, %MAP%), and bracket escapes (%LBRACE%, %RBRACE%). Notification keywords (%NOTIFY-*%) are recognized and parsed but do not produce audio or visual notification effects in the simulator.
+Supports standard display formatting including color codes (%WHITE%, %GRAY%, %BLUE%, %YELLOW%, %GOLD%, %GREEN%, %DARK_GREEN%, %TAN%, %BLACK%, %ORANGE%, %PURPLE%, %RED%, %CORAL%, %SAGE%, %TEAL%, %LIGHT_GRAY%), item references (%NAME%, %PRICE%, %ILVL%, %ALVL%, %CRAFTALVL%, %REROLLALVL%, %LVLREQ%, %QTY%, %RANGE%, %WPNSPD%, %NL%, %CL%, %MAP%), and bracket escapes (%LBRACE%, %RBRACE%). Notification keywords (%NOTIFY-*%) are recognized and parsed but do not produce audio or visual notification effects in the simulator.
 
 ## Known Limitations
 - Item notifications (%NOTIFY-*%) are parsed but do not produce sound or minimap icon effects

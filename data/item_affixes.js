@@ -1568,9 +1568,9 @@ var affixes = [
 var affixes_superior = [
 //	prefix	name	spwnble	rare	lvl	maxlvl	lvlreq	class	clvlreq	group	mod1	mod1par	mod1min	mod1max	mod2	mod2par	mod2min	mod2max	mod3	mod3par	mod3min	mod3max	itype1	itype2	itype3	itype4	itype5	itype6	itype7	etype1	etype2	etype3	etype4	etype5
 //	0	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25	26	27	28	29	30	31	32	33
-[	2,	""	1,	0,	1,	99,	1,	"",	0,	1,	"acP",	0,	5,	15,	"",	0,	0,	0,	"",	0,	0,	0,	"armo",	"",	"",	"",	"",	"",	"",	"",	"",	"",	"",	""	],
-[	2,	""	1,	0,	1,	99,	1,	"",	0,	2,	"durP",	0,	10,	15,	"",	0,	0,	0,	"",	0,	0,	0,	"armo",	"weap",	"",	"",	"",	"",	"",	"",	"",	"",	"",	""	],
-[	2,	""	1,	0,	1,	99,	1,	"",	0,	1,	"dmgP",	0,	5,	15,	"",	0,	0,	0,	"",	0,	0,	0,	"weap",	"",	"",	"",	"",	"",	"",	"",	"",	"",	"",	""	],
+[	2,	""	1,	0,	1,	99,	1,	"",	0,	1,	"acP",	0,	5,	20,	"",	0,	0,	0,	"",	0,	0,	0,	"armo",	"",	"",	"",	"",	"",	"",	"",	"",	"",	"",	""	],
+[	2,	""	1,	0,	1,	99,	1,	"",	0,	2,	"durP",	0,	10,	15,	"",	0,	0,	0,	"",	0,	0,	0,	"armo",	"weap",	"",	"",	"",	"",	"",	"",	"",	"",	"",	"",	""	],
+[	2,	""	1,	0,	1,	99,	1,	"",	0,	1,	"dmgP",	0,	5,	20,	"",	0,	0,	0,	"",	0,	0,	0,	"weap",	"",	"",	"",	"",	"",	"",	"",	"",	"",	"",	""	],
 [	2,	""	1,	0,	1,	99,	1,	"",	0,	3,	"attP",	0,	1,	3,	"",	0,	0,	0,	"",	0,	0,	0,	"weap",	"",	"",	"",	"",	"",	"",	"",	"",	"",	"",	""	],
 [	2,	""	1,	0,	1,	99,	1,	"",	0,	1,	"dmg_max",	0,	1,	1,	"",	0,	0,	0,	"",	0,	0,	0,	"weap",	"",	"",	"",	"",	"",	"",	"",	"",	"",	"",	""	],
 [	2,	""	1,	0,	1,	99,	1,	"",	0,	1,	"ease",	0,	-10,	-5,	"",	0,	0,	0,	"",	0,	0,	0,	"armo",	"weap",	"",	"",	"",	"",	"",	"",	"",	"",	"",	""	],
@@ -1876,9 +1876,9 @@ var affixes_superior = [
 // TODO: "durP" and "ease" should not apply if the item cannot have durability (any bow/crossbow, javelin, throwing weapon, or Phase Blade)
 //	group	mod			modmin	modmax	itype
 //	0		1			2		3		4
-[	1,		"acP",		5,		15,		"armo"	],
+[	1,		"acP",		5,		20,		"armo"	],
 [	2,		"durP",		10,		15,		"armo"	],
-[	1,		"dmgP",		5,		15,		"weap"	],
+[	1,		"dmgP",		5,		20,		"weap"	],
 [	2,		"durP",		10,		15,		"weap"	],
 [	3,		"attP",		1,		3,		"weap"	],
 [	1,		"dmg_max",	1,		1,		"weap"	],
