@@ -1575,7 +1575,7 @@ function parseFile(file,num) {
 			if (settings.validation == 1) { if (description_braces == 1) { text_length[2] += 3 } }
 		} else if (key == "ref") {
 			if (o == "ref_CLVL") { temp = character.CLVL }
-			else if (o == "ref_REROLLALVL") { temp = Math.round(Number(character.CLVL)/2) + Math.round(Number(itemToCompare.ILVL)/2) }
+			else if (o == "ref_REROLLALVL") { temp = Math.round(~~character.CLVL/2) + Math.round(~~itemToCompare.ILVL/2) }
 			else if (o == "ref_NAME") { blank = true }
 		else if (o == "ref_BASENAME") { temp = (typeof(itemToCompare.base) != 'undefined') ? itemToCompare.base : itemToCompare.NAME }
 			else if (settings.version == 1 && o == "ref_RUNENAME" && itemToCompare.RUNE > 0) { color = colors["ORANGE"]; temp = itemToCompare.name.split(" ")[0]; }	// TODO: why isn't itemToCompare.RUNENAME setup by this point? (for stacked runes)
