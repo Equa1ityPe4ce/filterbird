@@ -1563,7 +1563,7 @@ var all_codes = {
 	NORM:3,EXC:3,ELT:3,NMAG:3,MAG:3,RARE:3,UNI:3,SET:3,ID:3,ETH:3,INF:3,SUP:3,RW:3,
 	CL1:3,CL2:3,CL3:3,CL4:3,CL5:3,CL6:3,CL7:3,
 	EQ1:3,EQ2:3,EQ3:3,EQ4:3,EQ5:3,EQ6:3,EQ7:3,ARMOR:3,
-	WP1:3,WP2:3,WP3:3,WP4:3,WP5:3,WP6:3,WP7:3,WP8:3,WP9:3,WP10:3,WP11:3,WP12:3,WP13:3,WEAPON:3,CHARM:3,
+	WP1:3,WP2:3,WP3:3,WP4:3,WP5:3,WP6:3,WP7:3,WP8:3,WP9:3,WP10:3,WP11:3,WP12:3,WP13:3,WEAPON:3,CHARM:3,JEWELRY:3,QUIVER:3,MISC:3,
 	amu:3,rin:3,aqv:3,cqv:3,aq2:1,cq2:1,aqv2:2,aqv3:2,cqv2:2,cqv3:2,
 	bks:3,bkd:3,hdm:3,box:3,tr1:3,ass:3,msf:3,vip:3,hst:3,j34:3,g34:3,xyz:3,g33:3,bbb:3,qbr:3,qey:3,qhr:3,qf1:3,qf2:3,mss:3,hfh:3,ice:3,tr2:3,
 	crfb:3,crfc:3,crfs:3,crfh:3,crfv:3,crfu:3,crfp:3,
@@ -1598,7 +1598,7 @@ var all_codes = {
 	AXE:3,MACE:3,SWORD:3,DAGGER:3,THROWING:3,JAV:2,SPEAR:3,POLEARM:3,BOW:3,XBOW:3,STAFF:3,WAND:3,SCEPTER:3,_1H:2,_2H:2,	// JAV is a valid code in PoD, but doesn't seem to match with javelins
 	wss:2,lbox:2,dcma:2,dcbl:2,dcho:2,dcso:2,imra:2,imma:2,scou:2,rera:2,upma:2,upmp:2,scrb:2,ubtm:2,jewf:2,rtma:2,rtmo:2,rtmv:2,rtmf:2,cwss:2,rar:2,rbe:2,ram:2,rid:2,rtp:2,lpp:2,llmr:2,lsvl:2,ubaa:2,ubab:2,ubac:2,uba:2,rkey:2,fort:2,lmal:2,iwss:2,cm2f:2,pvpp:2,irma:2,irra:2,urma:2,rrra:2,
 	AMAZON:2,ASSASSIN:2,BARBARIAN:2,DRUID:2,NECROMANCER:2,PALADIN:2,SORCERESS:2,
-	PREFIX:2,SUFFIX:2,MAPID:2,SHOP:2,EQUIPPED:2,GEMMED:2,GROUND:2,INVENTORY:2,STASH:2,MERC:2,QUIVER:2,imrn:2,luca:2,lucb:2,lucc:2,lucd:2,_7cr2:2,cm1p:2,cm2p:2,cm3p:2,BUYPRICE:2,SELLPRICE:2,
+	PREFIX:2,SUFFIX:2,MAPID:2,SHOP:2,EQUIPPED:2,GEMMED:2,GROUND:2,INVENTORY:2,STASH:2,MERC:2,imrn:2,luca:2,lucb:2,lucc:2,lucd:2,_7cr2:2,cm1p:2,cm2p:2,cm3p:2,BUYPRICE:2,SELLPRICE:2,
 	ivea:2,ivez:2,iveb:2,ived:2,iven:2,ivep:2,ives:2,t3b:2,
 	t10:2,t11:2,t12:2,t13:2,t14:2,t15:2,t16:2,t17:2,t18:2,t20:2,t19:2,t21:2,t22:2,t23:2,t24:2,t25:2,t26:2,t27:2,t28:2,t29:2,t30:2,t31:2,t32:2,t33:2,t34:2,t35:2,t36:2,t37:2,t38:2,t39:2,t3a:2,t40:2,t41:2,t42:2,t43:2,t44:2,t45:2,t46:2,t47:2,t48:2,t49:2,t50:2,t51:2,t52:2,t53:2,t54:2,t55:2,t56:2,t57:2,t58:2,t59:2,t60:2,t61:2,t62:2,t63:2,t64:2,t65:2,t66:2,t67:2,t68:2,t69:2,
 	r01s:2,r02s:2,r03s:2,r04s:2,r05s:2,r06s:2,r07s:2,r08s:2,r09s:2,r10s:2,r11s:2,r12s:2,r13s:2,r14s:2,r15s:2,r16s:2,r17s:2,r18s:2,r19s:2,r20s:2,r21s:2,r22s:2,r23s:2,r24s:2,r25s:2,r26s:2,r27s:2,r28s:2,r29s:2,r30s:2,r31s:2,r32s:2,r33s:2,
