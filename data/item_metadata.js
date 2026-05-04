@@ -1563,7 +1563,7 @@ var all_codes = {
 	NORM:3,EXC:3,ELT:3,NMAG:3,MAG:3,RARE:3,UNI:3,SET:3,ID:3,ETH:3,INF:3,SUP:3,RW:3,
 	CL1:3,CL2:3,CL3:3,CL4:3,CL5:3,CL6:3,CL7:3,
 	EQ1:3,EQ2:3,EQ3:3,EQ4:3,EQ5:3,EQ6:3,EQ7:3,ARMOR:3,
-	WP1:3,WP2:3,WP3:3,WP4:3,WP5:3,WP6:3,WP7:3,WP8:3,WP9:3,WP10:3,WP11:3,WP12:3,WP13:3,WEAPON:3,
+	WP1:3,WP2:3,WP3:3,WP4:3,WP5:3,WP6:3,WP7:3,WP8:3,WP9:3,WP10:3,WP11:3,WP12:3,WP13:3,WEAPON:3,CHARM:3,
 	amu:3,rin:3,aqv:3,cqv:3,aq2:1,cq2:1,aqv2:2,aqv3:2,cqv2:2,cqv3:2,
 	bks:3,bkd:3,hdm:3,box:3,tr1:3,ass:3,msf:3,vip:3,hst:3,j34:3,g34:3,xyz:3,g33:3,bbb:3,qbr:3,qey:3,qhr:3,qf1:3,qf2:3,mss:3,hfh:3,ice:3,tr2:3,
 	crfb:3,crfc:3,crfs:3,crfh:3,crfv:3,crfu:3,crfp:3,

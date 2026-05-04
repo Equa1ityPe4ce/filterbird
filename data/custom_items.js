@@ -490,6 +490,7 @@ function setCustomBase() {
 				if (base == "Small Charm") { itemCustom.CODE = "cm1" }
 				else if (base == "Large Charm") { itemCustom.CODE = "cm2" }
 				else if (base == "Grand Charm") { itemCustom.CODE = "cm3" }
+				itemCustom.CHARM = true
 			}
 			else if (type == "jewel") { itemCustom.CODE = "jew" }
 			else if (type == "quiver") {
