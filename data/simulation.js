@@ -255,12 +255,13 @@ function setItem(value) {
 				else if (base.tier == 2) { itemToCompare.EXC = true }
 				else if (base.tier == 3) { itemToCompare.ELT = true }
 			} else {
-				if (group == "amulet" && typeof(itemToCompare.CODE) == 'undefined') { itemToCompare.CODE = "amu"; itemToCompare.base = "Amulet"; }
-				else if (group == "ring") { itemToCompare.CODE = "rin"; itemToCompare.base = "Ring"; }
+				if (group == "amulet" && typeof(itemToCompare.CODE) == 'undefined') { itemToCompare.CODE = "amu"; itemToCompare.base = "Amulet"; itemToCompare.JEWELRY = true; }
+				else if (group == "ring") { itemToCompare.CODE = "rin"; itemToCompare.base = "Ring"; itemToCompare.JEWELRY = true; }
 				else if (group == "charms") {
 					if (item.size == "small") { itemToCompare.CODE = "cm1"; itemToCompare.base = "Small Charm"; }
 					else if (item.size == "large") { itemToCompare.CODE = "cm2"; itemToCompare.base = "Large Charm"; }
 					else if (item.size == "grand") { itemToCompare.CODE = "cm3"; itemToCompare.base = "Grand Charm"; }
+					itemToCompare.CHARM = true;
 				}
 					if (item.type == "jewel") { itemToCompare.CODE = "jew"; itemToCompare.base = "Jewel"; }
 					else if (item.type == "rune") {
@@ -305,6 +306,7 @@ function setItem(value) {
 			itemToCompare[itemToCompare.CODE] = true
 			var quiverCodes = ["aqv","cqv","aqv2","aqv3","cqv2","cqv3","aq2","cq2"];
 			if (quiverCodes.indexOf(itemToCompare.CODE) >= 0 || itemToCompare.type == "quiver") { itemToCompare.QUIVER = true; }
+			if (group == "misc" || group == "runes" || itemToCompare.type == "rune" || itemToCompare.type == "gem" || itemToCompare.type == "misc" || itemToCompare.type == "other") { itemToCompare.MISC = true; }
 			if (typeof(itemToCompare.velocity) != 'undefined') { if (itemToCompare.velocity < 0) { itemToCompare.velocity += 100000 } }	// negative values overflow for this in-game code
 			if (typeof(itemToCompare.always_id) == 'undefined') { itemToCompare.always_id = false }
 			if (itemToCompare.always_id == false && item_settings.ID == false) { itemToCompare.ID = false }

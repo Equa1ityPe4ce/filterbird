@@ -54,10 +54,10 @@ The simulator recognizes a wide range of filter conditions including:
 - **Item properties**: NORM, EXC, ELT, NMAG, MAG, RARE, UNI, SET, ID, ETH, INF, SUP, RW, SOCK/SOCKETS, DEF, EDEF, EDAM, ED, MAXDUR, ILVL, QLVL, ALVL, CRAFTALVL, CRAFT, LVLREQ, QTY, PRICE, BUYPRICE, SELLPRICE
 - **Character stats**: CLVL, DIFF/DIFFICULTY, FILTLVL/FILTERLVL, CHARSTAT, GOLD, CLASS (PD2)
 - **Resistances and stats**: RES, FRES, CRES, LRES, PRES, AR, ARPER, FRW, IAS, FCR, FHR, FBR, MINDMG, MAXDMG, STR, DEX, LIFE, MANA, MFIND, GFIND, MAEK, DTM, REPLIFE, REPAIR, FOOLS, ALLSK
-- **Equipment types**: ARMOR, WEAPON, HELM, CHEST, SHIELD, GLOVES, BOOTS, BELT, CIRC, and all weapon categories (AXE, MACE, SWORD, DAGGER, SPEAR, POLEARM, BOW, XBOW, STAFF, WAND, SCEPTER, etc.)
+- **Equipment types**: ARMOR, WEAPON, CHARM, JEWELRY, QUIVER, MISC, HELM, CHEST, SHIELD, GLOVES, BOOTS, BELT, CIRC, and all weapon categories (AXE, MACE, SWORD, DAGGER, SPEAR, POLEARM, BOW, XBOW, STAFF, WAND, SCEPTER, etc.)
 - **Class-specific codes**: DRU, BAR, DIN, NEC, SIN, SOR, ZON, plus class item codes (CL1-CL7, EQ1-EQ7, WP1-WP13)
 - **Skill codes**: SK, CLSK, TABSK ranges for all classes
-- **PD2-specific codes**: CHSK (skill charges), OS (oskills), MULTI (multi-layered stat conditions), PREFIX, SUFFIX, MAPID, MAPTIER, AMAZON/ASSASSIN/BARBARIAN/DRUID/NECROMANCER/PALADIN/SORCERESS, AUTOMOD, GEMMED, QUIVER, and various PD2 item codes
+- **PD2-specific codes**: CHSK (skill charges), OS (oskills), MULTI (multi-layered stat conditions), PREFIX, SUFFIX, MAPID, MAPTIER, AMAZON/ASSASSIN/BARBARIAN/DRUID/NECROMANCER/PALADIN/SORCERESS, AUTOMOD, GEMMED, and various PD2 item codes
 - **Location conditions**: SHOP, EQUIPPED, GROUND, INVENTORY, STASH, MERC
 - **All individual item codes** for bases, gems, runes (including PD2-specific stacked runes and uber items)
 

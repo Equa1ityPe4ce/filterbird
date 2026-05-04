@@ -446,6 +446,7 @@ function setCustomBase() {
 	itemCustom.ILVL = document.getElementById("ilvl").value;
 
 	if (type == "rune" || type == "gem" || type == "other" || type == "misc") {
+		itemCustom.MISC = true
 		document.getElementById("select_rarity").style.display = "none"
 		for (itemNew in premade[type]) {
 			if (premade[type][itemNew].name == name) {
@@ -484,16 +485,18 @@ function setCustomBase() {
 			itemCustom.original_tier = itemCustom.tier;
 			if (itemCustom.tier == 1) { itemCustom.upgrade2 = bases[itemCustom.upgrade.split(" ").join("_").split("-").join("_").split("s'").join("s").split("'s").join("s")].upgrade }
 		} else {
-			if (type == "amulet") { itemCustom.CODE = "amu" }
-			else if (type == "ring") { itemCustom.CODE = "rin" }
+			if (type == "amulet") { itemCustom.CODE = "amu"; itemCustom.JEWELRY = true }
+			else if (type == "ring") { itemCustom.CODE = "rin"; itemCustom.JEWELRY = true }
 			else if (type == "charm") {
 				if (base == "Small Charm") { itemCustom.CODE = "cm1" }
 				else if (base == "Large Charm") { itemCustom.CODE = "cm2" }
 				else if (base == "Grand Charm") { itemCustom.CODE = "cm3" }
+				itemCustom.CHARM = true
 			}
 			else if (type == "jewel") { itemCustom.CODE = "jew" }
 			else if (type == "quiver") {
 				itemCustom.quiv = true
+				itemCustom.QUIVER = true
 				if (settings.version == 0) {
 					if (base == "Arrows") {
 						if (rarity == "Regular") { itemCustom.CODE = "aqv"; itemCustom.name = "Rusted Arrows"; itemCustom.NAME = "Rusted Arrows"; }
