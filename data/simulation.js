@@ -2057,9 +2057,9 @@ function setLocation(value) {
 // setFilterLevel -
 // ---------------------------------
 function setFilterLevel(value) {
-	if (isNaN(value) == true || value < 0 || value > 9) {
+	if (isNaN(value) == true || value < 0 || value > 15) {
 		value = Number(character.FILTLVL);
-		if (value > 9) { value = 9 };
+		if (value > 15) { value = 15 };
 	}
 	document.getElementById("filtlvl").value = Number(value)
 	character.FILTLVL = Number(value)
