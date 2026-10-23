@@ -1,6 +1,6 @@
 
 var itemToCompare = {name:"5000 Gold",NAME:"5000 Gold",CODE:"GOLD",GOLD:5000,ID:true,always_id:true,rarity:"regular"};
-var character = {CLVL:90,CHARSTAT14:199000,CHARSTAT15:199000,DIFFICULTY:2,ILVL:85,CHARSTAT70:0,CHARSTAT13:1000,AMAZON:true,ASSASSIN:false,BARBARIAN:false,DRUID:false,NECROMANCER:false,PALADIN:false,SORCERESS:false,SHOP:false,EQUIPPED:false,GROUND:false,INVENTORY:false,STASH:false,MERC:false,FILTLVL:1};
+var character = {CLVL:90,CHARSTAT14:199000,CHARSTAT15:199000,DIFFICULTY:2,ILVL:85,CHARSTAT70:0,CHARSTAT13:1000,AMAZON:true,ASSASSIN:false,BARBARIAN:false,DRUID:false,NECROMANCER:false,PALADIN:false,SORCERESS:false,SHOP:false,EQUIPPED:false,GROUND:false,INVENTORY:false,STASH:false,MERC:false,CUBE:false,FILTLVL:1,TRUE:true,FALSE:false,ANYDISCOVERED:true,ALLDISCOVERED:true,ANYOWNED:true,ALLOWNED:true};
 var item_settings = {ID:false, ILVL_return:85};
 var settings = {auto_difficulty:true,version:0,validation:1,auto_simulate:1,max_errors:50,error_limit:1,num_filters:2,background:0,nowrap:true,nowrap_width:745};
 var notices = {duplicates:0,pd2_conditions:0,pod_conditions:0,colors:0,encoding:0};
@@ -680,7 +680,7 @@ function parseFile(file,num) {
 	// Gather aliases: Alias[NAME]: VALUE
 	var aliases = {};
 	for (var ali = 0; ali < lines.length; ali++) {
-		var aliRule = lines[ali].split("/")[0];
+		var aliRule = lines[ali].split("//")[0];
 		var aliIndex = aliRule.indexOf("Alias[");
 		if (aliIndex >= 0 && aliRule.substring(0, aliIndex).trim() === "") {
 			var aliEnd = aliRule.indexOf("]:", aliIndex);
@@ -719,7 +719,7 @@ function parseFile(file,num) {
 	// Gather explicit formulas: Formula[KEY]: expression
 	var formulas = {};
 	for (var fi = 0; fi < lines.length; fi++) {
-		var fRule = lines[fi].split("/")[0];
+		var fRule = lines[fi].split("//")[0];
 		var fIndex = fRule.indexOf("Formula[");
 		if (fIndex >= 0 && fRule.substring(0, fIndex).trim() === "") {
 			var fEnd = fRule.indexOf("]:", fIndex);
@@ -1073,8 +1073,8 @@ function parseFile(file,num) {
 	for (line in lines) { if (done == false) {
 		line_num = Number(line)+1;
 		document.getElementById("o3").innerHTML = "<br>The filter loaded has critical errors which could cause instability with in-game filtering.<br>";
-		var rule = lines[line].split("/")[0];
-		var rule_with_tabs = lines_with_tabs[line].split("/")[0];
+		var rule = lines[line].split("//")[0];
+		var rule_with_tabs = lines_with_tabs[line].split("//")[0];
 		var index = rule.indexOf("ItemDisplay[");
 		var index_with_tabs = rule_with_tabs.indexOf("ItemDisplay[");
 		var index_end = rule.indexOf("]:");
@@ -1142,7 +1142,7 @@ function parseFile(file,num) {
 				for (cond in cond_list) {
 					cond = Number(cond)
 					var c = cond_list[cond];
-					var nonbool_conditions = ["GOLD","RUNE","GEMLEVEL","GEMTYPE","QTY","DEF","LVLREQ","PRICE","BUYPRICE","SELLPRICE","ALVL","CRAFTALVL","QLVL","ILVL","SOCK","ED","MAXDUR","AR","RES","FRES","CRES","LRES","PRES","FRW","IAS","FCR","FHR","FBR","MINDMG","MAXDMG","STR","DEX","LIFE","MANA","MFIND","GFIND","MAEK","DTM","REPLIFE","REPAIR","ARPER","FOOLS","ALLSK","WIDTH","HEIGHT","AREA","MAXSOCKETS","UPDEX","UPSTR","UPLVL","MAXRES","ALLATTRIB","BASEBLOCK","REQLVL","REQSTR","REQDEX","BASEMINONEH","BASEMAXONEH","BASEMINTWOH","BASEMAXTWOH","BASEMINSMITE","BASEMAXSMITE","BASEMINTHROW","BASEMAXTHROW","BASEMINKICK","BASEMAXKICK","MAPTIER"];
+					var nonbool_conditions = ["GOLD","RUNE","GEMLEVEL","GEMTYPE","QTY","DEF","LVLREQ","PRICE","BUYPRICE","SELLPRICE","ALVL","CRAFTALVL","QLVL","ILVL","SOCK","ED","MAXDUR","AR","RES","FRES","CRES","LRES","PRES","FRW","IAS","FCR","FHR","FBR","MINDMG","MAXDMG","STR","DEX","LIFE","MANA","MFIND","GFIND","MAEK","DTM","REPLIFE","REPAIR","ARPER","FOOLS","ALLSK","WIDTH","HEIGHT","AREA","MAXSOCKETS","UPDEX","UPSTR","UPLVL","MAXRES","ALLATTRIB","BASEBLOCK","REQLVL","REQSTR","REQDEX","BASEMINONEH","BASEMAXONEH","BASEMINTWOH","BASEMAXTWOH","BASEMINSMITE","BASEMAXSMITE","BASEMINTHROW","BASEMAXTHROW","BASEMINKICK","BASEMAXKICK","MAPTIER","REROLLALVL"];
 					if (c == "GEM") { c = "GEMLEVEL" }
 					if (c == "RUNENUM" || c == "RUNENAME") { c = "RUNE" }
 					var number = false;
@@ -1168,7 +1168,7 @@ function parseFile(file,num) {
 								recognized = true
 
 							} }
-							if (cr.substr(0,4) == "STAT") { if (Number(cr.slice(4)) >= 0 && Number(cr.slice(4)) <= 504) {
+							if (cr.substr(0,4) == "STAT") { if (Number(cr.slice(4)) >= 0 && Number(cr.slice(4)) <= 510) {
 								recognized = true
 								cond_list[cond] = ("STAT"+Number(cr.slice(4)))
 								c = cond_list[cond]
@@ -1198,6 +1198,7 @@ function parseFile(file,num) {
 						if (settings.version == 0 && c == "FILTERLVL") { c = "FILTLVL" }
 						if (settings.version == 1 && c == "CLASS") { c = "CLAZ" }
 						// set condition values
+						if (c == "REROLLALVL") { itemToCompare[c] = getRerollALVL() }
 						if (c == "CLVL" || c == "DIFFICULTY" || c.substr(0,8) == "CHARSTAT") {
 							if (typeof(character[c]) == 'undefined') { character[c] = 0 }
 							else if (~~Number(character[c]) < 0) { value_is_negative = true }
@@ -1228,7 +1229,7 @@ function parseFile(file,num) {
 						else if (~~Number(itemToCompare[c]) < 0) { value_is_negative = true }
 						// add to formula
 						if (c_falsify == true) { formula += "false " }
-						else if (c == "CLVL" || c == "DIFFICULTY" || c.substr(0,8) == "CHARSTAT" || c == "AMAZON" || c == "ASSASSIN" || c == "BARBARIAN" || c == "DRUID" || c == "NECROMANCER" || c == "PALADIN" || c == "SORCERESS" || c == "SHOP" || c == "EQUIPPED" || c == "GROUND" || c == "INVENTORY" || c == "STASH" || c == "MERC" || c == "FILTLVL") {
+						else if (c == "CLVL" || c == "DIFFICULTY" || c.substr(0,8) == "CHARSTAT" || c == "AMAZON" || c == "ASSASSIN" || c == "BARBARIAN" || c == "DRUID" || c == "NECROMANCER" || c == "PALADIN" || c == "SORCERESS" || c == "SHOP" || c == "EQUIPPED" || c == "GROUND" || c == "INVENTORY" || c == "STASH" || c == "MERC" || c == "CUBE" || c == "FILTLVL" || c == "TRUE" || c == "FALSE" || c == "ANYDISCOVERED" || c == "ALLDISCOVERED" || c == "ANYOWNED" || c == "ALLOWNED") {
 							if (value_is_negative == true) { formula += (2000000000+Number(character[c]))+" " }			// converts negative values to their equivalent 'unsigned' value
 							else { formula += character[c]+" " }
 						}
@@ -1268,7 +1269,11 @@ function parseFile(file,num) {
 					}
 					if (possible_logic_conflict == true) { document.getElementById("o"+num).innerHTML += "#"+num+" Improper formatting on line "+line_num+": (logic operators AND/OR used together without parentheses) ... "+"<l style='color:#aaa'>"+file.split("\t").join(" ").split("­").join("•").split("\n")[line]+"</l><br>"; errors++; }	// displays an error if the rule uses OR and AND together without parentheses
 				}
-				match = eval(formula)
+				try { match = eval(formula) }
+				catch (e) {
+					match = false
+					if (settings.validation == 1 && errors < settings.max_errors) { document.getElementById("o"+num).innerHTML += "#"+num+" Unable to evaluate conditions on line "+line_num+" ... "+"<l style='color:#aaa'>"+file.split("\t").join(" ").split("­").join("•").split("\n")[line]+"</l><br>"; errors++; }
+				}
 				//if (settings.validation == 1 && errors < settings.max_errors && unbounded_match_at_zero) { document.getElementById("o"+num).innerHTML += "#"+num+" Inadvisable formatting on line "+line_num+" (unbounded condition) ... "+"<l style='color:#aaa'>"+file.split("­").join("•").split("\n")[line]+"</l><br>"; errors++; }	// displays an error if the rule has unbounded conditions at zero	// TODO: Is this worth implementing? Impossible to know without seeing how the BH filter code functions in these cases
 			} else {
 				match = true
@@ -1336,7 +1341,7 @@ function parseFile(file,num) {
 				// POST-SEASON-6 CHANGES: This section is my first editing of simulation.js since a long absence and may not account for everything
 				if (settings.version == 1) {
 					out_format = out_format.split("%SOCKETS%").join(",ref_SOCK,").split("%DEF%").join(",ref_DEF,").split("%ED%").join(",ref_ED,").split("%EDEF%").join(",ref_EDEF,").split("%EDAM%").join(",ref_EDAM,").split("%AR%").join(",ref_AR,").split("%RES%").join(",ref_RES,").split("%FRES%").join(",ref_FRES,").split("%CRES%").join(",ref_CRES,").split("%LRES%").join(",ref_LRES,").split("%PRES%").join(",ref_PRES,").split("%FRW%").join(",ref_FRW,").split("%IAS%").join(",ref_IAS,").split("%FCR%").join(",ref_FCR,").split("%FHR%").join(",ref_FHR,").split("%FBR%").join(",ref_FBR,").split("%MINDMG%").join(",ref_MINDMG,").split("%MAXDMG%").join(",ref_MAXDMG,").split("%STR%").join(",ref_STR,").split("%DEX%").join(",ref_DEX,").split("%LIFE%").join(",ref_LIFE,").split("%MANA%").join(",ref_MANA,").split("%MFIND%").join(",ref_MFIND,").split("%GFIND%").join(",ref_GFIND,").split("%MAEK%").join(",ref_MAEK,").split("%DTM%").join(",ref_DTM,").split("%REPLIFE%").join(",ref_REPLIFE,").split("%REPAIR%").join(",ref_REPAIR,").split("%ARPER%").join(",ref_ARPER,").split("%FOOLS%").join(",ref_FOOLS,").split("%%").join(",ref_,")
-					for (let stat = 0; stat <= 504; stat++) {
+					for (let stat = 0; stat <= 510; stat++) {
 						if (typeof(itemToCompare["STAT"+stat]) != 'undefined') { out_format = out_format.split("%STAT"+stat+"%").join(",ref_STAT"+stat+",") }
 						else { out_format = out_format.split("%STAT"+stat+"%").join(",0,") }
 						if (typeof(itemToCompare["CHARSTAT"+stat]) != 'undefined') { out_format = out_format.split("%CHARSTAT"+stat+"%").join(",ref_CHARSTAT"+stat+",") }
@@ -1534,7 +1539,7 @@ function parseFile(file,num) {
 		// New filter code output tokens
 		out_format = out_format.split("%WIDTH%").join(",ref_WIDTH,").split("%HEIGHT%").join(",ref_HEIGHT,").split("%AREA%").join(",ref_AREA,").split("%MAXSOCKETS%").join(",ref_MAXSOCKETS,").split("%UPDEX%").join(",ref_UPDEX,").split("%UPSTR%").join(",ref_UPSTR,").split("%UPLVL%").join(",ref_UPLVL,").split("%MAXRES%").join(",ref_MAXRES,").split("%ALLATTRIB%").join(",ref_ALLATTRIB,").split("%BASEBLOCK%").join(",ref_BASEBLOCK,").split("%REQLVL%").join(",ref_REQLVL,").split("%REQSTR%").join(",ref_REQSTR,").split("%REQDEX%").join(",ref_REQDEX,")
 		out_format = out_format.split("%BASEMINONEH%").join(",ref_BASEMINONEH,").split("%BASEMAXONEH%").join(",ref_BASEMAXONEH,").split("%BASEMINTWOH%").join(",ref_BASEMINTWOH,").split("%BASEMAXTWOH%").join(",ref_BASEMAXTWOH,").split("%BASEMINSMITE%").join(",ref_BASEMINSMITE,").split("%BASEMAXSMITE%").join(",ref_BASEMAXSMITE,").split("%BASEMINTHROW%").join(",ref_BASEMINTHROW,").split("%BASEMAXTHROW%").join(",ref_BASEMAXTHROW,").split("%BASEMINKICK%").join(",ref_BASEMINKICK,").split("%BASEMAXKICK%").join(",ref_BASEMAXKICK,")
-			for (let stat = 0; stat <= 504; stat++) {
+			for (let stat = 0; stat <= 510; stat++) {
 			if (typeof(itemToCompare["STAT"+stat]) != 'undefined') { out_format = out_format.split("%STAT"+stat+"%").join(",ref_STAT"+stat+",") }
 			else { out_format = out_format.split("%STAT"+stat+"%").join(",0,") }
 			if (typeof(itemToCompare["CHARSTAT"+stat]) != 'undefined') { out_format = out_format.split("%CHARSTAT"+stat+"%").join(",ref_CHARSTAT"+stat+",") }
@@ -1577,7 +1582,7 @@ function parseFile(file,num) {
 			if (settings.validation == 1) { if (description_braces == 1) { text_length[2] += 3 } }
 		} else if (key == "ref") {
 			if (o == "ref_CLVL") { temp = character.CLVL }
-			else if (o == "ref_REROLLALVL") { temp = Math.round(Number(character.CLVL)/2) + Math.round(Number(itemToCompare.ILVL)/2) }
+			else if (o == "ref_REROLLALVL") { temp = getRerollALVL() }
 			else if (o == "ref_NAME") { blank = true }
 		else if (o == "ref_BASENAME") { temp = (typeof(itemToCompare.base) != 'undefined') ? itemToCompare.base : itemToCompare.NAME }
 			else if (settings.version == 1 && o == "ref_RUNENAME" && itemToCompare.RUNE > 0) { color = colors["ORANGE"]; temp = itemToCompare.name.split(" ")[0]; }	// TODO: why isn't itemToCompare.RUNENAME setup by this point? (for stacked runes)
@@ -1655,6 +1660,12 @@ function parseFile(file,num) {
 	if (errors >= settings.max_errors) { document.getElementById("o"+num).innerHTML += " ... There may be additional errors. The first "+settings.max_errors+" errors were displayed.<br>" }
 	else if (settings.error_limit == 0 && errors >= 50) { document.getElementById("o"+num).innerHTML += " ... In total, "+errors+" errors were displayed.<br>" }
 	return [display,description]
+}
+
+// getRerollALVL - affix level of the item after it is rerolled
+// ---------------------------------
+function getRerollALVL() {
+	return Math.round(Number(character.CLVL)/2) + Math.round(Number(itemToCompare.ILVL)/2)
 }
 
 // getColor - gets the default color for a given item
